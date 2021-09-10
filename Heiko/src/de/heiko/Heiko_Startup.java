@@ -3,6 +3,7 @@ package de.heiko;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import de.heiko.db.GetDataBaseConnection;
 import de.heiko.listener.CommandListener;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -16,14 +17,17 @@ public class Heiko_Startup {
 	private ShardManager shardMan;
 
 	public static void main(String[] args) {
-		if (args.length > 0) {
-			try {
-				new Heiko_Startup().startup(args[0]);
-			} catch (Exception e) {
-				e.printStackTrace();
+		if (args.length == 1) {
+			
+			if(GetDataBaseConnection.createConnection()) {
+				try {
+					new Heiko_Startup().startup(args[0]);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-		else System.out.println("Please provide the token");
+		else System.out.println("Please provide a token");
 	}
 
 	public void startup(String token) throws Exception {
