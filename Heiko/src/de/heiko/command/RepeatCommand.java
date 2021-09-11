@@ -13,6 +13,6 @@ public class RepeatCommand implements ServerCommand{
 		MessageManager.sendMessage(message.getContentDisplay(), channel, true);
 	}
 	
-	//commit sis shit
+	//commit sis shit right now
 
 }
