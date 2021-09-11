@@ -12,5 +12,7 @@ public class RepeatCommand implements ServerCommand{
 	public void performCommand(Member member, TextChannel channel, Message message) {
 		MessageManager.sendMessage(message.getContentDisplay(), channel, true);
 	}
+	
+	//commit sis shit
 
 }
