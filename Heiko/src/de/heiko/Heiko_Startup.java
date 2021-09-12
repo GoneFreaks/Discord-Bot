@@ -3,8 +3,13 @@ package de.heiko;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+
 import de.heiko.db.GetDataBaseConnection;
 import de.heiko.listener.CommandListener;
+import de.heiko.music.PlayerManager;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -15,11 +20,13 @@ public class Heiko_Startup {
 	public static Heiko_Startup INSTANCE;
 	private CommandManager cmdMan;
 	private ShardManager shardMan;
+	public AudioPlayerManager audioPlayerManager;
+	public PlayerManager playerManager;
 
 	public static void main(String[] args) {
 		if (args.length == 1) {
 			
-			if(GetDataBaseConnection.createConnection()) {
+			if(!GetDataBaseConnection.createConnection()) {
 				try {
 					new Heiko_Startup().startup(args[0]);
 				} catch (Exception e) {
@@ -37,10 +44,14 @@ public class Heiko_Startup {
 		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
 		builder.setActivity(Activity.listening("Rick Astley"));
 		builder.setStatus(OnlineStatus.ONLINE);
-		cmdMan = new CommandManager();
+		this.audioPlayerManager = new DefaultAudioPlayerManager();
+		this.playerManager = new PlayerManager();
+		this.cmdMan = new CommandManager();
 		builder.addEventListeners(new CommandListener());
-		shardMan = builder.build();
-
+		this.shardMan = builder.build();
+		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
+		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
+		
 		shutdown();
 
 	}
@@ -74,6 +85,10 @@ public class Heiko_Startup {
 
 	public CommandManager getCmdMan() {
 		return this.cmdMan;
+	}
+	
+	public ShardManager getShardMan() {
+		return this.shardMan;
 	}
 
 }
