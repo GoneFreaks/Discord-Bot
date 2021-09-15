@@ -1,4 +1,4 @@
-package de.heiko.listener;
+package de.gruwie.listener;
 
 import de.gruwie.Gruwie_Startup;
 import net.dv8tion.jda.api.entities.ChannelType;

@@ -1,4 +1,4 @@
-package de.heiko.util;
+package de.gruwie.util;
 
 import java.util.concurrent.TimeUnit;
 

@@ -2,9 +2,9 @@ package de.gruwie;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import de.heiko.command.types.ServerCommand;
-import de.heiko.music.commands.PlayCommand;
-import de.heiko.music.commands.StopCommand;
+import de.gruwie.command.types.ServerCommand;
+import de.gruwie.music.commands.PlayCommand;
+import de.gruwie.music.commands.StopCommand;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;

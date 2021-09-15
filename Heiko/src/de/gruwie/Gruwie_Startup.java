@@ -7,9 +7,9 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
-import de.heiko.db.GetDataBaseConnection;
-import de.heiko.listener.CommandListener;
-import de.heiko.music.PlayerManager;
+import de.gruwie.db.GetDataBaseConnection;
+import de.gruwie.listener.CommandListener;
+import de.gruwie.music.PlayerManager;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;

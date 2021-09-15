@@ -1,4 +1,4 @@
-package de.heiko.db;
+package de.gruwie.db;
 
 import java.sql.Connection;
 import java.sql.SQLException;

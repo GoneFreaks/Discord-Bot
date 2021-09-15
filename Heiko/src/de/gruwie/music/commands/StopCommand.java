@@ -1,10 +1,10 @@
-package de.heiko.music.commands;
+package de.gruwie.music.commands;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import de.gruwie.Gruwie_Startup;
-import de.heiko.command.types.ServerCommand;
-import de.heiko.music.MusicController;
+import de.gruwie.command.types.ServerCommand;
+import de.gruwie.music.MusicController;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

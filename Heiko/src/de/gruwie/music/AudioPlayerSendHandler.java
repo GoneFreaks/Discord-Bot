@@ -1,4 +1,4 @@
-package de.heiko.music;
+package de.gruwie.music;
 
 import java.nio.ByteBuffer;
 
