@@ -2,7 +2,7 @@ package de.heiko.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
-import de.heiko.Heiko_Startup;
+import de.gruwie.Gruwie_Startup;
 import net.dv8tion.jda.api.entities.Guild;
 
 public class MusicController {
@@ -12,7 +12,7 @@ public class MusicController {
 	
 	public MusicController(Guild guild) {
 		this.guild = guild;
-		this.player = Heiko_Startup.INSTANCE.audioPlayerManager.createPlayer();
+		this.player = Gruwie_Startup.INSTANCE.getAudioPlayerManager().createPlayer();
 		
 		this.guild.getAudioManager().setSendingHandler(new AudioPlayerSendHandler(player));
 		this.player.setVolume(10);

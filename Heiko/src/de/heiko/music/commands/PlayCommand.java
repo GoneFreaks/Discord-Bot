@@ -3,10 +3,11 @@ package de.heiko.music.commands;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
-import de.heiko.Heiko_Startup;
+import de.gruwie.Gruwie_Startup;
 import de.heiko.command.types.ServerCommand;
 import de.heiko.music.AudioLoadResult;
 import de.heiko.music.MusicController;
+import de.heiko.util.MessageManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -25,9 +26,9 @@ public class PlayCommand implements ServerCommand {
 			if((state = member.getVoiceState()) != null) {
 				VoiceChannel vc;
 				if((vc = state.getChannel()) != null) {
-					MusicController controller = Heiko_Startup.INSTANCE.playerManager.getController(vc.getGuild().getIdLong());
+					MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(vc.getGuild().getIdLong());
 					AudioPlayer player = controller.getPlayer();
-					AudioPlayerManager apm = Heiko_Startup.INSTANCE.audioPlayerManager;
+					AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
 					AudioManager manager = vc.getGuild().getAudioManager();
 					manager.openAudioConnection(vc);
 					
@@ -42,6 +43,7 @@ public class PlayCommand implements ServerCommand {
 					}
 					
 					apm.loadItem(url, new AudioLoadResult(controller, url));
+					
 				}
 			}
 		}

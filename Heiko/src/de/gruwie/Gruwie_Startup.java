@@ -1,4 +1,4 @@
-package de.heiko;
+package de.gruwie;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,20 +15,20 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
-public class Heiko_Startup {
+public class Gruwie_Startup {
 
-	public static Heiko_Startup INSTANCE;
+	public static Gruwie_Startup INSTANCE;
 	private CommandManager cmdMan;
 	private ShardManager shardMan;
-	public AudioPlayerManager audioPlayerManager;
-	public PlayerManager playerManager;
+	private AudioPlayerManager audioPlayerManager;
+	private PlayerManager playerManager;
 
 	public static void main(String[] args) {
 		if (args.length == 1) {
 			
 			if(!GetDataBaseConnection.createConnection()) {
 				try {
-					new Heiko_Startup().startup(args[0]);
+					new Gruwie_Startup().startup(args[0]);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -89,6 +89,14 @@ public class Heiko_Startup {
 	
 	public ShardManager getShardMan() {
 		return this.shardMan;
+	}
+	
+	public PlayerManager getPlayerManager() {
+		return this.playerManager;
+	}
+	
+	public AudioPlayerManager getAudioPlayerManager() {
+		return this.audioPlayerManager;
 	}
 
 }

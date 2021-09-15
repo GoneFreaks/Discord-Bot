@@ -2,7 +2,7 @@ package de.heiko.music;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import de.heiko.Heiko_Startup;
+import de.gruwie.Gruwie_Startup;
 
 public class PlayerManager {
 
@@ -17,7 +17,7 @@ public class PlayerManager {
 		
 		if(controller.containsKey(guildId)) mc = this.controller.get(guildId);
 		else {
-			mc = new MusicController(Heiko_Startup.INSTANCE.getShardMan().getGuildById(guildId));
+			mc = new MusicController(Gruwie_Startup.INSTANCE.getShardMan().getGuildById(guildId));
 			this.controller.put(guildId, mc);
 		}
 		return mc;

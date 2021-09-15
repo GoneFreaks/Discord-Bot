@@ -1,6 +1,6 @@
 package de.heiko.listener;
 
-import de.heiko.Heiko_Startup;
+import de.gruwie.Gruwie_Startup;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -25,7 +25,7 @@ public class CommandListener extends ListenerAdapter {
 				String[] args = message.substring(1).split(" ");
 				
 				if(args.length > 0) {
-					Heiko_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, event.getMessage());
+					Gruwie_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, event.getMessage());
 				}
 			}
 		}
