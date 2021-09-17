@@ -40,4 +40,6 @@ public class MessageManager {
 		builder.setColor(0x58ACFA);
 		return builder.build();
 	}
+	
+	//test
 }
