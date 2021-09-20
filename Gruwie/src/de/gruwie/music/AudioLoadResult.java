@@ -22,7 +22,16 @@ public class AudioLoadResult implements AudioLoadResultHandler	 {
 
 	@Override
 	public void playlistLoaded(AudioPlaylist playlist) {
-		System.out.println("playListLoaded");
+		
+		Queue queue = controller.getQueue();
+		
+		if(uri.startsWith("ytsearch:")) {
+			queue.addTrackToQueue(playlist.getTracks().get(0));
+		}
+		
+		for(AudioTrack track: playlist.getTracks()) {
+			queue.addTrackToQueue(track);
+		}
 	}
 
 	@Override
