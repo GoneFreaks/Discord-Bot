@@ -2,8 +2,8 @@ package de.gruwie.listener;
 
 import de.gruwie.Gruwie_Startup;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -16,24 +16,21 @@ public class CommandListener extends ListenerAdapter {
 			return;
 		}
 		
-		String message = event.getMessage().getContentDisplay();
+		String message_content = event.getMessage().getContentDisplay();
 		
 		if(event.isFromType(ChannelType.TEXT)) {
 			TextChannel channel = event.getTextChannel();
 			
-			if(message.startsWith("-")) {
-				String[] args = message.substring(1).split(" ");
+			if(message_content.startsWith("-")) {
+				String[] args = message_content.substring(1).split(" ");
 				
 				if(args.length > 0) {
-					Gruwie_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, event.getMessage());
+					Message message = event.getMessage();
+					Gruwie_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, message);
+					message.delete().queue();
 				}
 			}
 		}
-	}
-	
-	@Override
-	public void onSlashCommand(SlashCommandEvent event) {
-		System.out.println(event.getCommandString() + "\n" + event.getName());
 	}
 	
 }

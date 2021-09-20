@@ -19,6 +19,7 @@ public class PlayCommand implements ServerCommand {
 
 	@Override
 	public void performCommand(Member member, TextChannel channel, Message message) {
+		
 		String[] args = message.getContentDisplay().split(" ");
 		
 		if(args.length > 1) {

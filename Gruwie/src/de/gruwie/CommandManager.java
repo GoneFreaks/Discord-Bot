@@ -3,6 +3,7 @@ package de.gruwie;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.gruwie.command.types.ServerCommand;
+import de.gruwie.music.commands.NextCommand;
 import de.gruwie.music.commands.PlayCommand;
 import de.gruwie.music.commands.StopCommand;
 import net.dv8tion.jda.api.entities.Member;
@@ -22,6 +23,9 @@ public class CommandManager {
 		
 		this.storage.put("stop", new StopCommand());
 		this.storage.put("s", new StopCommand());
+		
+		this.storage.put("next", new NextCommand());
+		this.storage.put("n", new NextCommand());
 	}
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) {
