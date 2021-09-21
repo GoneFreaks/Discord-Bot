@@ -39,12 +39,11 @@ public class Queue {
 			if(pointer >= queuelist.size()) pointer = 0;
 			
 			AudioTrack track = queuelist.get(pointer);
-			printQueue(track.getDuration());
-			
-			pointer++;
 			
 			if(track != null) {
 				audioPlayer.playTrack(track.makeClone());
+				printQueue(track.getDuration() + 10000);
+				pointer++;
 				return true;
 			}
 		}
@@ -77,7 +76,7 @@ public class Queue {
 			b.append("\n");
 		}
 		
-		MessageManager.sendEmbedMessage(b.toString(), DataClass.getChannel(-1), duration); 
+		MessageManager.sendEmbedMessage(b.toString(), DataClass.getChannel(controller.getGuild().getIdLong()), duration);
 	}
 	
 }

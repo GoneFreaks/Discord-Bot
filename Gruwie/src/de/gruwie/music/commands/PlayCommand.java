@@ -32,6 +32,7 @@ public class PlayCommand implements ServerCommand {
 					AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
 					AudioManager manager = vc.getGuild().getAudioManager();
 					manager.openAudioConnection(vc);
+					manager.setSelfDeafened(true);
 					
 					StringBuilder str = new StringBuilder();
 					for(int i = 1; i < args.length; i++) {
