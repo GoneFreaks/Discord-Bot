@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
+import de.gruwie.db.DataManager;
 import de.gruwie.db.GetDataBaseConnection;
 import de.gruwie.listener.CommandListener;
 import de.gruwie.music.PlayerManager;
@@ -28,6 +29,7 @@ public class Gruwie_Startup {
 			
 			if(!GetDataBaseConnection.createConnection()) {
 				try {
+					DataManager.startup();
 					new Gruwie_Startup().startup(args[0]);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +44,7 @@ public class Gruwie_Startup {
 		INSTANCE = this;
 		
 		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
-		builder.setActivity(Activity.listening("Rick Astley"));
+		builder.setActivity(Activity.listening("-help"));
 		builder.setStatus(OnlineStatus.ONLINE);
 		this.audioPlayerManager = new DefaultAudioPlayerManager();
 		this.playerManager = new PlayerManager();
@@ -51,7 +53,6 @@ public class Gruwie_Startup {
 		this.shardMan = builder.build();
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
-		
 		shutdown();
 
 	}
@@ -68,6 +69,7 @@ public class Gruwie_Startup {
 						if (shardMan != null) {
 							shardMan.setStatus(OnlineStatus.OFFLINE);
 							shardMan.shutdown();
+							DataManager.shutdown();
 						}
 						System.out.println("Bot offline \n");
 						break;

@@ -11,8 +11,8 @@ public class Formatter {
 		long seconds = time / 1000;
 		
 		String h = hours + ":";
-		String m = (minutes < 10? "0" + minutes : minutes) + ":";
-		String s = (seconds < 10? "0" + seconds : seconds) + "";
+		String m = ((minutes < 10 && hours > 0)? "0" + minutes : minutes) + ":";
+		String s = ((seconds < 10 && minutes > 0)? "0" + seconds : seconds) + "";
 		return (hours > 0? h : "") + (minutes > 0? m : "") + (seconds > 0? s : (milli + "ms"));
 	}
 	

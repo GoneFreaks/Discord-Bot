@@ -12,7 +12,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.db.DataClass;
+import de.gruwie.db.DataManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -31,7 +31,7 @@ public class TrackScheduler extends AudioEventAdapter {
 	@Override
 	public void onTrackStart(AudioPlayer player, AudioTrack track) {
 		long guild_id = Gruwie_Startup.INSTANCE.getPlayerManager().getGuildByPlayerHash(player.hashCode());
-		TextChannel channel = DataClass.getChannel(guild_id);
+		TextChannel channel = DataManager.getChannel(guild_id);
 		
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(0x58ACFA);
@@ -75,12 +75,16 @@ public class TrackScheduler extends AudioEventAdapter {
 		Queue queue = controller.getQueue();
 
 		if (endReason.mayStartNext) {
-			queue.next();
+			if(!queue.next()) {
+				AudioManager manager = guild.getAudioManager();
+				player.stopTrack();
+				manager.closeAudioConnection();
+			}
 			return;
 		}
 		if (AudioTrackEndReason.REPLACED == endReason) return;
 
-		if (AudioTrackEndReason.FINISHED == endReason || AudioTrackEndReason.LOAD_FAILED == endReason || AudioTrackEndReason.STOPPED == endReason) {
+		if (AudioTrackEndReason.FINISHED == endReason || AudioTrackEndReason.LOAD_FAILED == endReason) {
 			AudioManager manager = guild.getAudioManager();
 			player.stopTrack();
 			manager.closeAudioConnection();

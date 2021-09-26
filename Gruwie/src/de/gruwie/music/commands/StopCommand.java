@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 public class StopCommand implements ServerCommand{
 
@@ -21,8 +22,9 @@ public class StopCommand implements ServerCommand{
 			if((vc = state.getChannel()) != null) {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(vc.getGuild().getIdLong());
 				AudioPlayer player = controller.getPlayer();
-				
+				AudioManager manager = controller.getGuild().getAudioManager();
 				player.stopTrack();
+				manager.closeAudioConnection();
 			}
 		}
 	}

@@ -18,7 +18,7 @@ public class MusicController {
 		
 		this.guild.getAudioManager().setSendingHandler(new AudioPlayerSendHandler(player));
 		this.player.addListener(new TrackScheduler());
-		this.player.setVolume(100);
+		this.player.setVolume(25);
 	}
 	
 	public AudioPlayer getPlayer() {
