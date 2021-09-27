@@ -11,6 +11,8 @@ import de.gruwie.db.DataManager;
 import de.gruwie.db.GetDataBaseConnection;
 import de.gruwie.listener.CommandListener;
 import de.gruwie.music.PlayerManager;
+import de.gruwie.util.ErrorClass;
+import de.gruwie.util.ErrorDTO;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -32,7 +34,7 @@ public class Gruwie_Startup {
 					DataManager.startup();
 					new Gruwie_Startup().startup(args[0]);
 				} catch (Exception e) {
-					e.printStackTrace();
+					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
 				}
 			}
 		}
@@ -70,6 +72,7 @@ public class Gruwie_Startup {
 							shardMan.setStatus(OnlineStatus.OFFLINE);
 							shardMan.shutdown();
 							DataManager.shutdown();
+							ErrorClass.shutdown();
 						}
 						System.out.println("Bot offline \n");
 						break;
@@ -78,7 +81,7 @@ public class Gruwie_Startup {
 				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
 				shardMan.setStatus(OnlineStatus.OFFLINE);
 				shardMan.shutdown();
 			}

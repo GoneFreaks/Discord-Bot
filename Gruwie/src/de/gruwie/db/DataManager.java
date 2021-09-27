@@ -12,6 +12,16 @@ public class DataManager {
 	private static ConcurrentHashMap<Long, Long> storage = new ConcurrentHashMap<>();
 	private static Set<Long> modified = new HashSet<>();
 	
+	public static void shutdown() {
+		if(modified.size() > 0) {
+			System.out.println("DataManager: Daten werden geschrieben");
+		}
+	}
+	
+	public static void startup() {
+		System.out.println("DataManager: Daten werden gelesen");
+	}
+	
 	public static void putChannel(long guild_id, long channel_id) {
 		storage.put(guild_id, channel_id);
 		modified.add(guild_id);
@@ -27,14 +37,8 @@ public class DataManager {
 		else return Gruwie_Startup.INSTANCE.getShardMan().getTextChannelById(storage.get(guild_id));
 	}
 	
-	public static void shutdown() {
-		if(modified.size() > 0) {
-			System.out.println("DataManager: Daten werden geschrieben");
-		}
-	}
-	
-	public static void startup() {
-		System.out.println("DataManager: Daten werden gelesen");
+	public static boolean trackKnown(String url) {
+		return false;
 	}
 	
 }

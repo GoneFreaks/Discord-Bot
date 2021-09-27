@@ -13,6 +13,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.DataManager;
+import de.gruwie.util.ErrorClass;
+import de.gruwie.util.ErrorDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -58,7 +60,7 @@ public class TrackScheduler extends AudioEventAdapter {
 				channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete().delete().queueAfter((long)(track.getDuration() + 10000), TimeUnit.MILLISECONDS);
 				
 			} catch (IOException e) {
-				e.printStackTrace();
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-TRACK-SCHEDULER", "SYSTEM"));
 			}
 			
 		}
@@ -75,16 +77,20 @@ public class TrackScheduler extends AudioEventAdapter {
 		Queue queue = controller.getQueue();
 
 		if (endReason.mayStartNext) {
-			if(!queue.next()) {
-				AudioManager manager = guild.getAudioManager();
-				player.stopTrack();
-				manager.closeAudioConnection();
+			try {
+				if(!queue.next()) {
+					AudioManager manager = guild.getAudioManager();
+					player.stopTrack();
+					manager.closeAudioConnection();
+				}
+			} catch (Exception e) {
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-TRACK-SCHEDULER", "SYSTEM"));
 			}
 			return;
 		}
 		if (AudioTrackEndReason.REPLACED == endReason) return;
 
-		if (AudioTrackEndReason.FINISHED == endReason || AudioTrackEndReason.LOAD_FAILED == endReason) {
+		if (AudioTrackEndReason.FINISHED == endReason || AudioTrackEndReason.LOAD_FAILED == endReason || AudioTrackEndReason.STOPPED == endReason) {
 			AudioManager manager = guild.getAudioManager();
 			player.stopTrack();
 			manager.closeAudioConnection();

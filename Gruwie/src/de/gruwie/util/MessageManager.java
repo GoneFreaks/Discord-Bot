@@ -3,6 +3,7 @@ package de.gruwie.util;
 import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -30,8 +31,10 @@ public class MessageManager {
 		else channel.sendMessageEmbeds(buildEmbedMessage(message)).queue();
 	}
 	
-	public static void sendEmbedMessage (String message, TextChannel channel, long delete) {
-		channel.sendMessageEmbeds(buildEmbedMessage(message)).complete().delete().queueAfter(delete, TimeUnit.MILLISECONDS);
+	public static Message sendEmbedMessage (String message, TextChannel channel, long delete) {
+		Message output = channel.sendMessageEmbeds(buildEmbedMessage(message)).complete();
+		output.delete().queueAfter(delete, TimeUnit.MILLISECONDS);
+		return output;
 	}
 	
 	private static MessageEmbed buildEmbedMessage (String message) {
@@ -39,5 +42,9 @@ public class MessageManager {
 		builder.setDescription(message);
 		builder.setColor(0x58ACFA);
 		return builder.build();
+	}
+	
+	public static void editMessage (Message m, String message, long delete) {
+		m.editMessageEmbeds(buildEmbedMessage(message)).complete().delete().queueAfter(delete, TimeUnit.MILLISECONDS);
 	}
 }

@@ -10,66 +10,81 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import de.gruwie.db.DataManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.MessageManager;
+import net.dv8tion.jda.api.entities.Message;
 
 public class Queue {
 
-	private static final int MAX_SIZE = 100;
-	private static final int BLOCK_SIZE = 25;
+	private static final int MAX_SIZE = 25;
 	
 	private MusicController controller;
 	private AudioPlayer audioPlayer;
 	private List<AudioTrack> queuelist;
 	private int pointer;
+	private int pointer_current;
+	private boolean repeat = true;
 	
-	private AudioTrack current;
+	private AudioTrack current_track;
+	private Message current_queue;
 
 	public Queue(MusicController controller) {
 		this.controller = controller;
 		this.audioPlayer = controller.getPlayer();
 		this.queuelist = new ArrayList<>();
 		pointer = 0;
+		pointer_current = 0;
 	}
 	
-	public boolean next() {
+	public boolean next() throws Exception {
 	
 		if(queuelist.size() > 0) {
 			
-			if(audioPlayer.getPlayingTrack() != null) {
-				audioPlayer.stopTrack();
-			}
-			
 			if(pointer >= queuelist.size()) pointer = 0;
 			
-			AudioTrack track = queuelist.get(pointer);
+			AudioTrack track = repeat? queuelist.get(pointer) : queuelist.remove(0);
+			pointer_current = pointer;
 			
 			if(track != null) {
-				current = track;
+				current_track = track;
 				audioPlayer.playTrack(track.makeClone());
 				printQueue(track.getDuration() + 10000);
-				pointer++;
+				if(repeat) pointer++;
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void addTrackToQueue(AudioTrack track) {
+	public void addTrackToQueue(AudioTrack track) throws Exception {
 
-		if (queuelist.size() >= MAX_SIZE) queuelist.remove(0);
+		if (queuelist.size() >= MAX_SIZE) return;
+		
 		this.queuelist.add(track);
+		
+		editQueueMessage();
 
 		if (controller.getPlayer().getPlayingTrack() == null) next();
 	}
 	
 	public void deleteQueue() {
 		this.queuelist = new ArrayList<>();
+		editQueueMessage();
 	}
 	
 	public List<AudioTrack> getQueueList() {
 		return queuelist;
 	}
 	
-	private void printQueue(long duration) {
+	public String getCurrentTrackTitle() {
+		return current_track.getInfo().title;
+	}
+	
+	public void changeRepeat() {
+		repeat = !repeat;
+	}
+	
+	private String queueToString() {
+		
+		if(queuelist.size() == 0) return "**THE QUEUE IS EMPTY**";
 		
 		StringBuilder strBuilder = new StringBuilder("");
 		
@@ -77,21 +92,24 @@ public class Queue {
 		strBuilder.append(queuelist.size() + "/" + MAX_SIZE + " Songs\n\n");
 		
 		for (int i = 0; i < queuelist.size(); i++) {
-			if(i == pointer) strBuilder.append("***:arrow_right:*** ");
+			if(i == pointer_current) strBuilder.append("***:arrow_right:*** ");
 			else strBuilder.append(":black_small_square: ");
 			AudioTrackInfo info = queuelist.get(i).getInfo();
 			strBuilder.append(info.title + " ");
 			strBuilder.append("**" + Formatter.formatTime(info.length) + "**");
 			strBuilder.append("\n");
 			
-			if((i+1) % BLOCK_SIZE == 0) {
-				MessageManager.sendEmbedMessage(strBuilder.toString(), DataManager.getChannel(controller.getGuild().getIdLong()), duration);
-				strBuilder = new StringBuilder("");
-			}
-			
 		}
 		
-		MessageManager.sendEmbedMessage(strBuilder.toString(), DataManager.getChannel(controller.getGuild().getIdLong()), duration);
+		return strBuilder.toString();
+	}
+	
+	private void printQueue(long duration) {
+		current_queue = MessageManager.sendEmbedMessage(queueToString(), DataManager.getChannel(controller.getGuild().getIdLong()), duration);
+	}
+	
+	private void editQueueMessage() {
+		if(current_queue != null) MessageManager.editMessage(current_queue, queueToString(), current_track.getDuration() - current_track.getPosition());
 	}
 	
 }

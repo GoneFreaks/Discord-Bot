@@ -5,6 +5,9 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import de.gruwie.util.ErrorClass;
+import de.gruwie.util.ErrorDTO;
+
 public class AudioLoadResult implements AudioLoadResultHandler {
 
 	private final MusicController controller;
@@ -26,12 +29,20 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 		Queue queue = controller.getQueue();
 
 		if (uri.startsWith("ytsearch:")) {
-			queue.addTrackToQueue(playlist.getTracks().get(0));
+			try {
+				queue.addTrackToQueue(playlist.getTracks().get(0));
+			} catch (Exception e) {
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM"));
+			}
 			return;
 		}
 
 		for (AudioTrack track : playlist.getTracks()) {
-			queue.addTrackToQueue(track);
+			try {
+				queue.addTrackToQueue(track);
+			} catch (Exception e) {
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM"));
+			}
 		}
 	}
 

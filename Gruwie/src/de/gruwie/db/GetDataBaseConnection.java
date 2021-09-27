@@ -5,6 +5,9 @@ import java.sql.SQLException;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import de.gruwie.util.ErrorClass;
+import de.gruwie.util.ErrorDTO;
+
 public class GetDataBaseConnection {
 
 	private static final String SERVER = "";
@@ -35,7 +38,7 @@ public class GetDataBaseConnection {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
 			return false;
 		}
 	}
