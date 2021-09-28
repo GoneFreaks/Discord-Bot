@@ -37,8 +37,4 @@ public class DataManager {
 		else return Gruwie_Startup.INSTANCE.getShardMan().getTextChannelById(storage.get(guild_id));
 	}
 	
-	public static boolean trackKnown(String url) {
-		return false;
-	}
-	
 }

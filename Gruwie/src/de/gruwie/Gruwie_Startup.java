@@ -10,6 +10,7 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import de.gruwie.db.DataManager;
 import de.gruwie.db.GetDataBaseConnection;
 import de.gruwie.listener.CommandListener;
+import de.gruwie.listener.EmoteListener;
 import de.gruwie.music.PlayerManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.ErrorDTO;
@@ -52,6 +53,7 @@ public class Gruwie_Startup {
 		this.playerManager = new PlayerManager();
 		this.cmdMan = new CommandManager();
 		builder.addEventListeners(new CommandListener());
+		builder.addEventListeners(new EmoteListener());
 		this.shardMan = builder.build();
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);

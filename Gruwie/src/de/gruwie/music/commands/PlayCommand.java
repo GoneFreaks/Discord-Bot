@@ -3,7 +3,7 @@ package de.gruwie.music.commands;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.command.types.ServerCommand;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.AudioLoadResult;
 import de.gruwie.music.MusicController;
 import net.dv8tion.jda.api.entities.GuildVoiceState;

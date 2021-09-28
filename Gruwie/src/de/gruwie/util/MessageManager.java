@@ -23,12 +23,12 @@ public class MessageManager {
 		
 	}
 	
-	public static void sendEmbedMessage (String message, TextChannel channel, boolean delete) {
+	public static Message sendEmbedMessage (String message, TextChannel channel, boolean delete) {
 		
 		if(delete) {
-			sendEmbedMessage(message, channel, DELETE_TIME);
+			return sendEmbedMessage(message, channel, DELETE_TIME);
 		}
-		else channel.sendMessageEmbeds(buildEmbedMessage(message)).queue();
+		else return channel.sendMessageEmbeds(buildEmbedMessage(message)).complete();
 	}
 	
 	public static Message sendEmbedMessage (String message, TextChannel channel, long delete) {
@@ -46,5 +46,9 @@ public class MessageManager {
 	
 	public static void editMessage (Message m, String message, long delete) {
 		m.editMessageEmbeds(buildEmbedMessage(message)).complete().delete().queueAfter(delete, TimeUnit.MILLISECONDS);
+	}
+	
+	public static void editMessage (Message m, String message) {
+		m.editMessageEmbeds(buildEmbedMessage(message)).complete();
 	}
 }

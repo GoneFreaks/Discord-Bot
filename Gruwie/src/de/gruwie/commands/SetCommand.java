@@ -1,6 +1,6 @@
 package de.gruwie.commands;
 
-import de.gruwie.command.types.ServerCommand;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.DataManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

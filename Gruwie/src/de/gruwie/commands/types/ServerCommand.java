@@ -1,4 +1,4 @@
-package de.gruwie.command.types;
+package de.gruwie.commands.types;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

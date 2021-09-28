@@ -1,7 +1,7 @@
 package de.gruwie.music;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.command.types.ServerCommand;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.DataManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.GruwieIO;
