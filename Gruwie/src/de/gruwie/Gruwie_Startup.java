@@ -28,18 +28,52 @@ public class Gruwie_Startup {
 	private PlayerManager playerManager;
 
 	public static void main(String[] args) {
-		if (args.length == 1) {
-			
-			if(!GetDataBaseConnection.createConnection()) {
-				try {
-					DataManager.startup();
-					new Gruwie_Startup().startup(args[0]);
-				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
+		if (args.length == 2) {
+			try {
+				
+				switch (Integer.parseInt(args[1])) {
+				case 0: {
+					if(!GetDataBaseConnection.createConnection()) {
+						ErrorClass.shutdown();
+						return;
+					}
+					System.out.println("0: Bot starting in default-mode");
+					break;
 				}
+				
+				case 1: {
+					System.out.println("1: Bot starting without database");
+					DataManager.withDataBase = false;
+					break;
+				}
+				
+				case 2: {
+					if(!GetDataBaseConnection.createConnection()) {
+						ErrorClass.shutdown();
+						return;
+					}
+					System.out.println("2: Bot starting without logging");
+					ErrorClass.writeToFile = false;
+					break;
+				}
+				
+				case 3: {
+					System.out.println("3: Bot starting without database and logging");
+					ErrorClass.writeToFile = false;
+					DataManager.withDataBase = false;
+					break;
+				}
+				
+				default:
+					System.out.println("Ungültige Startargumente");
+				}
+				DataManager.startup();
+				new Gruwie_Startup().startup(args[0]);
+			} catch (Exception e) {
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
 			}
 		}
-		else System.out.println("Please provide a token");
+		else System.out.println("Please provide a token and a start-type");
 	}
 
 	public void startup(String token) throws Exception {

@@ -7,17 +7,20 @@ import java.util.List;
 public class ErrorClass {
 
 	private static List<ErrorDTO> storage = new ArrayList<>();
+	public static boolean writeToFile = true;
 	
 	public static void reportError(ErrorDTO err) {
 		err.getException().printStackTrace();
-		storage.add(err);
+		if(writeToFile) storage.add(err);
 	}
 	
 	public static void shutdown() {
 		
-		long timestamp = System.currentTimeMillis();
+		if(!writeToFile) return;
 		
 		if(storage.size() > 0) {
+			
+			long timestamp = System.currentTimeMillis();
 			System.out.println("ErrorClass: Daten werden geschrieben");
 			
 			Collections.sort(storage);

@@ -9,7 +9,7 @@ public class EmoteListener extends ListenerAdapter {
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event) {
 		TicTacToeLobby lobby = TicTacToeLobby.getLobbyByGuildId(event.getGuild().getIdLong());
-		lobby.doTurn(event.getUserId(), event.getReactionEmote().getName());
+		if(lobby != null && lobby.isGameView(event.getMessageIdLong())) lobby.doTurn(event.getUserId(), event.getReactionEmote().getName());
 	}
 	
 }

@@ -11,8 +11,6 @@ public class GruwieIO {
 
 	public static void writeToFile(String file, String output) {
 		
-		System.out.println("SCHREIBE GRADE WAS");
-		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
 
 			writer.write(output);

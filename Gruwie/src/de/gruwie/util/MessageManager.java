@@ -10,34 +10,33 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class MessageManager {
 	
 	private static final long DELETE_TIME = 7000;
-
-	public static void sendMessage (String message, TextChannel channel, boolean delete) {
-		
-		if(delete) sendMessage(message, channel, DELETE_TIME);
-		else channel.sendMessage(message).queue();
-	}
-	
-	public static void sendMessage (String message, TextChannel channel, long delete) {
-		
-		channel.sendMessage(message).complete().delete().queueAfter(delete, TimeUnit.MILLISECONDS);	
-		
-	}
 	
 	public static Message sendEmbedMessage (String message, TextChannel channel, boolean delete) {
 		
-		if(delete) {
-			return sendEmbedMessage(message, channel, DELETE_TIME);
+		try {
+			if(delete) {
+				return sendEmbedMessage(message, channel, DELETE_TIME);
+			}
+			else return channel.sendMessageEmbeds(buildEmbedMessage(message)).complete();
+		} catch (Exception e) {
+			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM"));
+			return null;
 		}
-		else return channel.sendMessageEmbeds(buildEmbedMessage(message)).complete();
 	}
 	
 	public static Message sendEmbedMessage (String message, TextChannel channel, long delete) {
-		Message output = channel.sendMessageEmbeds(buildEmbedMessage(message)).complete();
-		output.delete().queueAfter(delete, TimeUnit.MILLISECONDS);
-		return output;
+		try {
+			Message output = channel.sendMessageEmbeds(buildEmbedMessage(message)).complete();
+			output.delete().queueAfter(delete, TimeUnit.MILLISECONDS);
+			return output;
+		} catch (Exception e) {
+			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM"));
+			return null;
+		}
 	}
 	
 	private static MessageEmbed buildEmbedMessage (String message) {
+		
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setDescription(message);
 		builder.setColor(0x58ACFA);
@@ -45,10 +44,20 @@ public class MessageManager {
 	}
 	
 	public static void editMessage (Message m, String message, long delete) {
-		m.editMessageEmbeds(buildEmbedMessage(message)).complete().delete().queueAfter(delete, TimeUnit.MILLISECONDS);
+		
+		try {
+			m.editMessageEmbeds(buildEmbedMessage(message)).complete().delete().queueAfter(delete, TimeUnit.MILLISECONDS);
+		} catch (Exception e) {
+			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM"));
+		}
 	}
 	
 	public static void editMessage (Message m, String message) {
-		m.editMessageEmbeds(buildEmbedMessage(message)).complete();
+		
+		try {
+			m.editMessageEmbeds(buildEmbedMessage(message)).complete();
+		} catch (Exception e) {
+			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM"));
+		}
 	}
 }

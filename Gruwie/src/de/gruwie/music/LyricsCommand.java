@@ -29,7 +29,7 @@ public class LyricsCommand implements ServerCommand {
 		String[] uri = Formatter.getURL(query);
 		
 		if(uri == null) {
-			MessageManager.sendEmbedMessage("**Unable to find lyrics**", DataManager.getChannel(channel.getGuild().getIdLong()), true);
+			MessageManager.sendEmbedMessage("**Unable to find lyrics**", DataManager.getChannel(channel), true);
 			return;
 		}
 		
@@ -37,10 +37,10 @@ public class LyricsCommand implements ServerCommand {
 			String temp = GruwieIO.doWebBrowsing(uri[i]);
 			if (temp != null) {
 				String output = Formatter.formatWebsite(temp);
-				MessageManager.sendEmbedMessage(output, DataManager.getChannel(channel.getGuild().getIdLong()), false);
+				MessageManager.sendEmbedMessage(output, DataManager.getChannel(channel), false);
 				return;
 			}
 		}
-		MessageManager.sendEmbedMessage("**Unable to find lyrics**", DataManager.getChannel(channel.getGuild().getIdLong()), true);
+		MessageManager.sendEmbedMessage("**Unable to find lyrics**", DataManager.getChannel(channel), true);
 	}
 }

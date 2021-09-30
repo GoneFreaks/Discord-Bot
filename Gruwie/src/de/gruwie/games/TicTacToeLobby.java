@@ -1,6 +1,7 @@
 package de.gruwie.games;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import de.gruwie.db.DataManager;
 import de.gruwie.util.MessageManager;
@@ -25,7 +26,7 @@ public class TicTacToeLobby {
 		this.guildId = guildId;
 		this.turn = 1;
 		storage.put(guildId, this);
-		this.game = new TicTacToeGame();
+		this.game = new TicTacToeGame(player1, player2);
 		
 		this.game_view = MessageManager.sendEmbedMessage(game.toString(), DataManager.getChannel(guildId), false);
 		addReactions();
@@ -35,10 +36,6 @@ public class TicTacToeLobby {
 		for (int i = 0; i < emote_arr.length; i++) {
 			this.game_view.addReaction(emote_arr[i]).queue();
 		}
-	}
-	
-	private void removeReaction(String emote) {
-		this.game_view.clearReactions(emote).queue();
 	}
 	
 	public static TicTacToeLobby getLobbyByGuildId(long guildId) {
@@ -51,7 +48,7 @@ public class TicTacToeLobby {
 	
 	public void doTurn(String playerId, String emote) {
 		if(playerId.equals(player1) || playerId.equals(player2)) {
-			if(setPlayer(playerId, Integer.parseInt(emote.charAt(0) + ""))) removeReaction(emote);
+			if(setPlayer(playerId, Integer.parseInt(emote.charAt(0) + ""))) this.game_view.clearReactions(emote).queue();
 		}
 	}
 	
@@ -61,23 +58,35 @@ public class TicTacToeLobby {
 			turn++;
 			game.setPlayer1(index);
 			MessageManager.editMessage(game_view, game.toString());
-			return true;
+			return isGameEnd();
 		}
 		if(turn % 2 == 0 && player2.equals(playerId)) {
 			turn++;
 			game.setPlayer2(index);
 			MessageManager.editMessage(game_view, game.toString());
-			return true;
-		}
-		
-		if(game.isWinner() || turn > 9) {
-			storage.remove(guildId);
-			game_view.delete().queue();
-			return false;
+			return isGameEnd();
 		}
 		
 		return false;
 		
+	}
+	
+	private boolean isGameEnd() {
+		if(game.isWinner() || turn > 9) {
+			endLobby();
+			return false;
+		}
+		else return true;
+	}
+	
+	public void endLobby() {
+		storage.remove(guildId);
+		game_view.clearReactions().queue();
+		game_view.delete().queueAfter(30, TimeUnit.SECONDS);
+	}
+	
+	public boolean isGameView(long messageId) {
+		return game_view.getIdLong() == messageId;
 	}
 	
 }

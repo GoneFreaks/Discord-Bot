@@ -6,6 +6,7 @@ import de.gruwie.commands.HelpCommand;
 import de.gruwie.commands.SetCommand;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.games.commands.CreateTTTLobbyCommand;
+import de.gruwie.games.commands.DeleteTTTLobbyCommand;
 import de.gruwie.music.LyricsCommand;
 import de.gruwie.music.commands.ClearQueueCommand;
 import de.gruwie.music.commands.NextCommand;
@@ -49,15 +50,18 @@ public class CommandManager {
 		
 		this.storage.put("tictactoe", new CreateTTTLobbyCommand());
 		this.storage.put("ttt", new CreateTTTLobbyCommand());
+		
+		this.storage.put("tictactoedelete", new DeleteTTTLobbyCommand());
+		this.storage.put("tttd", new DeleteTTTLobbyCommand());
 	}
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
 		
 		if(this.storage.containsKey(cmd)) {
 			this.storage.get(cmd).performCommand(member, channel, message);
-			return true;
+			return false;
 		}
-		else return false;
+		else return true;
 	}
 	
 	public String MapToString() {
@@ -71,6 +75,9 @@ public class CommandManager {
 			
 			if(!(i+1 >= arr.length) && (storage.get(arr[i]).getClass() != storage.get(arr[i+1]).getClass())) b.append("\n");
 		}
+		
+		b.append("\n\nMod-Creator:\n<@!690659763998031902>\n<@!690255106272526399>");
+		
 		return b.toString();
 	}
 	

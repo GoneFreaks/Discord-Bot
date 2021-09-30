@@ -8,10 +8,15 @@ public class TicTacToeGame {
 	private char winner;
 	private boolean turn;
 	
-	public TicTacToeGame() {
+	private String player1;
+	private String player2;
+	
+	public TicTacToeGame(String player1, String player2) {
 		this.storage = new char[9];
 		Arrays.fill(storage, '-');
 		this.turn = true;
+		this.player1 = "<@!" + player1 + ">";
+		this.player2 = "<@!" + player2 + ">";
 	}
 	
 	public void setPlayer1 (int index) {
@@ -62,10 +67,10 @@ public class TicTacToeGame {
 		StringBuilder b = new StringBuilder("");
 		
 		if(isWinner()) {
-			b.append("**The winner is: " + winner + "**\n");
+			b.append("**The winner is: " + ((winner == 'O')? player1 : player2) + "**\n");
 		}
 		else {
-			b.append("Game is running\nNext Player: " + (turn? "O":"X") + "\n");
+			b.append("Game is running\nNext Player: " + (turn? player1 : player2) + "\n");
 		}
 		
 		int start = 6;

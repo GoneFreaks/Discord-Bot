@@ -38,7 +38,7 @@ public class GetDataBaseConnection {
 			}
 			
 		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
+			ErrorClass.reportError(new ErrorDTO(e, "GET-DATABASE-CONNECTION", "SYSTEM"));
 			return false;
 		}
 	}

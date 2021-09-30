@@ -3,6 +3,7 @@ package de.gruwie.listener;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.ErrorDTO;
+import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -27,7 +28,9 @@ public class CommandListener extends ListenerAdapter {
 			if(args.length > 0) {
 				Message message = event.getMessage();
 				try {
-					Gruwie_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, message);
+					if(Gruwie_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, message)) {
+						MessageManager.sendEmbedMessage("UNKNOWN COMMAND", channel, true);
+					}
 				} catch (Exception e) {
 					ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName()));
 				}
