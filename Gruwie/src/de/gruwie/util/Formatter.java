@@ -6,7 +6,6 @@ import java.util.Date;
 public class Formatter {
 
 	public static String formatTime(long time) {
-		long milli = time;
 		long hours = time / 3600000;
 		time -= hours * 3600000;
 		long minutes = time / 60000;
@@ -16,7 +15,7 @@ public class Formatter {
 		String h = hours + ":";
 		String m = ((minutes < 10 && hours > 0)? "0" + minutes : minutes) + ":";
 		String s = ((seconds < 10 && minutes > 0)? "0" + seconds : seconds) + "";
-		return (hours > 0? h : "") + (minutes > 0? m : "") + (seconds > 0? s : (milli + "ms"));
+		return (hours > 0? h : "") + (minutes > 0? m : "") + s;
 	}
 	
 	public static String getTime() {

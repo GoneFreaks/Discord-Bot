@@ -7,7 +7,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
-import de.gruwie.db.DataManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Message;
@@ -24,7 +23,9 @@ public class Queue {
 	private boolean repeat = true;
 	
 	private AudioTrack current_track;
-	private Message current_queue;
+	private Message current_queue_view;
+	
+	private static String[] emote_arr = {"⏹️", "⏸️", "▶️", "⏭️", "🔁", "🆕"};
 
 	public Queue(MusicController controller) {
 		this.controller = controller;
@@ -35,7 +36,9 @@ public class Queue {
 	}
 	
 	public boolean next() throws Exception {
-	
+		
+		if(audioPlayer.getPlayingTrack() != null) audioPlayer.setVolume(0);
+		
 		if(queuelist.size() > 0) {
 			
 			if(pointer >= queuelist.size()) pointer = 0;
@@ -46,12 +49,21 @@ public class Queue {
 			if(track != null) {
 				current_track = track;
 				audioPlayer.playTrack(track.makeClone());
-				printQueue(track.getDuration() + 10000);
+				audioPlayer.setVolume(25);
 				if(repeat) pointer++;
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public void setView (Message current_queue_view) {
+		this.current_queue_view = current_queue_view;
+		
+		for (int i = 0; i < emote_arr.length; i++) {
+			if(current_queue_view != null)
+			current_queue_view.addReaction(emote_arr[i]).queue();
+		}
 	}
 
 	public void addTrackToQueue(AudioTrack track) throws Exception {
@@ -65,7 +77,7 @@ public class Queue {
 		if (controller.getPlayer().getPlayingTrack() == null) next();
 	}
 	
-	public void deleteQueue() {
+	public void clearQueue() {
 		this.queuelist = new ArrayList<>();
 		editQueueMessage();
 	}
@@ -80,9 +92,11 @@ public class Queue {
 	
 	public void changeRepeat() {
 		repeat = !repeat;
+		editQueueMessage();
 	}
 	
-	private String queueToString() {
+	@Override
+	public String toString() {
 		
 		if(queuelist.size() == 0) return "**THE QUEUE IS EMPTY**";
 		
@@ -92,7 +106,7 @@ public class Queue {
 		strBuilder.append(queuelist.size() + "/" + MAX_SIZE + " Songs\n\n");
 		
 		for (int i = 0; i < queuelist.size(); i++) {
-			if(i == pointer_current) strBuilder.append("***:arrow_right:*** ");
+			if(repeat && i == pointer_current) strBuilder.append("***:arrow_right:*** ");
 			else strBuilder.append(":black_small_square: ");
 			AudioTrackInfo info = queuelist.get(i).getInfo();
 			strBuilder.append(info.title + " ");
@@ -101,15 +115,13 @@ public class Queue {
 			
 		}
 		
+		strBuilder.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
+		
 		return strBuilder.toString();
 	}
 	
-	private void printQueue(long duration) {
-		current_queue = MessageManager.sendEmbedMessage(queueToString(), DataManager.getChannel(controller.getGuild().getIdLong()), duration);
-	}
-	
 	private void editQueueMessage() {
-		if(current_queue != null) MessageManager.editMessage(current_queue, queueToString(), current_track.getDuration() - current_track.getPosition());
+		if(current_queue_view != null) MessageManager.editMessage(current_queue_view, this.toString());
 	}
 	
 }

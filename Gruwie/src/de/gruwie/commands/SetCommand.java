@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class SetCommand implements ServerCommand {
 
 	@Override
-	public void performCommand(Member member, TextChannel channel, Message message) {
+	public void performServerCommand(Member member, TextChannel channel, Message message) {
 		
 		if(member.hasPermission(Permission.MANAGE_CHANNEL)) {
 			DataManager.putChannel(member.getGuild().getIdLong(), channel.getIdLong());

@@ -12,7 +12,6 @@ public class MessageManager {
 	private static final long DELETE_TIME = 7000;
 	
 	public static Message sendEmbedMessage (String message, TextChannel channel, boolean delete) {
-		
 		try {
 			if(delete) {
 				return sendEmbedMessage(message, channel, DELETE_TIME);
@@ -43,19 +42,10 @@ public class MessageManager {
 		return builder.build();
 	}
 	
-	public static void editMessage (Message m, String message, long delete) {
-		
-		try {
-			m.editMessageEmbeds(buildEmbedMessage(message)).complete().delete().queueAfter(delete, TimeUnit.MILLISECONDS);
-		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM"));
-		}
-	}
-	
 	public static void editMessage (Message m, String message) {
 		
 		try {
-			m.editMessageEmbeds(buildEmbedMessage(message)).complete();
+			m.editMessageEmbeds(buildEmbedMessage(message)).queue();
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM"));
 		}

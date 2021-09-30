@@ -11,10 +11,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class RepeatCommand implements ServerCommand {
 
 	@Override
-	public void performCommand(Member member, TextChannel channel, Message message) throws Exception {
+	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 		Queue queue = controller.getQueue();
 		queue.changeRepeat();
+		
 	}
 
 }

@@ -15,12 +15,17 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.DataManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.ErrorDTO;
+import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 public class TrackScheduler extends AudioEventAdapter {
+	
+	private Message current_track_view;
+	private Message current_queue_view;
 
 	@Override
 	public void onPlayerPause(AudioPlayer player) {
@@ -34,6 +39,8 @@ public class TrackScheduler extends AudioEventAdapter {
 	public void onTrackStart(AudioPlayer player, AudioTrack track) {
 		long guild_id = Gruwie_Startup.INSTANCE.getPlayerManager().getGuildByPlayerHash(player.hashCode());
 		TextChannel channel = DataManager.getChannel(guild_id);
+		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
+		Queue queue = controller.getQueue();
 		
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(0x58ACFA);
@@ -57,10 +64,12 @@ public class TrackScheduler extends AudioEventAdapter {
 				
 				builder.setImage("attachment://thumbnail.png");
 				channel.sendTyping().queue();
-				channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete().delete().queueAfter((long)(track.getDuration() + 10000), TimeUnit.MILLISECONDS);
+				current_track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
+				current_queue_view = MessageManager.sendEmbedMessage(queue.toString(), channel, false);
+				queue.setView(current_queue_view);
 				
 			} catch (IOException e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-TRACK-SCHEDULER", "SYSTEM"));
+				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM"));
 			}
 			
 		}
@@ -76,6 +85,16 @@ public class TrackScheduler extends AudioEventAdapter {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
 		Queue queue = controller.getQueue();
 
+		if(current_track_view != null) {
+			current_track_view.delete().queueAfter(10, TimeUnit.SECONDS);
+			current_track_view = null;
+		}
+		if(current_queue_view != null) {
+			current_queue_view.clearReactions().queue();
+			current_queue_view.delete().queueAfter(10, TimeUnit.SECONDS);
+			current_queue_view = null;
+		}
+		
 		if (endReason.mayStartNext) {
 			try {
 				if(!queue.next()) {
@@ -84,15 +103,15 @@ public class TrackScheduler extends AudioEventAdapter {
 					manager.closeAudioConnection();
 				}
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-TRACK-SCHEDULER", "SYSTEM"));
+				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM"));
 			}
 			return;
 		}
-		if (AudioTrackEndReason.REPLACED == endReason) return;
 
 		if (AudioTrackEndReason.FINISHED == endReason || AudioTrackEndReason.LOAD_FAILED == endReason || AudioTrackEndReason.STOPPED == endReason) {
 			AudioManager manager = guild.getAudioManager();
 			player.stopTrack();
+			queue.clearQueue();
 			manager.closeAudioConnection();
 		}
 		

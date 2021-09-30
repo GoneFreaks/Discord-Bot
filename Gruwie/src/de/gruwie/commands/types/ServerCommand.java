@@ -6,6 +6,6 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public interface ServerCommand{
 
-	public void performCommand(Member member, TextChannel channel, Message message) throws Exception;
+	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception;
 	
 }

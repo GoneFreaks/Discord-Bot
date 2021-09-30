@@ -13,18 +13,17 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
-public class StopCommand implements ServerCommand{
+public class PauseCommand implements ServerCommand {
 
 	@Override
-	public void performServerCommand(Member member, TextChannel channel, Message message) {
-		
+	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		GuildVoiceState state;
 		if((state = member.getVoiceState()) != null) {
 			VoiceChannel vc;
 			if((vc = state.getChannel()) != null) {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(vc.getGuild().getIdLong());
 				AudioPlayer player = controller.getPlayer();	
-				player.stopTrack();
+				player.setPaused(true);
 			}
 		}
 		else {

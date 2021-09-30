@@ -11,24 +11,27 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class CreateTTTLobbyCommand implements ServerCommand {
 
 	@Override
-	public void performCommand(Member member, TextChannel channel, Message message) throws Exception {
+	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
 		String[] args = message.getContentRaw().split(" ");
 		if(args.length == 2) {
 			
-			String player1 = member.getId();
-			String player2 = args[1].substring(3, args[1].length()-1);
-			
-			if(!TicTacToeLobby.lobbyExists(channel.getGuild().getIdLong())) {
-				new TicTacToeLobby(player1, player2, channel.getGuild().getIdLong());
+			if(args[1].startsWith("<@!")) {
+				
+				String player1 = member.getId();
+				String player2 = args[1].substring(3, args[1].length()-1);
+				
+				if(!player1.equals(player2)) {
+					if(!TicTacToeLobby.lobbyExists(channel.getGuild().getIdLong())) {
+						new TicTacToeLobby(player1, player2, channel.getGuild().getIdLong());
+					}
+					else MessageManager.sendEmbedMessage("THERE'S ALREADY A RUNNING LOBBY", DataManager.getChannel(channel), true);
+				}
+				else MessageManager.sendEmbedMessage("YOU CAN'T PLAY AGAINST YOURSELF", DataManager.getChannel(channel), true);
 			}
-			else {
-				MessageManager.sendEmbedMessage("THERE'S ALREADY A RUNNING LOBBY", DataManager.getChannel(channel), true);
-			}
+			else MessageManager.sendEmbedMessage("YOU HAVE TO MENTION ANOTHER PLAYER (@other_user)", DataManager.getChannel(channel), true);
 		}
-		else {
-			System.out.println("N�");
-		}
+		else MessageManager.sendEmbedMessage("USE THE COMMAND LIKE THIS -cmd @other_user", DataManager.getChannel(channel), true);
 	}
 
 }

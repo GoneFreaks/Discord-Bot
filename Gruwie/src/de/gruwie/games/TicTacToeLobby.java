@@ -46,7 +46,10 @@ public class TicTacToeLobby {
 		return storage.containsKey(guildId);
 	}
 	
-	public void doTurn(String playerId, String emote) {
+	public void doTurn(long messageId, String playerId, String emote) {
+		
+		if(!(game_view.getIdLong() == messageId)) return;
+		
 		if(playerId.equals(player1) || playerId.equals(player2)) {
 			if(setPlayer(playerId, Integer.parseInt(emote.charAt(0) + ""))) this.game_view.clearReactions(emote).queue();
 		}
@@ -66,9 +69,7 @@ public class TicTacToeLobby {
 			MessageManager.editMessage(game_view, game.toString());
 			return isGameEnd();
 		}
-		
 		return false;
-		
 	}
 	
 	private boolean isGameEnd() {
@@ -82,11 +83,7 @@ public class TicTacToeLobby {
 	public void endLobby() {
 		storage.remove(guildId);
 		game_view.clearReactions().queue();
-		game_view.delete().queueAfter(30, TimeUnit.SECONDS);
-	}
-	
-	public boolean isGameView(long messageId) {
-		return game_view.getIdLong() == messageId;
+		game_view.delete().queueAfter(15, TimeUnit.SECONDS);
 	}
 	
 }

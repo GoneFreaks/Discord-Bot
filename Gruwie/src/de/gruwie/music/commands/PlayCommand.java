@@ -4,8 +4,10 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
+import de.gruwie.db.DataManager;
 import de.gruwie.music.AudioLoadResult;
 import de.gruwie.music.MusicController;
+import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,7 +18,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 public class PlayCommand implements ServerCommand {
 
 	@Override
-	public void performCommand(Member member, TextChannel channel, Message message) {
+	public void performServerCommand(Member member, TextChannel channel, Message message) {
 		
 		String[] args = message.getContentDisplay().split(" ");
 		
@@ -44,6 +46,9 @@ public class PlayCommand implements ServerCommand {
 					
 				}
 			}
+		}
+		else {
+			MessageManager.sendEmbedMessage("YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY", DataManager.getChannel(channel), true);
 		}
 	}
 

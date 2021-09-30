@@ -10,8 +10,10 @@ import de.gruwie.games.commands.DeleteTTTLobbyCommand;
 import de.gruwie.music.LyricsCommand;
 import de.gruwie.music.commands.ClearQueueCommand;
 import de.gruwie.music.commands.NextCommand;
+import de.gruwie.music.commands.PauseCommand;
 import de.gruwie.music.commands.PlayCommand;
 import de.gruwie.music.commands.RepeatCommand;
+import de.gruwie.music.commands.ResumeCommand;
 import de.gruwie.music.commands.StopCommand;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -27,6 +29,9 @@ public class CommandManager {
 		
 		this.storage.put("play", new PlayCommand());
 		this.storage.put("p", new PlayCommand());
+		
+		this.storage.put("resume", new ResumeCommand());
+		this.storage.put("pause", new PauseCommand());
 		
 		this.storage.put("stop", new StopCommand());
 		this.storage.put("s", new StopCommand());
@@ -58,7 +63,7 @@ public class CommandManager {
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
 		
 		if(this.storage.containsKey(cmd)) {
-			this.storage.get(cmd).performCommand(member, channel, message);
+			this.storage.get(cmd).performServerCommand(member, channel, message);
 			return false;
 		}
 		else return true;

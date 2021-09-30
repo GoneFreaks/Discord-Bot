@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class HelpCommand implements ServerCommand{
 
 	@Override
-	public void performCommand(Member member, TextChannel channel, Message message) {
+	public void performServerCommand(Member member, TextChannel channel, Message message) {
 		
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		

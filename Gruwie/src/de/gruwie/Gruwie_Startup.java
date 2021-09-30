@@ -23,11 +23,13 @@ public class Gruwie_Startup {
 
 	public static Gruwie_Startup INSTANCE;
 	private CommandManager cmdMan;
+	private EmoteManager emMan;
 	private ShardManager shardMan;
 	private AudioPlayerManager audioPlayerManager;
 	private PlayerManager playerManager;
 
 	public static void main(String[] args) {
+		
 		if (args.length == 2) {
 			try {
 				
@@ -86,6 +88,7 @@ public class Gruwie_Startup {
 		this.audioPlayerManager = new DefaultAudioPlayerManager();
 		this.playerManager = new PlayerManager();
 		this.cmdMan = new CommandManager();
+		this.emMan = new EmoteManager();
 		builder.addEventListeners(new CommandListener());
 		builder.addEventListeners(new EmoteListener());
 		this.shardMan = builder.build();
@@ -126,6 +129,10 @@ public class Gruwie_Startup {
 
 	public CommandManager getCmdMan() {
 		return this.cmdMan;
+	}
+	
+	public EmoteManager getEmMan() {
+		return this.emMan;
 	}
 	
 	public ShardManager getShardMan() {

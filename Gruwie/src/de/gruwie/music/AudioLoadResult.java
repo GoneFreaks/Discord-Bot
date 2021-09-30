@@ -20,7 +20,12 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 
 	@Override
 	public void trackLoaded(AudioTrack track) {
-		controller.getPlayer().playTrack(track);
+		Queue queue = controller.getQueue();
+		try {
+			queue.addTrackToQueue(track);
+		} catch (Exception e) {
+			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM"));
+		}
 	}
 
 	@Override

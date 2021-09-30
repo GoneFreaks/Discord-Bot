@@ -75,13 +75,17 @@ public class TicTacToeGame {
 		
 		int start = 6;
 		
+		b.append("```");
+		
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				b.append(this.storage[start + j] + " ");
+				b.append((j==0? "\t" : "") + this.storage[start + j] + "\t");
 			}
 			b.append("\n");
 			start-=3;
 		}
+		
+		b.append("```");
 		
 		return b.toString();
 

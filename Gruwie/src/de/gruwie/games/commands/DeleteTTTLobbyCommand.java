@@ -12,12 +12,13 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class DeleteTTTLobbyCommand implements ServerCommand {
 
 	@Override
-	public void performCommand(Member member, TextChannel channel, Message message) throws Exception {
+	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
 		if(member.hasPermission(Permission.ADMINISTRATOR)) {
 			if(TicTacToeLobby.lobbyExists(channel.getGuild().getIdLong())) {
 				TicTacToeLobby.getLobbyByGuildId(channel.getGuild().getIdLong()).endLobby();
 			}
+			else MessageManager.sendEmbedMessage("NO LOBBY RUNNING ON THIS SERVER", DataManager.getChannel(channel), true);
 		}
 		else {
 			MessageManager.sendEmbedMessage("YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND", DataManager.getChannel(channel), true);

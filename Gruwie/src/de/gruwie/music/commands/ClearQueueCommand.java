@@ -11,11 +11,10 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ClearQueueCommand implements ServerCommand {
 
 	@Override
-	public void performCommand(Member member, TextChannel channel, Message message) {
+	public void performServerCommand(Member member, TextChannel channel, Message message) {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 		Queue queue = controller.getQueue();
-		
-		queue.deleteQueue();
+		queue.clearQueue();
 	}
 
 }
