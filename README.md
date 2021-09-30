@@ -15,4 +15,5 @@ The bot has diffrent configurations, each of them can be adressed by using certa
 		3: No database/logging
 		
 Configuration *0* and *1* can be used everytime, just keep in mind, that some features won't work in mode *1*
+
 Configuration *2* and *3* shouldn't be used unless you are a developer who can handle exceptions on his/her own
