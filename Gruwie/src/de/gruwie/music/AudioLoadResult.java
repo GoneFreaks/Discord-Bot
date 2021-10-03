@@ -6,7 +6,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.util.ErrorClass;
-import de.gruwie.util.ErrorDTO;
+import de.gruwie.util.dto.ErrorDTO;
 
 public class AudioLoadResult implements AudioLoadResultHandler {
 

@@ -3,7 +3,7 @@ package de.gruwie;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.gruwie.games.TicTacToeLobby;
-import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 
 public class EmoteManager {
 
@@ -43,9 +43,12 @@ public class EmoteManager {
 		this.emote_type.put("⏸️", EmoteType.CMD_ALT);
 		this.emote_to_cmd.put("⏸️", "pause");
 		
+		this.emote_type.put("⏩", EmoteType.CMD_ALT);
+		this.emote_to_cmd.put("⏩", "fastforward");
+		
 	}
 	
-	public boolean performEmoteCommand (MessageReactionAddEvent event) throws Exception {
+	public boolean performEmoteCommand (GenericMessageReactionEvent event) throws Exception {
 		
 		String emoteName = event.getReactionEmote().getName();
 		

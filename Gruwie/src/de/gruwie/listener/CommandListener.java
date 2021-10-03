@@ -2,8 +2,8 @@ package de.gruwie.listener;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.util.ErrorClass;
-import de.gruwie.util.ErrorDTO;
 import de.gruwie.util.MessageManager;
+import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -43,5 +43,4 @@ public class CommandListener extends ListenerAdapter {
 	public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
 		System.out.println("onPrivateMessageReceived");
 	}
-	
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.gruwie.util.dto.ErrorDTO;
+
 public class ErrorClass {
 
 	private static List<ErrorDTO> storage = new ArrayList<>();

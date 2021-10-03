@@ -25,7 +25,7 @@ public class Queue {
 	private AudioTrack current_track;
 	private Message current_queue_view;
 	
-	private static String[] emote_arr = {"⏹️", "⏸️", "▶️", "⏭️", "🔁", "🆕"};
+	private static String[] emote_arr = {"⏹️", "⏸️", "▶️", "⏩", "⏭️", "🔁", "🆕"};
 
 	public Queue(MusicController controller) {
 		this.controller = controller;
@@ -122,6 +122,12 @@ public class Queue {
 	
 	private void editQueueMessage() {
 		if(current_queue_view != null) MessageManager.editMessage(current_queue_view, this.toString());
+	}
+	
+	public boolean removeTrack (AudioTrack track) {
+		boolean result = queuelist.remove(track);
+		editQueueMessage();
+		return result;
 	}
 	
 }

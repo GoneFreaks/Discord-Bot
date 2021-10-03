@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import de.gruwie.Gruwie_Startup;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class DataManager {
+public class ChannelManager {
 
 	public static boolean withDataBase = true;
 	private static ConcurrentHashMap<Long, Long> storage = new ConcurrentHashMap<>();
@@ -18,7 +18,7 @@ public class DataManager {
 		if(!withDataBase) return;
 		
 		if(modified.size() > 0) {
-			System.out.println("DataManager: Daten werden geschrieben");
+			System.out.println("ChannelManager: Daten werden geschrieben");
 		}
 	}
 	
@@ -26,7 +26,7 @@ public class DataManager {
 		
 		if(!withDataBase) return;
 		
-		System.out.println("DataManager: Daten werden gelesen");
+		System.out.println("ChannelManager: Daten werden gelesen");
 	}
 	
 	public static void putChannel(long guild_id, long channel_id) {
@@ -35,10 +35,8 @@ public class DataManager {
 	}
 	
 	public static TextChannel getChannel(TextChannel channel) {
-		
 		long guild_id = channel.getGuild().getIdLong();
 		return getChannel(guild_id);
-
 	}
 	
 	public static TextChannel getChannel(long guild_id) {

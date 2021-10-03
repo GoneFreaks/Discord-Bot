@@ -12,10 +12,10 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.db.DataManager;
+import de.gruwie.db.ChannelManager;
 import de.gruwie.util.ErrorClass;
-import de.gruwie.util.ErrorDTO;
 import de.gruwie.util.MessageManager;
+import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -38,7 +38,7 @@ public class TrackScheduler extends AudioEventAdapter {
 	@Override
 	public void onTrackStart(AudioPlayer player, AudioTrack track) {
 		long guild_id = Gruwie_Startup.INSTANCE.getPlayerManager().getGuildByPlayerHash(player.hashCode());
-		TextChannel channel = DataManager.getChannel(guild_id);
+		TextChannel channel = ChannelManager.getChannel(guild_id);
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
 		Queue queue = controller.getQueue();
 		

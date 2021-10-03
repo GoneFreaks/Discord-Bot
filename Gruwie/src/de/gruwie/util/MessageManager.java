@@ -2,6 +2,7 @@ package de.gruwie.util;
 
 import java.util.concurrent.TimeUnit;
 
+import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;

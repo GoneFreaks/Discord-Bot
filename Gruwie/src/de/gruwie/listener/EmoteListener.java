@@ -2,15 +2,25 @@ package de.gruwie.listener;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.util.ErrorClass;
-import de.gruwie.util.ErrorDTO;
+import de.gruwie.util.dto.ErrorDTO;
+import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class EmoteListener extends ListenerAdapter {
 
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event) {
-		
+		onMessageReactionUpdate(event);
+	}
+	
+	@Override
+	public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
+		onMessageReactionUpdate(event);
+	}
+	
+	public void onMessageReactionUpdate(GenericMessageReactionEvent event) {
 		if(event.getMember().getUser().isBot()) return;
 		
 		String emote_name = event.getReactionEmote().getName();
@@ -25,6 +35,5 @@ public class EmoteListener extends ListenerAdapter {
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, emote_name, event.getMember().getEffectiveName()));
 		}
-		
 	}
 }

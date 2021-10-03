@@ -1,7 +1,9 @@
-package de.gruwie.util;
+package de.gruwie.util.dto;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
+import de.gruwie.util.Formatter;
 
 public class ErrorDTO implements Comparable<ErrorDTO>{
 

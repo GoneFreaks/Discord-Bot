@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import de.gruwie.util.ErrorClass;
-import de.gruwie.util.ErrorDTO;
+import de.gruwie.util.dto.ErrorDTO;
 
 public class GetDataBaseConnection {
 

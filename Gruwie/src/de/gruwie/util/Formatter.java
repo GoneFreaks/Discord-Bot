@@ -43,11 +43,7 @@ public class Formatter {
 		String[] result = new String[2];
 		for (int i = 0; i < temp.length; i++) {
 			String element = temp[i].replaceAll(" ", "");
-			if(!(element.contains("(") || element.contains("["))) {
-				result[i] = element;
-			}
-			else {
-				
+			if((element.contains("(") || element.contains("["))) {
 				if(element.contains("(")){
 					int index = element.lastIndexOf("(");
 					element = element.substring(0, index);
@@ -59,6 +55,7 @@ public class Formatter {
 					result[i] = element;
 				}
 			}
+			else result[i] = element;
 		}
 		return result;
 	}

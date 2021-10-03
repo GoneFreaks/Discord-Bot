@@ -9,9 +9,11 @@ import de.gruwie.games.commands.CreateTTTLobbyCommand;
 import de.gruwie.games.commands.DeleteTTTLobbyCommand;
 import de.gruwie.music.LyricsCommand;
 import de.gruwie.music.commands.ClearQueueCommand;
+import de.gruwie.music.commands.FastForwardCommand;
 import de.gruwie.music.commands.NextCommand;
 import de.gruwie.music.commands.PauseCommand;
 import de.gruwie.music.commands.PlayCommand;
+import de.gruwie.music.commands.RemoveTrackCommand;
 import de.gruwie.music.commands.RepeatCommand;
 import de.gruwie.music.commands.ResumeCommand;
 import de.gruwie.music.commands.StopCommand;
@@ -44,6 +46,9 @@ public class CommandManager {
 		this.storage.put("clear", new ClearQueueCommand());
 		this.storage.put("c", new ClearQueueCommand());
 		
+		this.storage.put("remove", new RemoveTrackCommand());
+		this.storage.put("r", new RemoveTrackCommand());
+		
 		this.storage.put("help", new HelpCommand());
 		this.storage.put("h", new HelpCommand());
 		
@@ -51,7 +56,10 @@ public class CommandManager {
 		this.storage.put("l", new LyricsCommand());
 		
 		this.storage.put("repeat", new RepeatCommand());
-		this.storage.put("r", new RepeatCommand());
+		
+		this.storage.put("fastforward", new FastForwardCommand());
+		this.storage.put("ff", new FastForwardCommand());
+		
 		
 		this.storage.put("tictactoe", new CreateTTTLobbyCommand());
 		this.storage.put("ttt", new CreateTTTLobbyCommand());
