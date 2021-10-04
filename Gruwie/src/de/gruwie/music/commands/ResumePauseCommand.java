@@ -8,12 +8,12 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ResumeCommand implements ServerCommand {
+public class ResumePauseCommand implements ServerCommand {
 
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		AudioPlayer player = CheckVoiceState.checkVoiceState(member, channel);
-		if(player != null) player.setPaused(false);
+		if(player != null) player.setPaused(!player.isPaused());
 	}
 
 }

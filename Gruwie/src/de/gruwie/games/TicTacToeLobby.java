@@ -57,18 +57,16 @@ public class TicTacToeLobby {
 	
 	private boolean setPlayer(String playerId, int index) {
 		
-		if(turn % 2 == 1 && player1.equals(playerId)) {
-			turn++;
-			game.setPlayer1(index);
-			MessageManager.editMessage(game_view, game.toString());
-			return isGameEnd();
+		if(player1.equals(playerId) || player2.equals(playerId)) {
+			if(game.getContent(index) != '-') {
+				turn++;
+				if(turn % 2 == 0) game.setPlayer1(index);
+				else game.setPlayer2(index);
+				MessageManager.editMessage(game_view, game.toString());
+				return isGameEnd();
+			}
 		}
-		if(turn % 2 == 0 && player2.equals(playerId)) {
-			turn++;
-			game.setPlayer2(index);
-			MessageManager.editMessage(game_view, game.toString());
-			return isGameEnd();
-		}
+		
 		return false;
 	}
 	

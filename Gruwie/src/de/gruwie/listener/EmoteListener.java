@@ -27,9 +27,6 @@ public class EmoteListener extends ListenerAdapter {
 		
 		try {
 			if(Gruwie_Startup.INSTANCE.getEmMan().performEmoteCommand(event)) {
-				
-			}
-			else {
 				System.out.println("UNKNOWN: EMOTE");
 			}
 		} catch (Exception e) {

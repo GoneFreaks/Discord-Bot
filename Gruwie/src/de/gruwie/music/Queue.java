@@ -7,13 +7,15 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
+import de.gruwie.ConfigManager;
 import de.gruwie.util.Formatter;
-import de.gruwie.util.MessageManager;
-import net.dv8tion.jda.api.entities.Message;
+import de.gruwie.util.dto.ViewDTO;
 
 public class Queue {
 
-	private static final int MAX_SIZE = 25;
+	private static int MAX_SIZE;
+	
+	private ViewDTO view;
 	
 	private MusicController controller;
 	private AudioPlayer audioPlayer;
@@ -23,9 +25,6 @@ public class Queue {
 	private boolean repeat = true;
 	
 	private AudioTrack current_track;
-	private Message current_queue_view;
-	
-	private static String[] emote_arr = {"⏹️", "⏸️", "▶️", "⏩", "⏭️", "🔁", "🆕"};
 
 	public Queue(MusicController controller) {
 		this.controller = controller;
@@ -33,6 +32,7 @@ public class Queue {
 		this.queuelist = new ArrayList<>();
 		pointer = 0;
 		pointer_current = 0;
+		MAX_SIZE = ConfigManager.getInteger("max_queue_size");
 	}
 	
 	public boolean next() throws Exception {
@@ -48,8 +48,8 @@ public class Queue {
 			
 			if(track != null) {
 				current_track = track;
+				audioPlayer.setVolume(ConfigManager.getInteger("default_volume"));
 				audioPlayer.playTrack(track.makeClone());
-				audioPlayer.setVolume(25);
 				if(repeat) pointer++;
 				return true;
 			}
@@ -57,13 +57,8 @@ public class Queue {
 		return false;
 	}
 	
-	public void setView (Message current_queue_view) {
-		this.current_queue_view = current_queue_view;
-		
-		for (int i = 0; i < emote_arr.length; i++) {
-			if(current_queue_view != null)
-			current_queue_view.addReaction(emote_arr[i]).queue();
-		}
+	public void setView(ViewDTO view) {
+		this.view = view;
 	}
 
 	public void addTrackToQueue(AudioTrack track) throws Exception {
@@ -72,7 +67,7 @@ public class Queue {
 		
 		this.queuelist.add(track);
 		
-		editQueueMessage();
+		if(view != null) editQueueMessage();
 
 		if (controller.getPlayer().getPlayingTrack() == null) next();
 	}
@@ -95,6 +90,10 @@ public class Queue {
 		editQueueMessage();
 	}
 	
+	private void editQueueMessage() {
+		view.editCurrentQueueView(this.toString());
+	}
+
 	@Override
 	public String toString() {
 		
@@ -103,7 +102,8 @@ public class Queue {
 		StringBuilder strBuilder = new StringBuilder("");
 		
 		strBuilder.append("__**Queue: **__\n");
-		strBuilder.append(queuelist.size() + "/" + MAX_SIZE + " Songs\n\n");
+		strBuilder.append(queuelist.size() + "/" + MAX_SIZE + " Songs\n");
+		strBuilder.append("Current Player-Volume: " + audioPlayer.getVolume() + "\n\n");
 		
 		for (int i = 0; i < queuelist.size(); i++) {
 			if(repeat && i == pointer_current) strBuilder.append("***:arrow_right:*** ");
@@ -120,14 +120,17 @@ public class Queue {
 		return strBuilder.toString();
 	}
 	
-	private void editQueueMessage() {
-		if(current_queue_view != null) MessageManager.editMessage(current_queue_view, this.toString());
-	}
-	
 	public boolean removeTrack (AudioTrack track) {
 		boolean result = queuelist.remove(track);
 		editQueueMessage();
 		return result;
+	}
+	
+	public void changeVolume(int volume) {
+		if(volume > 100) volume = 100;
+		if(volume < 0) volume = 0;
+		audioPlayer.setVolume(volume);
+		editQueueMessage();
 	}
 	
 }

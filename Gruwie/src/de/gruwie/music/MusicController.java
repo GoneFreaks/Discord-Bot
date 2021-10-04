@@ -4,12 +4,14 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import de.gruwie.Gruwie_Startup;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 public class MusicController {
 
 	private Guild guild;
 	private AudioPlayer player;
 	private Queue queue;
+	private VoiceChannel vc;
 	
 	public MusicController(Guild guild) {
 		this.guild = guild;
@@ -31,6 +33,14 @@ public class MusicController {
 
 	public Queue getQueue() {
 		return queue;
+	}
+	
+	public void setVoiceChannel(VoiceChannel vc) {
+		this.vc = vc;
+	}
+	
+	public VoiceChannel getVoiceChannel() {
+		return vc;
 	}
 	
 }

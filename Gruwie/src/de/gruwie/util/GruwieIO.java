@@ -7,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import de.gruwie.util.dto.ErrorDTO;
+
 public class GruwieIO {
 
 	public static void writeToFile(String file, String output) {
@@ -48,7 +50,7 @@ public class GruwieIO {
 				}
 			}
 		} catch (Exception e) {
-			//ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-GRUWIE-IO", "SYSTEM", link));
+			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-GRUWIE-IO", "SYSTEM", link));
 		}
 		return null;
 	}

@@ -11,18 +11,21 @@ import de.gruwie.music.LyricsCommand;
 import de.gruwie.music.commands.ClearQueueCommand;
 import de.gruwie.music.commands.FastForwardCommand;
 import de.gruwie.music.commands.NextCommand;
-import de.gruwie.music.commands.PauseCommand;
 import de.gruwie.music.commands.PlayCommand;
 import de.gruwie.music.commands.RemoveTrackCommand;
 import de.gruwie.music.commands.RepeatCommand;
-import de.gruwie.music.commands.ResumeCommand;
+import de.gruwie.music.commands.ResumePauseCommand;
 import de.gruwie.music.commands.StopCommand;
+import de.gruwie.music.commands.VolumeDownCommand;
+import de.gruwie.music.commands.VolumeUpCommand;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class CommandManager {
 
+	private static int openCommandCounter = 0;
+	
 	private LinkedHashMap<String, ServerCommand> storage;
 	
 	public CommandManager () {
@@ -32,14 +35,20 @@ public class CommandManager {
 		this.storage.put("play", new PlayCommand());
 		this.storage.put("p", new PlayCommand());
 		
-		this.storage.put("resume", new ResumeCommand());
-		this.storage.put("pause", new PauseCommand());
+		this.storage.put("resumepause", new ResumePauseCommand());
+		this.storage.put("rp", new ResumePauseCommand());
 		
 		this.storage.put("stop", new StopCommand());
 		this.storage.put("s", new StopCommand());
 		
 		this.storage.put("next", new NextCommand());
 		this.storage.put("n", new NextCommand());
+		
+		this.storage.put("volumeup", new VolumeUpCommand());
+		this.storage.put("vu", new VolumeUpCommand());
+		
+		this.storage.put("volumedown", new VolumeDownCommand());
+		this.storage.put("vd", new VolumeDownCommand());
 		
 		this.storage.put("set", new SetCommand());
 		
@@ -70,11 +79,16 @@ public class CommandManager {
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
 		
-		if(this.storage.containsKey(cmd)) {
-			this.storage.get(cmd).performServerCommand(member, channel, message);
-			return false;
+		if(ConfigManager.getBoolean("open_command") && openCommandCounter < ConfigManager.getInteger("max_open_command")) {
+			if(this.storage.containsKey(cmd)) {
+				++openCommandCounter;
+				this.storage.get(cmd).performServerCommand(member, channel, message);
+				--openCommandCounter;
+				return false;
+			}
+			else return true;
 		}
-		else return true;
+		else return false;
 	}
 	
 	public String MapToString() {
@@ -84,12 +98,12 @@ public class CommandManager {
 			
 			if((i-1 >= 0) && (storage.get(arr[i]).getClass() == storage.get(arr[i-1]).getClass())) b.append("Shortcut: ");
 			else b.append("Command: ");
-			b.append("*" + arr[i] + "*\n");
+			b.append("*-" + arr[i] + "*\n");
 			
 			if(!(i+1 >= arr.length) && (storage.get(arr[i]).getClass() != storage.get(arr[i+1]).getClass())) b.append("\n");
 		}
 		
-		b.append("\n\nMod-Creator:\n<@!690659763998031902>\n<@!690255106272526399>");
+		b.append("\n\nMod-Creator:\n<@!690659763998031902>\n<@!690255106272526399>\nHosted by: <@!" + ConfigManager.getString("owner_id") + ">");
 		
 		return b.toString();
 	}

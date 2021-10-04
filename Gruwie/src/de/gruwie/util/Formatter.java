@@ -26,6 +26,12 @@ public class Formatter {
 		return format("yyyy-MM-dd");
 	}
 	
+	public static void printBorderline () {
+		for (int i = 0; i < 50; i++) {
+			System.out.print((i < 49? "=" : "\n"));
+		}
+	}
+	
 	private static String format(String pattern) {
 		SimpleDateFormat f = new SimpleDateFormat(pattern);
 		Date d = new Date();

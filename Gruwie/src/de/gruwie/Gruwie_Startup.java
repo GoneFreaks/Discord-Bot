@@ -2,89 +2,50 @@ package de.gruwie;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
 import de.gruwie.db.ChannelManager;
-import de.gruwie.db.GetDataBaseConnection;
-import de.gruwie.listener.CommandListener;
-import de.gruwie.listener.EmoteListener;
 import de.gruwie.listener.SystemListener;
+import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class Gruwie_Startup {
-
-	public static int configuration;
 	
 	public static Gruwie_Startup INSTANCE;
 	private CommandManager cmdMan;
 	private EmoteManager emMan;
+	private AdminCommandManager acmdMan;
 	private ShardManager shardMan;
 	private AudioPlayerManager audioPlayerManager;
 	private PlayerManager playerManager;
 
 	public static void main(String[] args) {
 		
-		if (args.length == 2) {
+		if(ConfigManager.startup()) {
+			
 			try {
-				
-				switch (Integer.parseInt(args[1])) {
-				case 0: {
-					if(!GetDataBaseConnection.createConnection()) {
-						ErrorClass.shutdown();
-						return;
-					}
-					System.out.println("0: Bot starting in default-mode");
-					configuration = 0;
-					break;
-				}
-				
-				case 1: {
-					System.out.println("1: Bot starting without database");
-					ChannelManager.withDataBase = false;
-					configuration = 1;
-					break;
-				}
-				
-				case 2: {
-					if(!GetDataBaseConnection.createConnection()) {
-						ErrorClass.shutdown();
-						return;
-					}
-					System.out.println("2: Bot starting without logging");
-					ErrorClass.writeToFile = false;
-					configuration = 2;
-					break;
-				}
-				
-				case 3: {
-					System.out.println("3: Bot starting without database and logging");
-					ErrorClass.writeToFile = false;
-					ChannelManager.withDataBase = false;
-					configuration = 3;
-					break;
-				}
-				
-				default:
-					System.out.println("Ungültige Startargumente");
-					configuration = -1;
-					return;
-				}
 				ChannelManager.startup();
-				new Gruwie_Startup().startup(args[0]);
+				new Gruwie_Startup().startup(ConfigManager.getString("token"));
+				
 			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
 			}
 		}
-		else System.out.println("Please provide a token and a configuration-type");
+		else {
+			System.out.println("PROBLEM BEIM LADEN DER PROPERTIES-DATEI");
+		}
 	}
 
 	public void startup(String token) throws Exception {
@@ -94,42 +55,59 @@ public class Gruwie_Startup {
 		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
 		builder.setActivity(Activity.listening("-help"));
 		builder.setStatus(OnlineStatus.ONLINE);
-		builder.addEventListeners(new CommandListener(), new EmoteListener(), new SystemListener());
+		builder.addEventListeners(new SystemListener());
 		this.shardMan = builder.build();
 		
 		this.audioPlayerManager = new DefaultAudioPlayerManager();
 		this.playerManager = new PlayerManager();
 		this.cmdMan = new CommandManager();
 		this.emMan = new EmoteManager();
+		this.acmdMan = new AdminCommandManager();
 		
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
-		shutdown();
+		if(!ConfigManager.getBoolean("remote")) shutdownTerminal();
 
 	}
 
-	public void shutdown() {
-
+	private void shutdownTerminal() {
+		
 		new Thread(() -> {
 
 			String line = "";
 			try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+				
 				while ((line = reader.readLine()) != null) {
 
 					if (line.equalsIgnoreCase("exit")) {
-						if (shardMan != null) {
-							shardMan.setStatus(OnlineStatus.OFFLINE);
-							shardMan.shutdown();
-						}
+						shutdown();
 						break;
-					} else
-						System.out.println("Use 'exit' to shutdown");
+					} else System.out.println("Use 'exit' to shutdown");
 				}
-
+				
 			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
 			}
 		}).start();
+	}
+	
+	public void shutdownRemote() {
+		shutdown();
+	}
+	
+	private void shutdown() {
+		if (shardMan != null) {
+			
+			List<Guild> guilds = shardMan.getGuilds();
+			for (Guild i : guilds) {
+				MusicController controller = playerManager.getController(i.getIdLong());
+				AudioPlayer player = null;
+				if((player = controller.getPlayer()) != null) player.destroy();
+			}
+			
+			shardMan.setStatus(OnlineStatus.OFFLINE);
+			shardMan.shutdown();
+		}
 	}
 
 	public CommandManager getCmdMan() {
@@ -138,6 +116,10 @@ public class Gruwie_Startup {
 	
 	public EmoteManager getEmMan() {
 		return this.emMan;
+	}
+	
+	public AdminCommandManager getACmdMan() {
+		return this.acmdMan;
 	}
 	
 	public ShardManager getShardMan() {

@@ -28,6 +28,7 @@ public class PlayCommand implements ServerCommand {
 				VoiceChannel vc;
 				if((vc = state.getChannel()) != null) {
 					MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(vc.getGuild().getIdLong());
+					controller.setVoiceChannel(vc);
 					AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
 					AudioManager manager = vc.getGuild().getAudioManager();
 					manager.openAudioConnection(vc);

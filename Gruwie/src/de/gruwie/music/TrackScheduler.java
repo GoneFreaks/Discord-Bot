@@ -3,7 +3,6 @@ package de.gruwie.music;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
@@ -11,22 +10,24 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
+import de.gruwie.ConfigManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.ErrorDTO;
+import de.gruwie.util.dto.ViewDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 public class TrackScheduler extends AudioEventAdapter {
-	
-	private Message current_track_view;
-	private Message current_queue_view;
 
+	private ViewDTO view;
+	
 	@Override
 	public void onPlayerPause(AudioPlayer player) {
 	}
@@ -63,10 +64,11 @@ public class TrackScheduler extends AudioEventAdapter {
 			try (InputStream file = new URL("https://img.youtube.com/vi/" + videoID + "/hqdefault.jpg").openStream()){
 				
 				builder.setImage("attachment://thumbnail.png");
-				channel.sendTyping().queue();
-				current_track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
-				current_queue_view = MessageManager.sendEmbedMessage(queue.toString(), channel, false);
-				queue.setView(current_queue_view);
+				
+				Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
+				Message queue_view = MessageManager.sendEmbedMessage(queue.toString(), channel, false);
+				view = new ViewDTO(track_view, queue_view);
+				queue.setView(view);
 				
 			} catch (IOException e) {
 				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM"));
@@ -78,43 +80,40 @@ public class TrackScheduler extends AudioEventAdapter {
 
 	@Override
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-
+		
 		long guild_id = Gruwie_Startup.INSTANCE.getPlayerManager().getGuildByPlayerHash(player.hashCode());
 		Guild guild = Gruwie_Startup.INSTANCE.getShardMan().getGuildById(guild_id);
 		
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
 		Queue queue = controller.getQueue();
+		
+		VoiceChannel vc = controller.getVoiceChannel();
+		if(ConfigManager.getBoolean("afk") && vc.getMembers().size() == 1) {
+			closeAudio(guild, player, queue);
+		}
 
-		if(current_track_view != null) {
-			current_track_view.delete().queueAfter(10, TimeUnit.SECONDS);
-			current_track_view = null;
-		}
-		if(current_queue_view != null) {
-			current_queue_view.clearReactions().queue();
-			current_queue_view.delete().queueAfter(10, TimeUnit.SECONDS);
-			current_queue_view = null;
-		}
+		view.deleteView();
 		
 		if (endReason.mayStartNext) {
 			try {
 				if(!queue.next()) {
-					AudioManager manager = guild.getAudioManager();
-					player.stopTrack();
-					manager.closeAudioConnection();
+					closeAudio(guild, player, queue);
 				}
 			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM"));
 			}
-			return;
 		}
-
-		if (AudioTrackEndReason.FINISHED == endReason || AudioTrackEndReason.LOAD_FAILED == endReason || AudioTrackEndReason.STOPPED == endReason) {
-			AudioManager manager = guild.getAudioManager();
-			player.stopTrack();
-			queue.clearQueue();
-			manager.closeAudioConnection();
+		else {
+			closeAudio(guild, player, queue);
 		}
 		
+	}
+	
+	private void closeAudio(Guild guild, AudioPlayer player, Queue queue) {
+		AudioManager manager = guild.getAudioManager();
+		player.stopTrack();
+		queue.clearQueue();
+		manager.closeAudioConnection();
 	}
 
 }

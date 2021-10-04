@@ -19,6 +19,10 @@ public class TicTacToeGame {
 		this.player2 = "<@!" + player2 + ">";
 	}
 	
+	public char getContent(int index) {
+		return storage[index-1];
+	}
+	
 	public void setPlayer1 (int index) {
 		storage[index-1] = 'O';
 		turn = false;

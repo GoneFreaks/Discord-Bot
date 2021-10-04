@@ -6,6 +6,7 @@ import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class MessageManager {
@@ -50,5 +51,9 @@ public class MessageManager {
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM"));
 		}
+	}
+	
+	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message) {
+		channel.sendMessageEmbeds(buildEmbedMessage(message)).queue();
 	}
 }

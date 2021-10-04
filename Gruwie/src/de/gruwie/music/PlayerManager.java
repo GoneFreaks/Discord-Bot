@@ -6,7 +6,7 @@ import de.gruwie.Gruwie_Startup;
 
 public class PlayerManager {
 
-	public ConcurrentHashMap<Long, MusicController> controller;
+	private ConcurrentHashMap<Long, MusicController> controller;
 	
 	public PlayerManager() {
 		this.controller = new ConcurrentHashMap<Long, MusicController>();
@@ -32,5 +32,4 @@ public class PlayerManager {
 		}
 		return -1;
 	}
-	
 }

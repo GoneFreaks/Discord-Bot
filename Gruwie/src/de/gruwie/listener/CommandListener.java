@@ -1,5 +1,6 @@
 package de.gruwie.listener;
 
+import de.gruwie.ConfigManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
@@ -41,6 +42,22 @@ public class CommandListener extends ListenerAdapter {
 	
 	@Override
 	public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
-		System.out.println("onPrivateMessageReceived");
+		
+		if(event.getAuthor().isBot()) {
+			return;
+		}
+		
+		if(ConfigManager.getBoolean("remote") && event.getAuthor().getId().equals(ConfigManager.getString("owner_id"))) {
+			Message message = event.getMessage();
+			String cmd = event.getMessage().getContentRaw().split(" ")[0].toLowerCase();
+			try {
+				if(Gruwie_Startup.INSTANCE.getACmdMan().performCommand(cmd, message, event.getChannel())) {
+					MessageManager.sendEmbedPrivateMessage(event.getChannel(), "UNKNOWN COMMAND");
+				}
+			} catch (Exception e) {
+				ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName()));
+			}
+		}
+		else MessageManager.sendEmbedPrivateMessage(event.getChannel(), "WHY ARE YOU SENDING MESSAGES TO A BOT?");
 	}
 }
