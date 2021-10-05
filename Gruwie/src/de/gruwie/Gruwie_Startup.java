@@ -102,7 +102,7 @@ public class Gruwie_Startup {
 			for (Guild i : guilds) {
 				MusicController controller = playerManager.getController(i.getIdLong());
 				AudioPlayer player = null;
-				if((player = controller.getPlayer()) != null) player.destroy();
+				if((player = controller.getPlayer()) != null) player.stopTrack();
 			}
 			
 			shardMan.setStatus(OnlineStatus.OFFLINE);
