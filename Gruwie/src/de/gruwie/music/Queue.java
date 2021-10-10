@@ -1,6 +1,7 @@
 package de.gruwie.music;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -17,40 +18,39 @@ public class Queue {
 	
 	private ViewDTO view;
 	
-	private MusicController controller;
 	private AudioPlayer audioPlayer;
 	private List<AudioTrack> queuelist;
-	private int pointer;
-	private int pointer_current;
 	private boolean repeat = true;
 	
 	private AudioTrack current_track;
 
 	public Queue(MusicController controller) {
-		this.controller = controller;
 		this.audioPlayer = controller.getPlayer();
 		this.queuelist = new ArrayList<>();
-		pointer = 0;
-		pointer_current = 0;
 		MAX_SIZE = ConfigManager.getInteger("max_queue_size");
+	}
+	
+	public void shuffle() {
+		Collections.shuffle(queuelist);
+		editQueueMessage();
 	}
 	
 	public boolean next() throws Exception {
 		
-		if(audioPlayer.getPlayingTrack() != null) audioPlayer.setVolume(0);
-		
 		if(queuelist.size() > 0) {
 			
-			if(pointer >= queuelist.size()) pointer = 0;
+			int next_track = queuelist.indexOf(current_track);
+			if(next_track < 0 || next_track+1 >= queuelist.size()) next_track = 0;
+			else next_track++;
 			
-			AudioTrack track = repeat? queuelist.get(pointer) : queuelist.remove(0);
-			pointer_current = pointer;
+			audioPlayer.stopTrack();
+			
+			AudioTrack track = repeat? queuelist.get(next_track) : queuelist.remove(0);
 			
 			if(track != null) {
 				current_track = track;
-				audioPlayer.setVolume(ConfigManager.getInteger("default_volume"));
 				audioPlayer.playTrack(track.makeClone());
-				if(repeat) pointer++;
+				audioPlayer.setVolume(ConfigManager.getInteger("default_volume"));
 				return true;
 			}
 		}
@@ -65,11 +65,15 @@ public class Queue {
 
 		if (queuelist.size() >= MAX_SIZE) return;
 		
+		for (AudioTrack i : queuelist) {
+			if(i.getInfo().title.equals(track.getInfo().title)) return;
+		}
+		
 		this.queuelist.add(track);
 		
 		if(view != null) editQueueMessage();
 
-		if (controller.getPlayer().getPlayingTrack() == null) next();
+		if (audioPlayer.getPlayingTrack() == null) next();
 	}
 	
 	public void clearQueue() {
@@ -87,6 +91,7 @@ public class Queue {
 	
 	public void changeRepeat() {
 		repeat = !repeat;
+		if(!repeat) queuelist.remove(current_track);
 		editQueueMessage();
 	}
 	
@@ -102,11 +107,11 @@ public class Queue {
 		StringBuilder strBuilder = new StringBuilder("");
 		
 		strBuilder.append("__**Queue: **__\n");
-		strBuilder.append(queuelist.size() + "/" + MAX_SIZE + " Songs\n");
-		strBuilder.append("Current Player-Volume: " + audioPlayer.getVolume() + "\n\n");
+		strBuilder.append(queuelist.size() + "/" + MAX_SIZE + " Songs\n\n");
 		
+		int next_track = queuelist.indexOf(current_track);
 		for (int i = 0; i < queuelist.size(); i++) {
-			if(repeat && i == pointer_current) strBuilder.append("***:arrow_right:*** ");
+			if(i == next_track) strBuilder.append("***:arrow_right:*** ");
 			else strBuilder.append(":black_small_square: ");
 			AudioTrackInfo info = queuelist.get(i).getInfo();
 			strBuilder.append(info.title + " ");
@@ -116,7 +121,6 @@ public class Queue {
 		}
 		
 		strBuilder.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
-		
 		return strBuilder.toString();
 	}
 	
@@ -126,11 +130,11 @@ public class Queue {
 		return result;
 	}
 	
-	public void changeVolume(int volume) {
-		if(volume > 100) volume = 100;
-		if(volume < 0) volume = 0;
-		audioPlayer.setVolume(volume);
-		editQueueMessage();
+	public boolean removeTrack (String track) {
+		for (AudioTrack i : queuelist) {
+			String title = i.getInfo().title;
+			if(track.equals(title)) return removeTrack(i);
+		}
+		return false;
 	}
-	
 }

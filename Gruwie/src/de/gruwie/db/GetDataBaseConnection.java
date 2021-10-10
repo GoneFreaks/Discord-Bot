@@ -5,8 +5,7 @@ import java.sql.SQLException;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import de.gruwie.util.ErrorClass;
-import de.gruwie.util.dto.ErrorDTO;
+import de.gruwie.ConfigManager;
 
 public class GetDataBaseConnection {
 
@@ -22,8 +21,9 @@ public class GetDataBaseConnection {
 		return datasource.getConnection();
 	}
 	
-	public static boolean createConnection () {
-		try {
+	public static boolean createConnection () throws SQLException {
+		
+		if(ConfigManager.getBoolean("database")) {
 			
 			datasource = new MysqlDataSource();
 			datasource.setServerName(SERVER);
@@ -36,11 +36,8 @@ public class GetDataBaseConnection {
 				if(cn != null) return true;
 				else return false;
 			}
-			
-		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, "GET-DATABASE-CONNECTION", "SYSTEM"));
-			return false;
 		}
+		else return true;
 	}
 	
 }

@@ -11,7 +11,7 @@ public class CheckTrackDTO implements Comparable<CheckTrackDTO> {
 	
 	public CheckTrackDTO(AudioTrack track) {
 		this.track = track;
-		this.title = track.getInfo().title.toLowerCase();
+		this.title = track.getInfo().title;
 		this.treffer = 0;
 	}
 	
@@ -24,6 +24,10 @@ public class CheckTrackDTO implements Comparable<CheckTrackDTO> {
 	}
 	
 	public String getTitle() {
+		return this.title.toLowerCase();
+	}
+	
+	public String getTitleOriginal() {
 		return this.title;
 	}
 	

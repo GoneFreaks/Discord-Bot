@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class ViewDTO {
 
-	private final static String[] EMOTES = {"⏹️", "⏯️", "⏩", "⏭️", "🔁", "🆕", "⏫", "⏬"};
+	private final static String[] EMOTES = {"⏹️", "⏯️", "⏩", "⏭️", "🔁", "🔀", "🆕"};
 	
 	private Message current_track_view;
 	private Message current_queue_view;

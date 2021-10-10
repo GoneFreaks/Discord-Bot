@@ -43,11 +43,8 @@ public class EmoteManager {
 		this.emote_type.put("⏩", EmoteType.CMD_ALT);
 		this.emote_to_cmd.put("⏩", "fastforward");
 		
-		this.emote_type.put("⏫", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("⏫", "volumeup");
-		
-		this.emote_type.put("⏬", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("⏬", "volumedown");
+		this.emote_type.put("🔀", EmoteType.CMD_ALT);
+		this.emote_to_cmd.put("🔀", "shuffle");
 		
 	}
 	

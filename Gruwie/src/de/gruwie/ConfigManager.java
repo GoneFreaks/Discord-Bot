@@ -11,7 +11,6 @@ public class ConfigManager {
 	
 	public static boolean startup() {
 		config = new Properties();
-		
 		try {
 			InputStream in = new FileInputStream(new File("config.properties"));
 			config.load(in);

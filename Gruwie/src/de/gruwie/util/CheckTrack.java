@@ -41,16 +41,22 @@ public class CheckTrack {
 		return storage;
 	}
 	
-	public static AudioTrack getAudioTrack (List<AudioTrack> queuelist, String query) {
+	public static List<CheckTrackDTO> getAudioTrack (List<AudioTrack> queuelist, String query) {
 		List<CheckTrackDTO> storage = compareStrings(queuelist, query.toLowerCase());
 		Collections.sort(storage);
 		
-		if(storage.get(0).getTreffer() == storage.get(1).getTreffer()) {
-			return null;
+		if(storage.size() == 1) {
+			return storage.subList(0, 1);
 		}
-		else {
-			return storage.get(0).getTrack();
+		if(storage.size() > 1) {
+			for (int i = 1; i < storage.size(); i++) {
+				if(storage.get(i-1).getTreffer() != storage.get(i).getTreffer()) {
+					return storage.subList(0, i);
+				}
+			}
+			return storage.subList(0, storage.size());
 		}
+		return null;
 	}
 	
 }

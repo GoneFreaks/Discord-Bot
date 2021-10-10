@@ -1,14 +1,14 @@
 package de.gruwie.music.commands;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
+import de.gruwie.music.helper.RemoveTrackHelper;
 import de.gruwie.util.CheckTrack;
-import de.gruwie.util.MessageManager;
+import de.gruwie.util.dto.CheckTrackDTO;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -28,10 +28,11 @@ public class RemoveTrackCommand implements ServerCommand {
 			
 			MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 			Queue queue = controller.getQueue();
-			AudioTrack track = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());
-			
-			if(track != null) queue.removeTrack(track);
-			else MessageManager.sendEmbedMessage("MULTIPLE RESULTS FOUND", ChannelManager.getChannel(channel), true);
+			List<CheckTrackDTO> track_list = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());
+			if(track_list != null) {
+				if(track_list.size() == 1) queue.removeTrack(track_list.get(0).getTrack());
+				else RemoveTrackHelper.multipleFound(track_list, channel);
+			}
 		}
 	}
 

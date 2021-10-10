@@ -12,12 +12,12 @@ import de.gruwie.music.commands.ClearQueueCommand;
 import de.gruwie.music.commands.FastForwardCommand;
 import de.gruwie.music.commands.NextCommand;
 import de.gruwie.music.commands.PlayCommand;
+import de.gruwie.music.commands.PlayPlaylistCommand;
 import de.gruwie.music.commands.RemoveTrackCommand;
 import de.gruwie.music.commands.RepeatCommand;
 import de.gruwie.music.commands.ResumePauseCommand;
+import de.gruwie.music.commands.ShuffleCommand;
 import de.gruwie.music.commands.StopCommand;
-import de.gruwie.music.commands.VolumeDownCommand;
-import de.gruwie.music.commands.VolumeUpCommand;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -35,6 +35,9 @@ public class CommandManager {
 		this.storage.put("play", new PlayCommand());
 		this.storage.put("p", new PlayCommand());
 		
+		this.storage.put("playplaylist", new PlayPlaylistCommand());
+		this.storage.put("pp", new PlayPlaylistCommand());
+		
 		this.storage.put("resumepause", new ResumePauseCommand());
 		this.storage.put("rp", new ResumePauseCommand());
 		
@@ -43,12 +46,6 @@ public class CommandManager {
 		
 		this.storage.put("next", new NextCommand());
 		this.storage.put("n", new NextCommand());
-		
-		this.storage.put("volumeup", new VolumeUpCommand());
-		this.storage.put("vu", new VolumeUpCommand());
-		
-		this.storage.put("volumedown", new VolumeDownCommand());
-		this.storage.put("vd", new VolumeDownCommand());
 		
 		this.storage.put("set", new SetCommand());
 		
@@ -65,6 +62,8 @@ public class CommandManager {
 		this.storage.put("l", new LyricsCommand());
 		
 		this.storage.put("repeat", new RepeatCommand());
+		
+		this.storage.put("shuffle", new ShuffleCommand());
 		
 		this.storage.put("fastforward", new FastForwardCommand());
 		this.storage.put("ff", new FastForwardCommand());
@@ -91,7 +90,8 @@ public class CommandManager {
 		else return false;
 	}
 	
-	public String MapToString() {
+	@Override
+	public String toString() {
 		Object[] arr = storage.keySet().toArray();
 		StringBuilder b = new StringBuilder("__**Supported commands**__\n\n");
 		for (int i = 0; i < arr.length; i++) {

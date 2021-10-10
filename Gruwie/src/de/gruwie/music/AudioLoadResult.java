@@ -24,7 +24,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 		try {
 			queue.addTrackToQueue(track);
 		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM"));
+			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
 		}
 	}
 
@@ -37,7 +37,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			try {
 				queue.addTrackToQueue(playlist.getTracks().get(0));
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM"));
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
 			}
 			return;
 		}
@@ -46,7 +46,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			try {
 				queue.addTrackToQueue(track);
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM"));
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
 			}
 		}
 	}

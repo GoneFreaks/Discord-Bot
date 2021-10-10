@@ -26,9 +26,9 @@ public class Formatter {
 		return format("yyyy-MM-dd");
 	}
 	
-	public static void printBorderline () {
+	public static void printBorderline (String element) {
 		for (int i = 0; i < 50; i++) {
-			System.out.print((i < 49? "=" : "\n"));
+			System.out.print((i < 49? element : "\n"));
 		}
 	}
 	

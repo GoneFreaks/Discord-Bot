@@ -30,7 +30,7 @@ public class EmoteListener extends ListenerAdapter {
 				System.out.println("UNKNOWN: EMOTE");
 			}
 		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, emote_name, event.getMember().getEffectiveName()));
+			ErrorClass.reportError(new ErrorDTO(e, emote_name, event.getMember().getEffectiveName(), event.getGuild().getId()));
 		}
 	}
 }

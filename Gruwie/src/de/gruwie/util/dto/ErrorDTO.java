@@ -13,18 +13,20 @@ public class ErrorDTO implements Comparable<ErrorDTO>{
 	private String author;
 	private long current_time;
 	private String comment;
+	private String guildId;
 	
-	public ErrorDTO(Exception ex, String message, String author) {
+	public ErrorDTO(Exception ex, String message, String author, String guildId) {
 		this.timestamp = Formatter.getDate() + " " + Formatter.getTime();
 		this.current_time = System.currentTimeMillis();
 		this.ex = ex;
 		this.message = message;
 		this.author = author;
 		this.comment = null;
+		this.guildId = guildId;
 	}
 	
-	public ErrorDTO(Exception ex, String message, String author, String comment){
-		this(ex, message, author);
+	public ErrorDTO(Exception ex, String message, String author, String guildId, String comment){
+		this(ex, message, author, guildId);
 		this.comment = comment;
 	}
 	
@@ -43,7 +45,7 @@ public class ErrorDTO implements Comparable<ErrorDTO>{
 		PrintWriter pw = new PrintWriter(sw);
 		ex.printStackTrace(pw);
 		
-		return timestamp + " " + message + " " + author + (comment == null? " " : (" " + comment + " ")) + sw.toString();
+		return guildId + " " + timestamp + " " + message + " " + author + (comment == null? " " : (" " + comment + " ")) + sw.toString();
 	}
 
 	@Override

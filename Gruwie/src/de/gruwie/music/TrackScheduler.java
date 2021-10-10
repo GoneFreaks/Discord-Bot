@@ -43,8 +43,7 @@ public class TrackScheduler extends AudioEventAdapter {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
 		Queue queue = controller.getQueue();
 		
-		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(0x58ACFA);
+		EmbedBuilder builder = MessageManager.buildEmbedMessage("");
 		AudioTrackInfo info = track.getInfo();
 		builder.setDescription("Playing: " + info.title);
 		
@@ -71,7 +70,7 @@ public class TrackScheduler extends AudioEventAdapter {
 				queue.setView(view);
 				
 			} catch (IOException e) {
-				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM"));
+				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM", "" + guild_id));
 			}
 			
 		}
@@ -94,24 +93,18 @@ public class TrackScheduler extends AudioEventAdapter {
 
 		view.deleteView();
 		
-		if (endReason.mayStartNext) {
+		if(endReason.mayStartNext) {
 			try {
-				if(!queue.next()) {
-					closeAudio(guild, player, queue);
-				}
+				if(!queue.next()) closeAudio(guild, player, queue);
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM"));
+				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM", "" + guild_id));
 			}
 		}
-		else {
-			closeAudio(guild, player, queue);
-		}
-		
 	}
 	
 	private void closeAudio(Guild guild, AudioPlayer player, Queue queue) {
 		AudioManager manager = guild.getAudioManager();
-		player.stopTrack();
+		player.destroy();
 		queue.clearQueue();
 		manager.closeAudioConnection();
 	}

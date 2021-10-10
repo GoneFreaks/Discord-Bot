@@ -10,6 +10,7 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
 import de.gruwie.db.ChannelManager;
+import de.gruwie.db.GetDataBaseConnection;
 import de.gruwie.listener.SystemListener;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
@@ -24,6 +25,8 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 public class Gruwie_Startup {
 	
 	public static Gruwie_Startup INSTANCE;
+	public static long start_time;
+	
 	private CommandManager cmdMan;
 	private EmoteManager emMan;
 	private AdminCommandManager acmdMan;
@@ -33,19 +36,21 @@ public class Gruwie_Startup {
 
 	public static void main(String[] args) {
 		
-		if(ConfigManager.startup()) {
+		start_time = System.currentTimeMillis();
+		
+		if(ConfigManager.startup()) {																
 			
 			try {
-				ChannelManager.startup();
-				new Gruwie_Startup().startup(ConfigManager.getString("token"));
+				if(GetDataBaseConnection.createConnection()) {
+					ChannelManager.startup();
+					new Gruwie_Startup().startup(ConfigManager.getString("token"));
+				}
 				
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));
 			}
 		}
-		else {
-			System.out.println("PROBLEM BEIM LADEN DER PROPERTIES-DATEI");
-		}
+		else System.out.println("PROBLEM BEIM LADEN DER PROPERTIES-DATEI");
 	}
 
 	public void startup(String token) throws Exception {
@@ -78,7 +83,6 @@ public class Gruwie_Startup {
 			try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
 				
 				while ((line = reader.readLine()) != null) {
-
 					if (line.equalsIgnoreCase("exit")) {
 						shutdown();
 						break;
@@ -86,7 +90,7 @@ public class Gruwie_Startup {
 				}
 				
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM"));
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));
 			}
 		}).start();
 	}
@@ -102,7 +106,7 @@ public class Gruwie_Startup {
 			for (Guild i : guilds) {
 				MusicController controller = playerManager.getController(i.getIdLong());
 				AudioPlayer player = null;
-				if((player = controller.getPlayer()) != null) player.stopTrack();
+				if((player = controller.getPlayer()) != null) player.destroy();
 			}
 			
 			shardMan.setStatus(OnlineStatus.OFFLINE);

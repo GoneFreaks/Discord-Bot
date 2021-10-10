@@ -16,7 +16,7 @@ public class HelpCommand implements ServerCommand{
 		
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		
-		MessageManager.sendEmbedMessage(cmdMan.MapToString(), ChannelManager.getChannel(channel), false);
+		MessageManager.sendEmbedMessage(cmdMan.toString(), ChannelManager.getChannel(channel), false);
 		
 	}
 

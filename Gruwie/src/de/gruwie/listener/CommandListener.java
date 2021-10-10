@@ -23,7 +23,7 @@ public class CommandListener extends ListenerAdapter {
 		String message_content = event.getMessage().getContentDisplay().toLowerCase();
 		TextChannel channel = event.getChannel();
 			
-		if(message_content.startsWith("-")) {
+		if(message_content.startsWith(ConfigManager.getString("symbol"))) {
 			String[] args = message_content.substring(1).split(" ");
 				
 			if(args.length > 0) {
@@ -33,7 +33,7 @@ public class CommandListener extends ListenerAdapter {
 						MessageManager.sendEmbedMessage("UNKNOWN COMMAND", channel, true);
 					}
 				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName()));
+					ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), channel.getGuild().getId()));
 				}
 				message.delete().queue();
 			}
@@ -55,7 +55,7 @@ public class CommandListener extends ListenerAdapter {
 					MessageManager.sendEmbedPrivateMessage(event.getChannel(), "UNKNOWN COMMAND");
 				}
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName()));
+				ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), "PRIVATE"));
 			}
 		}
 		else MessageManager.sendEmbedPrivateMessage(event.getChannel(), "WHY ARE YOU SENDING MESSAGES TO A BOT?");
