@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
+import de.gruwie.db.PlaylistManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.util.ErrorClass;
@@ -53,19 +54,32 @@ public class SystemListener extends ListenerAdapter {
 	public void onButtonClick(ButtonClickEvent event) {
 		
 		event.deferEdit().queue();
-		
-		String cmd = event.getComponentId().substring(0, 4);
+		String type = event.getComponentId().substring(0, 4);
 		String data = event.getComponentId().substring(4);
 		
-		switch (cmd) {
+		switch (type) {
 			case "reth": {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(event.getGuild().getIdLong());
 				Queue queue = controller.getQueue();
-				if(queue.removeTrack(data)) event.getMessage().delete().queue();
+				queue.removeTrack(data);
 				break;
 			}
+			case "gpus": {
+				try {
+					PlaylistManager.playPlaylist(event.getTextChannel(), event.getMember(), data, true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			case "gpgu": {
+				try {
+					PlaylistManager.playPlaylist(event.getTextChannel(), event.getMember(), data, false);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		
+		event.getMessage().delete().queue();
 	}
 	
 }

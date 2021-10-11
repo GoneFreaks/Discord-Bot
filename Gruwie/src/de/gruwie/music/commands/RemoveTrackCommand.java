@@ -8,6 +8,7 @@ import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.helper.RemoveTrackHelper;
 import de.gruwie.util.CheckTrack;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.CheckTrackDTO;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -23,7 +24,7 @@ public class RemoveTrackCommand implements ServerCommand {
 			
 			StringBuilder b = new StringBuilder("");
 			for(int i = 1; i < args.length; i++) {
-				b.append(args[i].toLowerCase());
+				b.append(args[i].toLowerCase() + " ");
 			}
 			
 			MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
@@ -34,6 +35,7 @@ public class RemoveTrackCommand implements ServerCommand {
 				else RemoveTrackHelper.multipleFound(track_list, channel);
 			}
 		}
+		else MessageManager.sendEmbedMessage("**YOU HAVE TO PROVIDE A QUERY IN ORDER TO DELETE A TRACK**", channel, true);
 	}
 
 }

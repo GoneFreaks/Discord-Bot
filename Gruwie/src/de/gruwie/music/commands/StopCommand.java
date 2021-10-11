@@ -21,7 +21,7 @@ public class StopCommand implements ServerCommand{
 		AudioManager manager = channel.getGuild().getAudioManager();;
 		Queue queue = controller.getQueue();
 		
-		if(player != null) player.destroy();
+		if(player != null) player.stopTrack();
 		queue.clearQueue();
 		manager.closeAudioConnection();
 	}

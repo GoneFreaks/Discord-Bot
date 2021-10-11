@@ -9,10 +9,12 @@ import de.gruwie.games.commands.CreateTTTLobbyCommand;
 import de.gruwie.games.commands.DeleteTTTLobbyCommand;
 import de.gruwie.music.LyricsCommand;
 import de.gruwie.music.commands.ClearQueueCommand;
+import de.gruwie.music.commands.ExportGuildPlaylistCommand;
+import de.gruwie.music.commands.ExportUserPlaylistCommand;
 import de.gruwie.music.commands.FastForwardCommand;
+import de.gruwie.music.commands.GetPlaylistsCommand;
 import de.gruwie.music.commands.NextCommand;
 import de.gruwie.music.commands.PlayCommand;
-import de.gruwie.music.commands.PlayPlaylistCommand;
 import de.gruwie.music.commands.RemoveTrackCommand;
 import de.gruwie.music.commands.RepeatCommand;
 import de.gruwie.music.commands.ResumePauseCommand;
@@ -35,8 +37,14 @@ public class CommandManager {
 		this.storage.put("play", new PlayCommand());
 		this.storage.put("p", new PlayCommand());
 		
-		this.storage.put("playplaylist", new PlayPlaylistCommand());
-		this.storage.put("pp", new PlayPlaylistCommand());
+		this.storage.put("getplaylists", new GetPlaylistsCommand());
+		this.storage.put("gp", new GetPlaylistsCommand());
+		
+		this.storage.put("exportuserplaylist", new ExportUserPlaylistCommand());
+		this.storage.put("eup", new ExportUserPlaylistCommand());
+		
+		this.storage.put("exportguildplaylist", new ExportGuildPlaylistCommand());
+		this.storage.put("egp", new ExportGuildPlaylistCommand());
 		
 		this.storage.put("resumepause", new ResumePauseCommand());
 		this.storage.put("rp", new ResumePauseCommand());

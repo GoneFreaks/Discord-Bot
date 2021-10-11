@@ -21,18 +21,19 @@ public class Queue {
 	private AudioPlayer audioPlayer;
 	private List<AudioTrack> queuelist;
 	private boolean repeat = true;
-	
 	private AudioTrack current_track;
+	private long lastViewUpdate;
 
 	public Queue(MusicController controller) {
 		this.audioPlayer = controller.getPlayer();
 		this.queuelist = new ArrayList<>();
 		MAX_SIZE = ConfigManager.getInteger("max_queue_size");
+		this.lastViewUpdate = 0;
 	}
 	
 	public void shuffle() {
 		Collections.shuffle(queuelist);
-		editQueueMessage();
+		editQueueMessage(true);
 	}
 	
 	public boolean next() throws Exception {
@@ -71,14 +72,14 @@ public class Queue {
 		
 		this.queuelist.add(track);
 		
-		if(view != null) editQueueMessage();
+		if(view != null) editQueueMessage(false);
 
 		if (audioPlayer.getPlayingTrack() == null) next();
 	}
 	
 	public void clearQueue() {
 		this.queuelist = new ArrayList<>();
-		editQueueMessage();
+		editQueueMessage(true);
 	}
 	
 	public List<AudioTrack> getQueueList() {
@@ -92,11 +93,14 @@ public class Queue {
 	public void changeRepeat() {
 		repeat = !repeat;
 		if(!repeat) queuelist.remove(current_track);
-		editQueueMessage();
+		editQueueMessage(true);
 	}
 	
-	private void editQueueMessage() {
-		view.editCurrentQueueView(this.toString());
+	private void editQueueMessage(boolean slowUpdates) {
+		if(slowUpdates || (System.currentTimeMillis() - lastViewUpdate) > 10000) {
+			view.editCurrentQueueView(this.toString());
+			lastViewUpdate = System.currentTimeMillis();
+		}
 	}
 
 	@Override
@@ -126,7 +130,7 @@ public class Queue {
 	
 	public boolean removeTrack (AudioTrack track) {
 		boolean result = queuelist.remove(track);
-		editQueueMessage();
+		editQueueMessage(true);
 		return result;
 	}
 	

@@ -1,43 +1,49 @@
 package de.gruwie.db;
 
+import java.io.File;
 import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.List;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
-
-import de.gruwie.ConfigManager;
+import de.gruwie.util.Formatter;
+import de.gruwie.util.GruwieIO;
 
 public class GetDataBaseConnection {
-
-	private static final String SERVER = "";
-	private static final int PORT = -1;
-	private static final String DATABASENAME = "";
-	private static final String USERNAME = "";
-	private static final String PASSWORD = "";
 	
-	private static MysqlDataSource datasource;
+	private static Connection connection;
 	
-	public static Connection getConnection () throws SQLException {
-		return datasource.getConnection();
+	public static Connection getConnection () throws Exception {
+		if(connection == null) createConnection();
+		return connection;
 	}
 	
-	public static boolean createConnection () throws SQLException {
-		
-		if(ConfigManager.getBoolean("database")) {
+	public static boolean createConnection () throws Exception {
 			
-			datasource = new MysqlDataSource();
-			datasource.setServerName(SERVER);
-			datasource.setPort(PORT);
-			datasource.setDatabaseName(DATABASENAME);
-			datasource.setUser(USERNAME);
-			datasource.setPassword(PASSWORD);
+		boolean newFile = false;
 			
-			try(Connection cn = getConnection()){
-				if(cn != null) return true;
-				else return false;
-			}
+		File file = new File("data.db");
+		if(!file.exists()) {
+			System.out.println("No Database found --> creating an empty default-Database");
+			Formatter.printBorderline("-");
+			file.createNewFile();
+			newFile = true;
 		}
-		else return true;
+		String url = "jdbc:sqlite:" + file.getPath();
+		if((connection = DriverManager.getConnection(url)) != null) {
+			if(newFile) initializeDatabase();
+			return true;
+		}
+		else return false;
+			
+	}
+	
+	public static void initializeDatabase() throws Exception {
+		List<String> default_tables = GruwieIO.readFromFile("default_tables.txt");
+		for (String query : default_tables) {
+			Statement stmt = connection.createStatement();
+			stmt.execute(query);
+		}
 	}
 	
 }

@@ -15,6 +15,7 @@ import de.gruwie.listener.SystemListener;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
 import de.gruwie.util.ErrorClass;
+import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -41,10 +42,15 @@ public class Gruwie_Startup {
 		if(ConfigManager.startup()) {																
 			
 			try {
-				if(GetDataBaseConnection.createConnection()) {
-					ChannelManager.startup();
-					new Gruwie_Startup().startup(ConfigManager.getString("token"));
+				if(ConfigManager.getBoolean("database")) {
+					if(!GetDataBaseConnection.createConnection()) return;
+					else {
+						System.out.println("Connected to the Database");
+						Formatter.printBorderline("=");
+					}
 				}
+				ChannelManager.startup();
+				new Gruwie_Startup().startup(ConfigManager.getString("token"));
 				
 			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));

@@ -22,3 +22,7 @@ In order to use the Bot, you have to set some properties first:
 										
 				2.owner_id
 				This property has to be set, if you're intending to use the remote-system
+				
+The owner of Bot (the Account whose id is equals to the owner_id) can execute some Admin-Commands by typing them in a private-Chat with Gruwie.<br>
+Keep in mind that you can theoratically change every single config-Option and reload it, but this could cause unexpected behaviour.<br>
+Every non critical option is marked with an #uncritical-Tag.<br>

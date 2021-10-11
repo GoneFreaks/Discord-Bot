@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import de.gruwie.ConfigManager;
 import de.gruwie.Gruwie_Startup;
+import de.gruwie.db.da.ChannelOutputDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ChannelManager {
@@ -14,16 +15,12 @@ public class ChannelManager {
 	private static Set<Long> modified = new HashSet<>();
 	
 	public static void shutdown() {
-		
-		if(ConfigManager.getBoolean("database") && modified.size() > 0) {
-			System.out.println("ChannelManager: Daten werden geschrieben");
-		}
-		
+		if(ConfigManager.getBoolean("database") && modified.size() > 0) ChannelOutputDA.writeOutputChannels(modified, storage);
 	}
 	
 	public static void startup() {
 		if(ConfigManager.getBoolean("database")) {
-			System.out.println("ChannelManager: Daten werden gelesen");
+			storage = ChannelOutputDA.readOutputChannels();
 		}
 	}
 	

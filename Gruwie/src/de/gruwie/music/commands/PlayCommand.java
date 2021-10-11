@@ -44,7 +44,7 @@ public class PlayCommand implements ServerCommand {
 			apm.loadItem(url, new AudioLoadResult(controller, url));
 		}
 		else {
-			MessageManager.sendEmbedMessage("YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY", ChannelManager.getChannel(channel), true);
+			MessageManager.sendEmbedMessage("**YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY**", ChannelManager.getChannel(channel), true);
 		}
 	}
 
