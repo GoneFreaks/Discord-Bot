@@ -42,12 +42,10 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			return;
 		}
 
-		for (AudioTrack track : playlist.getTracks()) {
-			try {
-				queue.addTrackToQueue(track);
-			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
-			}
+		try {
+			queue.addPlaylistToQueue(playlist.getTracks());
+		} catch (Exception e) {
+			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
 		}
 	}
 

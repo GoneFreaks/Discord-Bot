@@ -23,8 +23,10 @@ public class ExportPlaylistCommand {
 			if(args.length == 2) {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();
-				PlaylistManager.exportPlaylist(tracks, args[1], isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
-				MessageManager.sendEmbedMessage("**A PLAYLIST NAMED " + args[1] + " HAS BEEN CREATED**", channel, true);
+				if(PlaylistManager.exportPlaylist(tracks, args[1], isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser)) {
+					MessageManager.sendEmbedMessage("**A PLAYLIST NAMED " + args[1] + " HAS BEEN CREATED**", channel, true);
+				}
+				else MessageManager.sendEmbedMessage("**SOMETHING WENT WRONG WHILE SAVING THE PLAYLIST\n--> TRY A DIFFRENT NAME**", channel, true);
 			}
 			else MessageManager.sendEmbedMessage("**YOU HAVE TO PROVIDE A NAME FOR YOU'RE PLAYLIST**", channel, true);
 		}

@@ -37,19 +37,25 @@ public class GetPlaylistsCommand implements ServerCommand {
 		List<Button> buttons = new ArrayList<>();
 		List<ActionRow> rows = new ArrayList<>();
 		
-		if(playlists.getGuild_playlists() != null) {
-			for (String i : playlists.getGuild_playlists()) {
-				buttons.add(Button.primary("gpgu" + i, i));
+		List<String> guild = playlists.getGuild_playlists();
+		if(guild != null) {
+			for (int i = 0; i < guild.size(); i++) {
+				buttons.add(Button.primary("gpgu" + guild.get(i), "GUILD: " + guild.get(i)));
+				if((i+1) % 5 == 0) {
+					rows.add(ActionRow.of(buttons));
+					buttons = new ArrayList<>();
+				}
 			}
-			if(buttons.size() > 0 ) rows.add(ActionRow.of(buttons));
-			
-			buttons = new ArrayList<>();
+			if(buttons.size() > 0) {
+				rows.add(ActionRow.of(buttons));
+				buttons = new ArrayList<>();
+			}
 		}
 		
 		List<String> user = playlists.getUser_playlists();
 		if(user != null) {
 			for (int i = 0; i < user.size(); i++) {
-				buttons.add(Button.primary("gpus" + user.get(i), user.get(i)));
+				buttons.add(Button.primary("gpus" + user.get(i), "USER: " + user.get(i)));
 				if((i+1) % 5 == 0) {
 					rows.add(ActionRow.of(buttons));
 					buttons = new ArrayList<>();
@@ -65,7 +71,7 @@ public class GetPlaylistsCommand implements ServerCommand {
 			action.setActionRows(rows).queue();
 		}
 		else {
-			MessageManager.sendEmbedMessage("**NO PLAYLIST EITHER FOR YOUR ACCOUNT AND FOR THE SERVER WERE FOUND**", output_channel, true);
+			MessageManager.sendEmbedMessage("**NO PLAYLIST EITHER FOR YOUR ACCOUNT OR FOR THE SERVER WERE FOUND**", output_channel, true);
 		}
 	}
 

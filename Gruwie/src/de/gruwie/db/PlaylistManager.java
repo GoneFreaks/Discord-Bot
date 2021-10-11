@@ -7,7 +7,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.da.PlaylistDA;
-import de.gruwie.music.AudioLoadResult;
+import de.gruwie.music.AudioLoadResultLazy;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
 import de.gruwie.util.dto.PlaylistsDTO;
@@ -22,8 +22,8 @@ public class PlaylistManager {
 		return new PlaylistsDTO(PlaylistDA.readAllPlaylists(guildId, false), PlaylistDA.readAllPlaylists(userId, true));
 	}
 	
-	public static void exportPlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) {
-		PlaylistDA.writePlaylist(tracks, name, iD, isUser);
+	public static boolean exportPlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) {
+		return PlaylistDA.writePlaylist(tracks, name, iD, isUser);
 	}
 	
 	public static void playPlaylist(TextChannel channel, Member member, String playlist, boolean isUser) throws Exception {
@@ -39,8 +39,9 @@ public class PlaylistManager {
 		
 		List<String> list = PlaylistDA.readPlaylist(playlist, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
 		if(list != null) {
+			AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
 			for (String i : list) {
-				apm.loadItem(i, new AudioLoadResult(controller, i));
+				apm.loadItem(i, lazy);
 			}
 		}
 	}

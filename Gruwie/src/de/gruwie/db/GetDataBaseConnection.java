@@ -45,5 +45,4 @@ public class GetDataBaseConnection {
 			stmt.execute(query);
 		}
 	}
-	
 }

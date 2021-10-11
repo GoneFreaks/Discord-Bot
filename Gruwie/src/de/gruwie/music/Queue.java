@@ -13,8 +13,6 @@ import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.ViewDTO;
 
 public class Queue {
-
-	private static int MAX_SIZE;
 	
 	private ViewDTO view;
 	
@@ -22,18 +20,15 @@ public class Queue {
 	private List<AudioTrack> queuelist;
 	private boolean repeat = true;
 	private AudioTrack current_track;
-	private long lastViewUpdate;
 
 	public Queue(MusicController controller) {
 		this.audioPlayer = controller.getPlayer();
 		this.queuelist = new ArrayList<>();
-		MAX_SIZE = ConfigManager.getInteger("max_queue_size");
-		this.lastViewUpdate = 0;
 	}
 	
 	public void shuffle() {
 		Collections.shuffle(queuelist);
-		editQueueMessage(true);
+		editQueueMessage();
 	}
 	
 	public boolean next() throws Exception {
@@ -64,7 +59,7 @@ public class Queue {
 
 	public void addTrackToQueue(AudioTrack track) throws Exception {
 
-		if (queuelist.size() >= MAX_SIZE) return;
+		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
 		for (AudioTrack i : queuelist) {
 			if(i.getInfo().title.equals(track.getInfo().title)) return;
@@ -72,14 +67,24 @@ public class Queue {
 		
 		this.queuelist.add(track);
 		
-		if(view != null) editQueueMessage(false);
+		if(view != null) editQueueMessage();
 
 		if (audioPlayer.getPlayingTrack() == null) next();
 	}
 	
+	public void addPlaylistToQueue(List<AudioTrack> tracks) throws Exception {
+		
+		queuelist = tracks;
+		
+		if(view != null) editQueueMessage();
+
+		if (audioPlayer.getPlayingTrack() == null) next();
+		
+	}
+	
 	public void clearQueue() {
 		this.queuelist = new ArrayList<>();
-		editQueueMessage(true);
+		editQueueMessage();
 	}
 	
 	public List<AudioTrack> getQueueList() {
@@ -93,14 +98,11 @@ public class Queue {
 	public void changeRepeat() {
 		repeat = !repeat;
 		if(!repeat) queuelist.remove(current_track);
-		editQueueMessage(true);
+		editQueueMessage();
 	}
 	
-	private void editQueueMessage(boolean slowUpdates) {
-		if(slowUpdates || (System.currentTimeMillis() - lastViewUpdate) > 10000) {
-			view.editCurrentQueueView(this.toString());
-			lastViewUpdate = System.currentTimeMillis();
-		}
+	public void editQueueMessage() {
+		view.editCurrentQueueView(this.toString());
 	}
 
 	@Override
@@ -111,7 +113,7 @@ public class Queue {
 		StringBuilder strBuilder = new StringBuilder("");
 		
 		strBuilder.append("__**Queue: **__\n");
-		strBuilder.append(queuelist.size() + "/" + MAX_SIZE + " Songs\n\n");
+		strBuilder.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
 		
 		int next_track = queuelist.indexOf(current_track);
 		for (int i = 0; i < queuelist.size(); i++) {
@@ -130,7 +132,7 @@ public class Queue {
 	
 	public boolean removeTrack (AudioTrack track) {
 		boolean result = queuelist.remove(track);
-		editQueueMessage(true);
+		editQueueMessage();
 		return result;
 	}
 	

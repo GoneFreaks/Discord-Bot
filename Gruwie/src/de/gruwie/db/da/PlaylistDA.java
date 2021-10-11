@@ -2,21 +2,24 @@ package de.gruwie.db.da;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.db.GetDataBaseConnection;
+import de.gruwie.util.dto.InsertTrackDTO;
 
 public class PlaylistDA {
 	
 	public static List<String> readAllPlaylists(long iD, boolean isUser) {
 		List<String> playlists = new ArrayList<>();
 		
-		String query = isUser? "SELECT DISTINCT playlist_name FROM user_audiotrack WHERE userId = ?" : "SELECT DISTINCT playlist_name FROM guild_audiotrack WHERE guildId = ?"; 
+		String query = "SELECT DISTINCT playlist_name FROM playlist WHERE iD = ? AND isUser = ?"; 
 		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement(query)){
 			pstmt.setLong(1, iD);
+			pstmt.setBoolean(2, isUser);
 			try(ResultSet rs = pstmt.executeQuery()){
 				while(rs.next()) {
 					playlists.add(rs.getString(1));
@@ -29,31 +32,59 @@ public class PlaylistDA {
 			return null;
 		}
 	}
-
-	public static void writePlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) {
+	
+	public static boolean playlistsExists(long iD, boolean isUser, String playlist_name) {
 		
-		String query = "INSERT INTO " + (isUser? "user_audiotrack" : "guild_audiotrack") + " (" + (isUser? "userId" : "guildId") + ", playlist_name, url) VALUES (?, ?, ?)";
+		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement("SELECT playlist_name FROM playlist WHERE playlist_name = ? AND isUser = ? AND iD = ?")){
+			pstmt.setString(1, playlist_name);
+			pstmt.setBoolean(2, isUser);
+			pstmt.setLong(3, iD);
+			try(ResultSet rs = pstmt.executeQuery()){
+				if(rs.next()) return true;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	public static boolean writePlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) {
+		
+		if(playlistsExists(iD, isUser, name)) return false;
+		
+		List<String> playlist_complete = new ArrayList<>();
+		for (AudioTrack i : tracks) {
+			playlist_complete.add(i.getInfo().uri);
+		}
+		
+		List<Integer> track_ids = insertIntoTracks(playlist_complete);
+		
+		String query = "INSERT INTO playlist (iD, isUser, playlist_name, track) VALUES (?,?,?,?)";
 		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement(query)){
-			for (AudioTrack track : tracks) {
+			for (Integer i : track_ids) {
 				pstmt.setLong(1, iD);
-				pstmt.setString(2, name);
-				pstmt.setString(3, track.getInfo().uri);
+				pstmt.setBoolean(2, isUser);
+				pstmt.setString(3, name);
+				pstmt.setInt(4, i);
 				pstmt.addBatch();
 			}
 			pstmt.executeBatch();
+			return true;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
 	public static List<String> readPlaylist(String name, long id, boolean isUser) {
 		List<String> urls = new ArrayList<>();
 		
-		String query = "SELECT url FROM " + (isUser? "user_audiotrack" : "guild_audiotrack") + " WHERE " + (isUser? "userId" : "guildId") + " = ? AND playlist_name = ?";
+		String query = "SELECT url FROM track t JOIN playlist p ON t.iD = p.track WHERE p.id = ? AND isUser = ? AND playlist_name = ?";
 		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement(query)){
 			pstmt.setLong(1, id);
-			pstmt.setString(2, name);
+			pstmt.setBoolean(2, isUser);
+			pstmt.setString(3, name);
 			try(ResultSet rs = pstmt.executeQuery()){
 				while(rs.next()) {
 					urls.add(rs.getString(1));
@@ -65,6 +96,47 @@ public class PlaylistDA {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	private static List<Integer> insertIntoTracks(List<String> playlist_complete) {
+		List<Integer> result = new ArrayList<>();
+		
+		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement("INSERT INTO TRACK (url) VALUES (?)", Statement.RETURN_GENERATED_KEYS)){
+			
+			InsertTrackDTO insert = removeDuplicates(playlist_complete);
+			
+			for (String i : insert.getUnavailable()) {
+				pstmt.setString(1, i);
+				pstmt.executeUpdate();
+				try(ResultSet rs = pstmt.getGeneratedKeys()){
+					while(rs.next()) result.add(rs.getInt(1));
+				}
+			}
+			
+			result.addAll(insert.getAvailable());
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return result;
+	}
+	
+	private static InsertTrackDTO removeDuplicates(List<String> test) throws Exception{
+		
+		List<String> available_urls = new ArrayList<>();
+		List<Integer> available_id = new ArrayList<>();
+		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement("SELECT iD, url FROM track WHERE url = ?")){
+			for (String i : test) {
+				pstmt.setString(1, i);
+				try(ResultSet rs = pstmt.executeQuery()) {
+					while(rs.next()) {
+						available_id.add(rs.getInt(1));
+						available_urls.add(rs.getString(2));
+					}
+				}
+			}
+		}
+		test.removeAll(available_urls);
+		return new InsertTrackDTO(available_id, test);
 	}
 	
 }

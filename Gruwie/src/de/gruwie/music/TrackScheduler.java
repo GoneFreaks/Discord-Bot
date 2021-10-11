@@ -104,7 +104,7 @@ public class TrackScheduler extends AudioEventAdapter {
 	
 	private void closeAudio(Guild guild, AudioPlayer player, Queue queue) {
 		AudioManager manager = guild.getAudioManager();
-		player.destroy();
+		player.stopTrack();
 		queue.clearQueue();
 		manager.closeAudioConnection();
 	}
