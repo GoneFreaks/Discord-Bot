@@ -75,4 +75,24 @@ public class GetPlaylistsCommand implements ServerCommand {
 		}
 	}
 
+	@Override
+	public String getDescription() {
+		return "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are two type of buttons:\n *Guild-Playlists* which can only be played if you're on the right server and\n*User-Playlists* which are private and bound to your account (these playlists can be used globally)";
+	}
+
+	@Override
+	public String getCommand() {
+		return "getplaylists";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "gp";
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
+
 }

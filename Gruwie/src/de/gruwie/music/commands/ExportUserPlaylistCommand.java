@@ -13,4 +13,24 @@ public class ExportUserPlaylistCommand implements ServerCommand {
 		ExportPlaylistCommand.exportPlaylist(member, channel, message, true);
 	}
 
+	@Override
+	public String getDescription() {
+		return "Save the current music-queue as an account-specific playlist with the provided name (no spaces are allowed)\nEveryone can use this command";
+	}
+
+	@Override
+	public String getCommand() {
+		return "exportuserplaylist";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "eup";
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
+
 }

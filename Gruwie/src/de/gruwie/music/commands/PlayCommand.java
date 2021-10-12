@@ -48,4 +48,23 @@ public class PlayCommand implements ServerCommand {
 		}
 	}
 
+	@Override
+	public String getDescription() {
+		return "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*";
+	}
+
+	@Override
+	public String getCommand() {
+		return "play";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "p";
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
 }

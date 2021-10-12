@@ -28,4 +28,24 @@ public class FastForwardCommand implements ServerCommand {
 		}
 	}
 
+	@Override
+	public String getDescription() {
+		return "Skip 10 seconds further in the currently playing track";
+	}
+
+	@Override
+	public String getCommand() {
+		return "fastforward";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "ff";
+	}
+
+	@Override
+	public String getSymbol() {
+		return ":fast_forward:";
+	}
+
 }

@@ -47,7 +47,7 @@ public class CommandListener extends ListenerAdapter {
 			return;
 		}
 		
-		if(ConfigManager.getBoolean("remote") && event.getAuthor().getId().equals(ConfigManager.getString("owner_id"))) {
+		if(event.getAuthor().getId().equals(ConfigManager.getString("owner_id"))) {
 			Message message = event.getMessage();
 			String cmd = event.getMessage().getContentRaw().split(" ")[0].toLowerCase();
 			try {

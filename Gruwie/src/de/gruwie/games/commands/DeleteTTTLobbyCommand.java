@@ -25,4 +25,24 @@ public class DeleteTTTLobbyCommand implements ServerCommand {
 		}
 	}
 
+	@Override
+	public String getDescription() {
+		return "Delete the TicTacToe-Lobby for this server.\nPermission *Administrator* needed";
+	}
+
+	@Override
+	public String getCommand() {
+		return "tictactoedelete";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "tttd";
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
+	
 }

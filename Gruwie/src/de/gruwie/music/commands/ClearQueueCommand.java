@@ -17,4 +17,24 @@ public class ClearQueueCommand implements ServerCommand {
 		queue.clearQueue();
 	}
 
+	@Override
+	public String getDescription() {
+		return "Clear the music-queue";
+	}
+
+	@Override
+	public String getCommand() {
+		return "clear";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "c";
+	}
+
+	@Override
+	public String getSymbol() {
+		return ":new:";
+	}
+
 }

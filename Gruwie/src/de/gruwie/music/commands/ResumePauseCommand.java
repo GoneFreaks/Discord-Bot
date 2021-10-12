@@ -19,4 +19,24 @@ public class ResumePauseCommand implements ServerCommand {
 		if(player != null) player.setPaused(!player.isPaused());
 	}
 
+	@Override
+	public String getDescription() {
+		return "Either pause or resume the playing of the track";
+	}
+
+	@Override
+	public String getCommand() {
+		return "resumepause";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "rp";
+	}
+
+	@Override
+	public String getSymbol() {
+		return ":play_pause:";
+	}
+
 }

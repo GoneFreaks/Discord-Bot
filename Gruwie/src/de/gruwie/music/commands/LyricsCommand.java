@@ -1,8 +1,10 @@
-package de.gruwie.music;
+package de.gruwie.music.commands;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
+import de.gruwie.music.MusicController;
+import de.gruwie.music.Queue;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.GruwieIO;
 import de.gruwie.util.MessageManager;
@@ -43,4 +45,25 @@ public class LyricsCommand implements ServerCommand {
 		}
 		MessageManager.sendEmbedMessage("**Unable to find lyrics**", ChannelManager.getChannel(channel), true);
 	}
+	
+	@Override
+	public String getDescription() {
+		return "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track";
+	}
+
+	@Override
+	public String getCommand() {
+		return "lyrics";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "l";
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
+	
 }

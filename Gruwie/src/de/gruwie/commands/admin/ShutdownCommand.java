@@ -11,7 +11,7 @@ public class ShutdownCommand implements AdminCommand {
 	@Override
 	public void performAdminCommand(Message message, PrivateChannel privateChannel) throws Exception {
 		MessageManager.sendEmbedPrivateMessage(privateChannel, "BOT IS OFFLINE");
-		Gruwie_Startup.INSTANCE.shutdownRemote();
+		Gruwie_Startup.INSTANCE.shutdown();
 	}
 
 }

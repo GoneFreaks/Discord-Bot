@@ -17,4 +17,24 @@ public class NextCommand implements ServerCommand{
 		queue.next();
 	}
 
+	@Override
+	public String getDescription() {
+		return "Play the next track in the music-queue";
+	}
+
+	@Override
+	public String getCommand() {
+		return "next";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "n";
+	}
+
+	@Override
+	public String getSymbol() {
+		return ":track_next:";
+	}
+
 }

@@ -25,4 +25,24 @@ public class SetCommand implements ServerCommand {
 		}
 	}
 
+	@Override
+	public String getDescription() {
+		return "Choose which channel Gruwie should use as the output-channel";
+	}
+
+	@Override
+	public String getCommand() {
+		return "set";
+	}
+
+	@Override
+	public String getShortcut() {
+		return null;
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
+	
 }

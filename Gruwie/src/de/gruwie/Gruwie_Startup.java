@@ -64,7 +64,7 @@ public class Gruwie_Startup {
 		INSTANCE = this;
 		
 		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
-		builder.setActivity(Activity.listening("-help"));
+		builder.setActivity(Activity.listening("help"));
 		builder.setStatus(OnlineStatus.ONLINE);
 		builder.addEventListeners(new SystemListener());
 		this.shardMan = builder.build();
@@ -77,7 +77,7 @@ public class Gruwie_Startup {
 		
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
-		if(!ConfigManager.getBoolean("remote")) shutdownTerminal();
+		shutdownTerminal();
 
 	}
 
@@ -101,11 +101,7 @@ public class Gruwie_Startup {
 		}).start();
 	}
 	
-	public void shutdownRemote() {
-		shutdown();
-	}
-	
-	private void shutdown() {
+	public void shutdown() {
 		if (shardMan != null) {
 			
 			List<Guild> guilds = shardMan.getGuilds();

@@ -38,4 +38,24 @@ public class RemoveTrackCommand implements ServerCommand {
 		else MessageManager.sendEmbedMessage("**YOU HAVE TO PROVIDE A QUERY IN ORDER TO DELETE A TRACK**", channel, true);
 	}
 
+	@Override
+	public String getDescription() {
+		return "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query";
+	}
+
+	@Override
+	public String getCommand() {
+		return "remove";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "r";
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
+
 }

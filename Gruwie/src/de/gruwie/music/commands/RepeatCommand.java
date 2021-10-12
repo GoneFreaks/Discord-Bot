@@ -18,4 +18,24 @@ public class RepeatCommand implements ServerCommand {
 		
 	}
 
+	@Override
+	public String getDescription() {
+		return "If active playing a track will not affect the music-queue, if it is not active the next track will be pulled/removed from the music-queue";
+	}
+
+	@Override
+	public String getCommand() {
+		return "repeat";
+	}
+
+	@Override
+	public String getShortcut() {
+		return null;
+	}
+
+	@Override
+	public String getSymbol() {
+		return ":repeat:";
+	}
+
 }

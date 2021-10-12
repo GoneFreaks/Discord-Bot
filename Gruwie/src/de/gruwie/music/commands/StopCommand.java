@@ -25,4 +25,24 @@ public class StopCommand implements ServerCommand{
 		queue.clearQueue();
 		manager.closeAudioConnection();
 	}
+
+	@Override
+	public String getDescription() {
+		return "Gruwie will do the following things: *Stop playing music, Clearing the music-queue, leaving the voice-channel*\nIf noone except Gruwie is connected to a voice-channel this command will be executed automatically";
+	}
+
+	@Override
+	public String getCommand() {
+		return "stop";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "s";
+	}
+
+	@Override
+	public String getSymbol() {
+		return ":stop_button:";
+	}
 }

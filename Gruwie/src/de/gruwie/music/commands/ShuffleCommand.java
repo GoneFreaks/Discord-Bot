@@ -17,4 +17,23 @@ public class ShuffleCommand implements ServerCommand {
 		queue.shuffle();
 	}
 
+	@Override
+	public String getDescription() {
+		return "Shuffle the complete music-queue";
+	}
+
+	@Override
+	public String getCommand() {
+		return "shuffle";
+	}
+
+	@Override
+	public String getShortcut() {
+		return null;
+	}
+
+	@Override
+	public String getSymbol() {
+		return ":twisted_rightwards_arrows:";
+	}
 }

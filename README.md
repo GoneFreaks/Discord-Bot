@@ -25,4 +25,4 @@ In order to use the Bot, you have to set some properties first:
 				
 The owner of Bot (the Account whose id is equals to the owner_id) can execute some Admin-Commands by typing them in a private-Chat with Gruwie.<br>
 Keep in mind that you can theoratically change every single config-Option and reload it, but this could cause unexpected behaviour.<br>
-Every non critical option is marked with an #uncritical-Tag.<br>
+Therefore every uncritical option has been marked with the *#uncritical* - Tag.

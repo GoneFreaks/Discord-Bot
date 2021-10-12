@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
+import de.gruwie.db.GetDataBaseConnection;
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
@@ -47,7 +48,9 @@ public class SystemListener extends ListenerAdapter {
 		
 		ChannelManager.shutdown();
 		ErrorClass.shutdown();
+		GetDataBaseConnection.closeConnection();
 		System.out.println("BOT has been shutdown");
+		System.exit(0);
 	}
 	
 	@Override

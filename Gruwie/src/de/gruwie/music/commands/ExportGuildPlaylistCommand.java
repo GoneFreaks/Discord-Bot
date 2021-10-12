@@ -16,4 +16,24 @@ public class ExportGuildPlaylistCommand implements ServerCommand {
 		else MessageManager.sendEmbedMessage("**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, true);
 	}
 
+	@Override
+	public String getDescription() {
+		return "Save the current music-queue as a server-specific playlist with the provided name (no spaces are allowed)\nOnly Admins of the server can use this command";
+	}
+
+	@Override
+	public String getCommand() {
+		return "exportguildplaylist";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "egp";
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
+	
 }

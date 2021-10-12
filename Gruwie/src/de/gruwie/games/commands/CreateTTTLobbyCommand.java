@@ -33,5 +33,25 @@ public class CreateTTTLobbyCommand implements ServerCommand {
 		}
 		else MessageManager.sendEmbedMessage("USE THE COMMAND LIKE THIS -cmd @other_user", ChannelManager.getChannel(channel), true);
 	}
+	
+	@Override
+	public String getDescription() {
+		return "Create a new TicTacToeLobby in order to use this command you have to add another player.\nJust use *@<another_player>* to choose your opponent";
+	}
+
+	@Override
+	public String getCommand() {
+		return "tictactoe";
+	}
+
+	@Override
+	public String getShortcut() {
+		return "ttt";
+	}
+
+	@Override
+	public String getSymbol() {
+		return null;
+	}
 
 }
