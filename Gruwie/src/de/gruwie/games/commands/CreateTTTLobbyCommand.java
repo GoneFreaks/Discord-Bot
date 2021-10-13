@@ -10,6 +10,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class CreateTTTLobbyCommand implements ServerCommand {
 
+	private static final String COMMAND = "tictactoe";
+	private static final String SHORTCUT = "ttt";
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "Create a new TicTacToeLobby in order to use this command you have to add another player.\nJust use *@<another_player>* to choose your opponent";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
@@ -36,22 +41,22 @@ public class CreateTTTLobbyCommand implements ServerCommand {
 	
 	@Override
 	public String getDescription() {
-		return "Create a new TicTacToeLobby in order to use this command you have to add another player.\nJust use *@<another_player>* to choose your opponent";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "tictactoe";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "ttt";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 
 }

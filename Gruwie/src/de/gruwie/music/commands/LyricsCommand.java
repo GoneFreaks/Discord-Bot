@@ -14,6 +14,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class LyricsCommand implements ServerCommand {
 
+	private static final String COMMAND = "lyrics";
+	private static final String SHORTCUT = "l";
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
@@ -48,22 +53,22 @@ public class LyricsCommand implements ServerCommand {
 	
 	@Override
 	public String getDescription() {
-		return "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "lyrics";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "l";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 	
 }

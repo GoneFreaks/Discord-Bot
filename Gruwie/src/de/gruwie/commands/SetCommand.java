@@ -11,6 +11,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class SetCommand implements ServerCommand {
 
+	private static final String COMMAND = "set";
+	private static final String SHORTCUT = null;
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "Choose which channel Gruwie should use as the output-channel";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
@@ -27,22 +32,22 @@ public class SetCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "Choose which channel Gruwie should use as the output-channel";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "set";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return null;
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 	
 }

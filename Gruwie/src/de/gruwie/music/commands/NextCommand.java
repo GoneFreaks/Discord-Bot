@@ -10,6 +10,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class NextCommand implements ServerCommand{
 
+	private static final String COMMAND = "next";
+	private static final String SHORTCUT = "n";
+	private static final String SYMBOL = ":track_next:";
+	private static final String DESCRIPTION = "Play the next track in the music-queue";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
@@ -19,22 +24,22 @@ public class NextCommand implements ServerCommand{
 
 	@Override
 	public String getDescription() {
-		return "Play the next track in the music-queue";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "next";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "n";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return ":track_next:";
+		return SYMBOL;
 	}
 
 }

@@ -17,6 +17,11 @@ import net.dv8tion.jda.api.managers.AudioManager;
 
 public class PlayCommand implements ServerCommand {
 
+	private static final String COMMAND = "play";
+	private static final String SHORTCUT = "p";
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
@@ -50,21 +55,21 @@ public class PlayCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "play";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "p";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 }

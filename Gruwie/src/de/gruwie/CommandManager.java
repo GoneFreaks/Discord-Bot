@@ -57,14 +57,11 @@ public class CommandManager {
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
 		
-		if(ConfigManager.getBoolean("open_command")) {
-			if(this.storage.containsKey(cmd)) {
-				this.storage.get(cmd).performServerCommand(member, channel, message);
-				return false;
-			}
-			else return true;
+		if(this.storage.containsKey(cmd)) {
+			this.storage.get(cmd).performServerCommand(member, channel, message);
+			return false;
 		}
-		else return false;
+		else return true;
 	}
 	
 	public ConcurrentHashMap<String, ServerCommand> initializeMap() {

@@ -12,6 +12,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class HelpCommand implements ServerCommand{
 
+	private static final String COMMAND = "help";
+	private static final String SHORTCUT = "h";
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "A collection of all commands available\nAlso the command to get help for other commands";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
@@ -42,22 +47,22 @@ public class HelpCommand implements ServerCommand{
 	
 	@Override
 	public String getDescription() {
-		return "A collection of all commands available\nAlso the command to get help for other commands";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "help";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "h";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 
 }

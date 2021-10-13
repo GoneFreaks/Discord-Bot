@@ -102,7 +102,7 @@ public class Queue {
 	}
 	
 	public void editQueueMessage() {
-		view.editCurrentQueueView(this.toString());
+		if(view != null) view.editCurrentQueueView(this.toString());
 	}
 
 	@Override

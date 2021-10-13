@@ -10,32 +10,36 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class RepeatCommand implements ServerCommand {
 
+	private static final String COMMAND = "repeat";
+	private static final String SHORTCUT = null;
+	private static final String SYMBOL = ":repeat:";
+	private static final String DESCRIPTION = "If active playing a track will not affect the music-queue, if it is not active the next track will be pulled/removed from the music-queue";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 		Queue queue = controller.getQueue();
 		queue.changeRepeat();
-		
 	}
 
 	@Override
 	public String getDescription() {
-		return "If active playing a track will not affect the music-queue, if it is not active the next track will be pulled/removed from the music-queue";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "repeat";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return null;
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return ":repeat:";
+		return SYMBOL;
 	}
 
 }

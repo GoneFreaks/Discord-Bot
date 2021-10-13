@@ -19,6 +19,11 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class GetPlaylistsCommand implements ServerCommand {
 
+	private static final String COMMAND = "getplaylists";
+	private static final String SHORTCUT = "gp";
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are two type of buttons:\n *Guild-Playlists* which can only be played if you're on the right server and\n*User-Playlists* which are private and bound to your account (these playlists can be used globally)";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
@@ -77,22 +82,22 @@ public class GetPlaylistsCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are two type of buttons:\n *Guild-Playlists* which can only be played if you're on the right server and\n*User-Playlists* which are private and bound to your account (these playlists can be used globally)";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "getplaylists";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "gp";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 
 }

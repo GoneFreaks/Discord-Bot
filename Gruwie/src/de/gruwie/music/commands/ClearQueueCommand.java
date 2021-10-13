@@ -10,6 +10,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ClearQueueCommand implements ServerCommand {
 
+	private static final String COMMAND = "clear";
+	private static final String SHORTCUT = "c";
+	private static final String SYMBOL = ":new:";
+	private static final String DESCRIPTION = "Clear the music-queue";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
@@ -19,22 +24,22 @@ public class ClearQueueCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "Clear the music-queue";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "clear";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "c";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return ":new:";
+		return SYMBOL;
 	}
 
 }

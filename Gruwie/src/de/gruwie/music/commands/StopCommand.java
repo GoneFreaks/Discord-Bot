@@ -13,6 +13,11 @@ import net.dv8tion.jda.api.managers.AudioManager;
 
 public class StopCommand implements ServerCommand{
 
+	private static final String COMMAND = "stop";
+	private static final String SHORTCUT = "s";
+	private static final String SYMBOL = ":stop_button:";
+	private static final String DESCRIPTION = "Gruwie will do the following things: *Stop playing music, Clearing the music-queue, leaving the voice-channel*\nIf noone except Gruwie is connected to a voice-channel this command will be executed automatically";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
@@ -28,21 +33,21 @@ public class StopCommand implements ServerCommand{
 
 	@Override
 	public String getDescription() {
-		return "Gruwie will do the following things: *Stop playing music, Clearing the music-queue, leaving the voice-channel*\nIf noone except Gruwie is connected to a voice-channel this command will be executed automatically";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "stop";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "s";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return ":stop_button:";
+		return SYMBOL;
 	}
 }

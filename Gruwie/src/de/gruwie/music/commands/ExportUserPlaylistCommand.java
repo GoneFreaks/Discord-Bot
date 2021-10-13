@@ -8,6 +8,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ExportUserPlaylistCommand implements ServerCommand {
 
+	private static final String COMMAND = "exportuserplaylist";
+	private static final String SHORTCUT = "eup";
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "Save the current music-queue as an account-specific playlist with the provided name (no spaces are allowed)\nEveryone can use this command";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		ExportPlaylistCommand.exportPlaylist(member, channel, message, true);
@@ -15,22 +20,22 @@ public class ExportUserPlaylistCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "Save the current music-queue as an account-specific playlist with the provided name (no spaces are allowed)\nEveryone can use this command";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "exportuserplaylist";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "eup";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 
 }

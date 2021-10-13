@@ -21,6 +21,7 @@ public class EmoteListener extends ListenerAdapter {
 	}
 	
 	public void onMessageReactionUpdate(GenericMessageReactionEvent event) {
+		
 		if(event.getMember().getUser().isBot()) return;
 		
 		String emote_name = event.getReactionEmote().getName();

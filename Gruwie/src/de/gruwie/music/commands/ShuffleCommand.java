@@ -10,6 +10,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ShuffleCommand implements ServerCommand {
 
+	private static final String COMMAND = "shuffle";
+	private static final String SHORTCUT = null;
+	private static final String SYMBOL = ":twisted_rightwards_arrows:";
+	private static final String DESCRIPTION = "Shuffle the complete music-queue";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
@@ -19,21 +24,21 @@ public class ShuffleCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "Shuffle the complete music-queue";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "shuffle";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return null;
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return ":twisted_rightwards_arrows:";
+		return SYMBOL;
 	}
 }

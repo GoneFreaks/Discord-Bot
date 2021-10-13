@@ -11,6 +11,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class DeleteTTTLobbyCommand implements ServerCommand {
 
+	private static final String COMMAND = "tictactoedelete";
+	private static final String SHORTCUT = "tttd";
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "Delete the TicTacToe-Lobby for this server.\nPermission *Administrator* needed";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
@@ -27,22 +32,22 @@ public class DeleteTTTLobbyCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "Delete the TicTacToe-Lobby for this server.\nPermission *Administrator* needed";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "tictactoedelete";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "tttd";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 	
 }

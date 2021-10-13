@@ -20,7 +20,7 @@ public class AdminCommandManager {
 		storage.put("help", new HelpCommand());
 		storage.put("reload", new ReloadCommand());
 		storage.put("shutdown", new ShutdownCommand());
-		storage.put("show", new ShowConfigCommand());
+		storage.put("config", new ShowConfigCommand());
 	}
 	
 	public boolean performCommand(String cmd, Message message, PrivateChannel privateChannel) throws Exception {

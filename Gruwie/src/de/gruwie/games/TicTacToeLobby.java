@@ -48,25 +48,22 @@ public class TicTacToeLobby {
 	
 	public void doTurn(long messageId, String playerId, String emote) {
 		
-		if(!(game_view.getIdLong() == messageId)) return;
-		
-		if(playerId.equals(player1) || playerId.equals(player2)) {
-			if(setPlayer(playerId, Integer.parseInt(emote.charAt(0) + ""))) this.game_view.clearReactions(emote).queue();
+		if(game_view.getIdLong() == messageId) {
+			if(playerId.equals(player1) || playerId.equals(player2)) {
+				if(setPlayer(playerId, Integer.parseInt(emote.charAt(0) + ""))) this.game_view.clearReactions(emote).queue();
+			}
 		}
 	}
 	
 	private boolean setPlayer(String playerId, int index) {
 		
-		if(player1.equals(playerId) || player2.equals(playerId)) {
-			if(game.getContent(index) != '-') {
-				turn++;
-				if(turn % 2 == 0) game.setPlayer1(index);
-				else game.setPlayer2(index);
-				MessageManager.editMessage(game_view, game.toString());
-				return isGameEnd();
-			}
+		if(game.getContent(index) == '-') {
+			turn++;
+			if(turn % 2 == 0) game.setPlayer1(index);
+			else game.setPlayer2(index);
+			MessageManager.editMessage(game_view, game.toString());
+			return isGameEnd();
 		}
-		
 		return false;
 	}
 	

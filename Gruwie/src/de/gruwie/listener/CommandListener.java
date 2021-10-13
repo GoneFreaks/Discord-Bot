@@ -30,7 +30,7 @@ public class CommandListener extends ListenerAdapter {
 				Message message = event.getMessage();
 				try {
 					if(Gruwie_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, message)) {
-						MessageManager.sendEmbedMessage("UNKNOWN COMMAND", channel, true);
+						MessageManager.sendEmbedMessage("**UNKNOWN COMMAND**", channel, true);
 					}
 				} catch (Exception e) {
 					ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), channel.getGuild().getId()));

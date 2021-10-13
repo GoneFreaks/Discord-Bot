@@ -13,7 +13,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class FastForwardCommand implements ServerCommand {
 	
 	private static final long FAST_FORWARD = 10000L;
-
+	private static final String COMMAND = "fastforward";
+	private static final String SHORTCUT = "ff";
+	private static final String SYMBOL = ":fast_forward:";
+	private static final String DESCRIPTION = "Skip 10 seconds further in the currently playing track";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
@@ -30,22 +34,22 @@ public class FastForwardCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "Skip 10 seconds further in the currently playing track";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "fastforward";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "ff";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return ":fast_forward:";
+		return SYMBOL;
 	}
 
 }

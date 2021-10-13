@@ -16,6 +16,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class RemoveTrackCommand implements ServerCommand {
 
+	private static final String COMMAND = "remove";
+	private static final String SHORTCUT = "r";
+	private static final String SYMBOL = null;
+	private static final String DESCRIPTION = "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
@@ -40,22 +45,22 @@ public class RemoveTrackCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "remove";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "r";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return null;
+		return SYMBOL;
 	}
 
 }

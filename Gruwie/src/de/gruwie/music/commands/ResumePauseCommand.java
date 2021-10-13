@@ -11,6 +11,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ResumePauseCommand implements ServerCommand {
 
+	private static final String COMMAND = "resumepause";
+	private static final String SHORTCUT = "rp";
+	private static final String SYMBOL = ":play_pause:";
+	private static final String DESCRIPTION = "Either pause or resume the playing of the track";
+	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
@@ -21,22 +26,22 @@ public class ResumePauseCommand implements ServerCommand {
 
 	@Override
 	public String getDescription() {
-		return "Either pause or resume the playing of the track";
+		return DESCRIPTION;
 	}
 
 	@Override
 	public String getCommand() {
-		return "resumepause";
+		return COMMAND;
 	}
 
 	@Override
 	public String getShortcut() {
-		return "rp";
+		return SHORTCUT;
 	}
 
 	@Override
 	public String getSymbol() {
-		return ":play_pause:";
+		return SYMBOL;
 	}
 
 }
