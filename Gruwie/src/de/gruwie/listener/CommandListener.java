@@ -22,10 +22,12 @@ public class CommandListener extends ListenerAdapter {
 		
 		String message_content = event.getMessage().getContentDisplay().toLowerCase();
 		TextChannel channel = event.getChannel();
+		String symbol = ConfigManager.getString("symbol");
+		
+		if(message_content.startsWith(symbol) || message_content.equals("help")) {
+			String[] args = message_content.replaceFirst(symbol, "").split(" ");
+			System.out.println();
 			
-		if(message_content.startsWith(ConfigManager.getString("symbol"))) {
-			String[] args = message_content.substring(1).split(" ");
-				
 			if(args.length > 0) {
 				Message message = event.getMessage();
 				try {

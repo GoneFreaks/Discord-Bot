@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
@@ -61,12 +62,6 @@ public class SystemListener extends ListenerAdapter {
 		String data = event.getComponentId().substring(4);
 		
 		switch (type) {
-			case "reth": {
-				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(event.getGuild().getIdLong());
-				Queue queue = controller.getQueue();
-				queue.removeTrack(data);
-				break;
-			}
 			case "gpus": {
 				try {
 					PlaylistManager.playPlaylist(event.getTextChannel(), event.getMember(), data, true);
@@ -82,6 +77,19 @@ public class SystemListener extends ListenerAdapter {
 				}
 			}
 		}
+		event.getMessage().delete().queue();
+	}
+	
+	@Override
+	public void onSelectionMenu(SelectionMenuEvent event) {
+		
+		event.deferEdit().queue();
+		
+		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(event.getGuild().getIdLong());
+		Queue queue = controller.getQueue();
+		List<String> selected = event.getValues();
+		if(selected.size() == 1) queue.removeTrack(selected.get(0));
+		
 		event.getMessage().delete().queue();
 	}
 	

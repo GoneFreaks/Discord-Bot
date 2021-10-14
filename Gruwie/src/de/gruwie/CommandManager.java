@@ -76,14 +76,15 @@ public class CommandManager {
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder("__**Supported commands**__\n\n");
-		b.append("**Current command symbol " + ConfigManager.getString("symbol") + "**\n\n");
+		String cmd_symbol = ConfigManager.getString("symbol");
+		b.append("**Current command symbol " + cmd_symbol + "**\n\n");
 		for (int i = 0; i < commands.length; i++) {
 			ServerCommand current = commands[i];
 			
-			b.append("Command: *" + current.getCommand() + "*\n");
+			b.append("Command: *" + cmd_symbol + current.getCommand() + "*\n");
 			
 			String shortcut = current.getShortcut();
-			if(shortcut != null) b.append("Shortcut: *" + shortcut + "*\n");
+			if(shortcut != null) b.append("Shortcut: *" + cmd_symbol + shortcut + "*\n");
 			
 			String symbol = current.getSymbol();
 			if(symbol != null) b.append("Symbol: *" + symbol + "*\n");
@@ -91,7 +92,7 @@ public class CommandManager {
 			b.append("\n");
 		}
 		
-		b.append("\n**You can use *-help <command>* in order to get specific help**\n");
+		b.append("\n**You can use *" + cmd_symbol + "help <command>* in order to get help fpr a specific command**\n");
 		b.append("\n\nMod-Creator:\n<@!690659763998031902>\n<@!690255106272526399>\nHosted by: <@!" + ConfigManager.getString("owner_id") + ">");
 		return b.toString();
 	}
