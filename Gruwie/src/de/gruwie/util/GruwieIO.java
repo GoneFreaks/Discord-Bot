@@ -18,9 +18,7 @@ public class GruwieIO {
 	public static void writeToFile(String file, String output) {
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-
 			writer.write(output);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -35,7 +33,6 @@ public class GruwieIO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return result;
 	}
 	
@@ -47,24 +44,6 @@ public class GruwieIO {
 			int responseCode = con.getResponseCode();
 			if(responseCode == 200) {
 				return con.getInputStream();
-			}
-			else {
-				switch (responseCode) {
-				case 403:
-					System.out.println("Access denied");
-					break;
-					
-				case 404:
-					System.out.println("Not found");
-					break;
-					
-				case 429:
-					System.out.println("Too many requests");
-					break;
-
-				default:
-					System.out.println("Response Fehlercode: " + responseCode);
-				}
 			}
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-GRUWIE-IO", "SYSTEM", link));
@@ -88,5 +67,4 @@ public class GruwieIO {
 		String edit = b.toString().replace(';', '\n');
 		return edit;
 	}
-	
 }

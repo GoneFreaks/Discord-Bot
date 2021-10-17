@@ -10,7 +10,8 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
 import de.gruwie.db.ChannelManager;
-import de.gruwie.db.GetDataBaseConnection;
+import de.gruwie.db.ConnectionManager;
+import de.gruwie.db.management.DatabaseManagement;
 import de.gruwie.listener.SystemListener;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
@@ -37,23 +38,30 @@ public class Gruwie_Startup {
 
 	public static void main(String[] args) {
 		
+		System.out.println("Running OS:\t\t" + System.getProperty("os.name"));
+		System.out.println("Running Java-Version:\t" + System.getProperty("java.version"));
+		Formatter.printBorderline("=");
+		
 		start_time = System.currentTimeMillis();
 		
 		if(ConfigManager.startup()) {																
 			
-			try {
-				if(ConfigManager.getBoolean("database")) {
-					if(!GetDataBaseConnection.createConnection()) return;
-					else {
-						System.out.println("Connected to the Database");
-						Formatter.printBorderline("=");
+			if(ConfigManager.getBoolean("dbmanagement")) DatabaseManagement.boot();
+			else {
+				try {
+					if(ConfigManager.getBoolean("database")) {
+						if(!ConnectionManager.createConnection()) return;
+						else {
+							System.out.println("Connected to the Database");
+							Formatter.printBorderline("=");
+						}
 					}
+					ChannelManager.startup();
+					new Gruwie_Startup().startup(ConfigManager.getString("token"));
+					
+				} catch (Exception e) {
+					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));
 				}
-				ChannelManager.startup();
-				new Gruwie_Startup().startup(ConfigManager.getString("token"));
-				
-			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));
 			}
 		}
 		else System.out.println("PROBLEM BEIM LADEN DER PROPERTIES-DATEI");

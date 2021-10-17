@@ -1,6 +1,7 @@
 package de.gruwie.commands;
 
 import de.gruwie.ConfigManager;
+import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.MessageManager;
@@ -9,45 +10,20 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class SetCommand implements ServerCommand {
-
-	private static final String COMMAND = "set";
-	private static final String SHORTCUT = null;
-	private static final String SYMBOL = null;
-	private static final String DESCRIPTION = "Choose which channel Gruwie should use as the output-channel";
+public class SetCommand extends CommandInfo implements ServerCommand {
+	
+	public SetCommand() {
+		super(SetCommand.class.getSimpleName(), null, "Choose which channel Gruwie should use as the output-channel");
+	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
 		if(member.hasPermission(Permission.MANAGE_CHANNEL)) {
 			ChannelManager.putChannel(member.getGuild().getIdLong(), channel.getIdLong());
-			String output1 = "**OUTPUT-CHANNEL HAS BEEN SET**";
-			String output2 = ConfigManager.getBoolean("database")? "" : " TEMPORARILY";
-			MessageManager.sendEmbedMessage(output1 + output2, ChannelManager.getChannel(channel), true);
+			MessageManager.sendEmbedMessage("**OUTPUT-CHANNEL HAS BEEN SET**" + (ConfigManager.getBoolean("database")? "" : " TEMPORARILY"), ChannelManager.getChannel(channel), true);
 		}
-		else {
-			MessageManager.sendEmbedMessage("**YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND**", ChannelManager.getChannel(channel), true);
-		}
-	}
-
-	@Override
-	public String getDescription() {
-		return DESCRIPTION;
-	}
-
-	@Override
-	public String getCommand() {
-		return COMMAND;
-	}
-
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
-
-	@Override
-	public String getSymbol() {
-		return SYMBOL;
+		else MessageManager.sendEmbedMessage("**YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND**", ChannelManager.getChannel(channel), true);
 	}
 	
 }

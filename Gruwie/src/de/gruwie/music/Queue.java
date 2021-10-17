@@ -18,12 +18,13 @@ public class Queue {
 	
 	private AudioPlayer audioPlayer;
 	private List<AudioTrack> queuelist;
-	private boolean repeat = true;
+	private boolean repeat;
 	private AudioTrack current_track;
 
 	public Queue(MusicController controller) {
 		this.audioPlayer = controller.getPlayer();
 		this.queuelist = new ArrayList<>();
+		this.repeat = ConfigManager.getBoolean("repeat");
 	}
 	
 	public void shuffle() {

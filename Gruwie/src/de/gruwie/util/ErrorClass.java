@@ -6,9 +6,12 @@ import java.util.List;
 
 import de.gruwie.ConfigManager;
 import de.gruwie.util.dto.ErrorDTO;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 public class ErrorClass {
 
+	private static ErrorHandler handler = new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, (error) -> {});
 	private static List<ErrorDTO> storage = new ArrayList<>();
 	
 	public static void reportError(ErrorDTO err) {
@@ -39,6 +42,10 @@ public class ErrorClass {
 		}
 		b.append("\n");
 		return b.toString();
+	}
+	
+	public static ErrorHandler getErrorHandler() {
+		return handler;
 	}
 	
 }

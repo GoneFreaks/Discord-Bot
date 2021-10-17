@@ -3,6 +3,7 @@ package de.gruwie.commands;
 import de.gruwie.CommandManager;
 import de.gruwie.ConfigManager;
 import de.gruwie.Gruwie_Startup;
+import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.MessageManager;
@@ -10,12 +11,11 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class HelpCommand implements ServerCommand{
-
-	private static final String COMMAND = "help";
-	private static final String SHORTCUT = "h";
-	private static final String SYMBOL = null;
-	private static final String DESCRIPTION = "A collection of all commands available\nAlso the command to get help for other commands";
+public class HelpCommand extends CommandInfo implements ServerCommand{
+	
+	public HelpCommand() {
+		super(HelpCommand.class.getSimpleName(), null, "A collection of all commands available\nAlso the command to get help for other commands");
+	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
@@ -25,7 +25,6 @@ public class HelpCommand implements ServerCommand{
 		
 		if(args.length == 1) MessageManager.sendEmbedMessage(cmdMan.toString(), ChannelManager.getChannel(channel), false);
 		else {
-			
 			String command_symbol = ConfigManager.getString("symbol");
 			
 			String cmd = args[1].trim().replaceAll(command_symbol, "");
@@ -33,10 +32,7 @@ public class HelpCommand implements ServerCommand{
 			if(scmd != null) {
 				
 				StringBuilder b = new StringBuilder("");
-				b.append("**Command: " + command_symbol + scmd.getCommand() + "**\n");
-				if(scmd.getShortcut() != null) b.append("**Shortcut: " + command_symbol + scmd.getShortcut() + "**\n");
-				if(scmd.getSymbol() != null) b.append("**Symbol: " + scmd.getSymbol() + "**\n");
-				b.append("\n" + scmd.getDescription());
+				b.append(scmd + "\n" + scmd.getDescription());
 				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
 				
 				MessageManager.sendEmbedMessage(b.toString(), ChannelManager.getChannel(channel), false);
@@ -44,25 +40,4 @@ public class HelpCommand implements ServerCommand{
 			else MessageManager.sendEmbedMessage("**YOU HAVE PROVIDED AN UNKNOWN COMMAND**", ChannelManager.getChannel(channel), true);
 		}
 	}
-	
-	@Override
-	public String getDescription() {
-		return DESCRIPTION;
-	}
-
-	@Override
-	public String getCommand() {
-		return COMMAND;
-	}
-
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
-
-	@Override
-	public String getSymbol() {
-		return SYMBOL;
-	}
-
 }

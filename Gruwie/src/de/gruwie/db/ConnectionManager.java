@@ -10,7 +10,7 @@ import java.util.List;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.GruwieIO;
 
-public class GetDataBaseConnection {
+public class ConnectionManager {
 	
 	private static Connection connection;
 	

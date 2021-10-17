@@ -2,12 +2,15 @@ package de.gruwie;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import de.gruwie.commands.ClearCommand;
 import de.gruwie.commands.HelpCommand;
 import de.gruwie.commands.SetCommand;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.games.commands.CreateTTTLobbyCommand;
 import de.gruwie.games.commands.DeleteTTTLobbyCommand;
 import de.gruwie.music.commands.ClearQueueCommand;
+import de.gruwie.music.commands.EarRapeCommand;
+import de.gruwie.music.commands.EqualizerCommand;
 import de.gruwie.music.commands.ExportGuildPlaylistCommand;
 import de.gruwie.music.commands.ExportUserPlaylistCommand;
 import de.gruwie.music.commands.FastForwardCommand;
@@ -15,6 +18,7 @@ import de.gruwie.music.commands.GetPlaylistsCommand;
 import de.gruwie.music.commands.LyricsCommand;
 import de.gruwie.music.commands.NextCommand;
 import de.gruwie.music.commands.PlayCommand;
+import de.gruwie.music.commands.RemoveEqualizerCommand;
 import de.gruwie.music.commands.RemoveTrackCommand;
 import de.gruwie.music.commands.RepeatCommand;
 import de.gruwie.music.commands.ResumePauseCommand;
@@ -33,20 +37,30 @@ public class CommandManager {
 		
 		ServerCommand[] temp = {
 				new PlayCommand(),
+				
 				new GetPlaylistsCommand(),
 				new ExportUserPlaylistCommand(),
 				new ExportGuildPlaylistCommand(),
-				new ResumePauseCommand(),
+				
 				new StopCommand(),
+				new ResumePauseCommand(),
+				new FastForwardCommand(),
 				new NextCommand(),
-				new SetCommand(),
-				new ClearQueueCommand(),
-				new RemoveTrackCommand(),
-				new HelpCommand(),
-				new LyricsCommand(),
 				new RepeatCommand(),
 				new ShuffleCommand(),
-				new FastForwardCommand(),
+				new ClearQueueCommand(),
+				
+				new RemoveTrackCommand(),
+				new LyricsCommand(),
+				
+				new EarRapeCommand(),
+				new EqualizerCommand(),
+				new RemoveEqualizerCommand(),
+				
+				new HelpCommand(),
+				new ClearCommand(),
+				new SetCommand(),
+				
 				new CreateTTTLobbyCommand(),
 				new DeleteTTTLobbyCommand()
 		};
@@ -78,21 +92,12 @@ public class CommandManager {
 		StringBuilder b = new StringBuilder("__**Supported commands**__\n\n");
 		String cmd_symbol = ConfigManager.getString("symbol");
 		b.append("**Current command symbol " + cmd_symbol + "**\n\n");
+		
 		for (int i = 0; i < commands.length; i++) {
-			ServerCommand current = commands[i];
-			
-			b.append("Command: *" + cmd_symbol + current.getCommand() + "*\n");
-			
-			String shortcut = current.getShortcut();
-			if(shortcut != null) b.append("Shortcut: *" + cmd_symbol + shortcut + "*\n");
-			
-			String symbol = current.getSymbol();
-			if(symbol != null) b.append("Symbol: *" + symbol + "*\n");
-			
-			b.append("\n");
+			b.append(commands[i] + "\n");
 		}
 		
-		b.append("\n**You can use *" + cmd_symbol + "help <command>* in order to get help fpr a specific command**\n");
+		b.append("\n**You can use *" + cmd_symbol + "help <command>* in order to get help for a specific command**\n");
 		b.append("\n\nMod-Creator:\n<@!690659763998031902>\n<@!690255106272526399>\nHosted by: <@!" + ConfigManager.getString("owner_id") + ">");
 		return b.toString();
 	}

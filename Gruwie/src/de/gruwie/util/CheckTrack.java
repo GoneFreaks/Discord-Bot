@@ -35,9 +35,7 @@ public class CheckTrack {
 				checkSubstring(storage, input_arr[i]);
 			}
 		}
-		else {
-			checkSubstring(storage, input_query);
-		}
+		else checkSubstring(storage, input_query);
 		return storage;
 	}
 	

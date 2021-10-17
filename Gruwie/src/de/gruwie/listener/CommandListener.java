@@ -26,18 +26,17 @@ public class CommandListener extends ListenerAdapter {
 		
 		if(message_content.startsWith(symbol) || message_content.equals("help")) {
 			String[] args = message_content.replaceFirst(symbol, "").split(" ");
-			System.out.println();
 			
 			if(args.length > 0) {
 				Message message = event.getMessage();
 				try {
 					if(Gruwie_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, message)) {
-						MessageManager.sendEmbedMessage("**UNKNOWN COMMAND**", channel, true);
+						MessageManager.sendEmbedMessage("**I DON'T KNOW THIS COMMAND (╯°□°）╯︵ ┻━┻**", channel, true);
 					}
 				} catch (Exception e) {
 					ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), channel.getGuild().getId()));
 				}
-				message.delete().queue();
+				message.delete().queue(null, ErrorClass.getErrorHandler());
 			}
 		}
 	}

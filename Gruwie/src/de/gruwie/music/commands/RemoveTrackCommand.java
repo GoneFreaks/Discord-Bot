@@ -3,6 +3,7 @@ package de.gruwie.music.commands;
 import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
+import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
@@ -14,12 +15,11 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class RemoveTrackCommand implements ServerCommand {
-
-	private static final String COMMAND = "remove";
-	private static final String SHORTCUT = "r";
-	private static final String SYMBOL = null;
-	private static final String DESCRIPTION = "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query";
+public class RemoveTrackCommand extends CommandInfo implements ServerCommand {
+	
+	public RemoveTrackCommand() {
+		super(RemoveTrackCommand.class.getSimpleName(), null, "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query");
+	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
@@ -41,26 +41,6 @@ public class RemoveTrackCommand implements ServerCommand {
 			}
 		}
 		else MessageManager.sendEmbedMessage("**YOU HAVE TO PROVIDE A QUERY IN ORDER TO DELETE A TRACK**", channel, true);
-	}
-
-	@Override
-	public String getDescription() {
-		return DESCRIPTION;
-	}
-
-	@Override
-	public String getCommand() {
-		return COMMAND;
-	}
-
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
-
-	@Override
-	public String getSymbol() {
-		return SYMBOL;
 	}
 
 }

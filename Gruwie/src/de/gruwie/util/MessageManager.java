@@ -24,8 +24,9 @@ public class MessageManager {
 	}
 	
 	private static Message sendEmbedMessage (String message, TextChannel channel, long delete) throws Exception {
+		
 		Message output = channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
-		output.delete().queueAfter(delete, TimeUnit.MILLISECONDS);
+		output.delete().queueAfter(delete, TimeUnit.MILLISECONDS, null, ErrorClass.getErrorHandler(), null);
 		return output;
 	}
 	
@@ -45,13 +46,13 @@ public class MessageManager {
 	public static void editMessage (Message m, String message) {
 		
 		try {
-			m.editMessageEmbeds(buildEmbedMessage(message).build()).queue();
+			m.editMessageEmbeds(buildEmbedMessage(message).build()).queue(null, ErrorClass.getErrorHandler());
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM", m.getGuild().getId()));
 		}
 	}
 	
 	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message) {
-		channel.sendMessageEmbeds(buildEmbedMessage(message).build()).queue();
+		channel.sendMessageEmbeds(buildEmbedMessage(message).build()).queue(null, ErrorClass.getErrorHandler());
 	}
 }

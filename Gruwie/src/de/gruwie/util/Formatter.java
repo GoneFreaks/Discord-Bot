@@ -1,10 +1,16 @@
 package de.gruwie.util;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import de.gruwie.util.dto.CommandDTO;
 
 public class Formatter {
 
+	private static List<String> shortcuts = new ArrayList<>();
+	
 	public static String formatTime(long time) {
 		long hours = time / 3600000;
 		time -= hours * 3600000;
@@ -106,6 +112,19 @@ public class Formatter {
 		String ready = temp5;
 		
 		return ready;
+	}
+	
+	public static CommandDTO createNames(String input) {
+		String command = input.replaceAll("Command", "").replaceAll("Lobby", "");
+		StringBuilder b = new StringBuilder("");
+		for (int i = 0; i < command.length(); i++) {
+			if(command.charAt(i) > 'A' && command.charAt(i) < 'Z') b.append(command.charAt(i));
+		}
+		String shortcut = b.toString().toLowerCase();
+		if(shortcuts.contains(shortcut)) shortcut = null;
+		else shortcuts.add(shortcut);
+		
+		return new CommandDTO(command.toLowerCase(), shortcut);
 	}
 	
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import de.gruwie.db.GetDataBaseConnection;
+import de.gruwie.db.ConnectionManager;
 import de.gruwie.util.dto.InsertTrackDTO;
 
 public class PlaylistDA {
@@ -17,7 +17,7 @@ public class PlaylistDA {
 		List<String> playlists = new ArrayList<>();
 		
 		String query = "SELECT DISTINCT playlist_name FROM playlist WHERE iD = ? AND isUser = ?"; 
-		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement(query)){
+		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(query)){
 			pstmt.setLong(1, iD);
 			pstmt.setBoolean(2, isUser);
 			try(ResultSet rs = pstmt.executeQuery()){
@@ -35,7 +35,7 @@ public class PlaylistDA {
 	
 	public static boolean playlistsExists(long iD, boolean isUser, String playlist_name) {
 		
-		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement("SELECT playlist_name FROM playlist WHERE playlist_name = ? AND isUser = ? AND iD = ?")){
+		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement("SELECT playlist_name FROM playlist WHERE playlist_name = ? AND isUser = ? AND iD = ?")){
 			pstmt.setString(1, playlist_name);
 			pstmt.setBoolean(2, isUser);
 			pstmt.setLong(3, iD);
@@ -60,7 +60,7 @@ public class PlaylistDA {
 		List<Integer> track_ids = insertIntoTracks(playlist_complete);
 		
 		String query = "INSERT INTO playlist (iD, isUser, playlist_name, track) VALUES (?,?,?,?)";
-		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement(query)){
+		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(query)){
 			for (Integer i : track_ids) {
 				pstmt.setLong(1, iD);
 				pstmt.setBoolean(2, isUser);
@@ -81,7 +81,7 @@ public class PlaylistDA {
 		List<String> urls = new ArrayList<>();
 		
 		String query = "SELECT url FROM track t JOIN playlist p ON t.iD = p.track WHERE p.id = ? AND isUser = ? AND playlist_name = ?";
-		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement(query)){
+		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(query)){
 			pstmt.setLong(1, id);
 			pstmt.setBoolean(2, isUser);
 			pstmt.setString(3, name);
@@ -101,7 +101,7 @@ public class PlaylistDA {
 	private static List<Integer> insertIntoTracks(List<String> playlist_complete) {
 		List<Integer> result = new ArrayList<>();
 		
-		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement("INSERT INTO TRACK (url) VALUES (?)", Statement.RETURN_GENERATED_KEYS)){
+		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement("INSERT INTO TRACK (url) VALUES (?)", Statement.RETURN_GENERATED_KEYS)){
 			
 			InsertTrackDTO insert = removeDuplicates(playlist_complete);
 			
@@ -124,7 +124,7 @@ public class PlaylistDA {
 		
 		List<String> available_urls = new ArrayList<>();
 		List<Integer> available_id = new ArrayList<>();
-		try(PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement("SELECT iD, url FROM track WHERE url = ?")){
+		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement("SELECT iD, url FROM track WHERE url = ?")){
 			for (String i : test) {
 				pstmt.setString(1, i);
 				try(ResultSet rs = pstmt.executeQuery()) {

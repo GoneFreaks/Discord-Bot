@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
-import de.gruwie.db.GetDataBaseConnection;
+import de.gruwie.db.ConnectionManager;
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
@@ -28,6 +28,7 @@ public class SystemListener extends ListenerAdapter {
 		shardMan.addEventListener(new EmoteListener());
 		Formatter.printBorderline("=");
 		
+		Formatter.printBorderline("=");
 		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
 		System.out.println("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
 		Formatter.printBorderline("=");
@@ -49,7 +50,7 @@ public class SystemListener extends ListenerAdapter {
 		
 		ChannelManager.shutdown();
 		ErrorClass.shutdown();
-		GetDataBaseConnection.closeConnection();
+		ConnectionManager.closeConnection();
 		System.out.println("BOT has been shutdown");
 		System.exit(0);
 	}

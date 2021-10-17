@@ -5,17 +5,15 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
-import de.gruwie.music.Queue;
 import de.gruwie.music.helper.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.managers.AudioManager;
 
-public class StopCommand extends CommandInfo implements ServerCommand{
-	
-	public StopCommand() {
-		super(StopCommand.class.getSimpleName(), ":stop_button:", "Gruwie will do the following things: *Stop playing music, Clearing the music-queue, leaving the voice-channel*\nIf noone except Gruwie is connected to a voice-channel this command will be executed automatically");
+public class RemoveEqualizerCommand extends CommandInfo implements ServerCommand {
+
+	public RemoveEqualizerCommand() {
+		super(RemoveEqualizerCommand.class.getSimpleName(), null, null);
 	}
 	
 	@Override
@@ -23,11 +21,7 @@ public class StopCommand extends CommandInfo implements ServerCommand{
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller == null) return;
 		AudioPlayer player = controller.getPlayer();
-		AudioManager manager = channel.getGuild().getAudioManager();;
-		Queue queue = controller.getQueue();
-		
-		if(player != null) player.stopTrack();
-		queue.clearQueue();
-		manager.closeAudioConnection();
+		player.setFilterFactory(null);
 	}
+
 }

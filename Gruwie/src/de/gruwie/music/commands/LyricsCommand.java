@@ -1,6 +1,7 @@
 package de.gruwie.music.commands;
 
 import de.gruwie.Gruwie_Startup;
+import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.music.MusicController;
@@ -12,12 +13,11 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class LyricsCommand implements ServerCommand {
-
-	private static final String COMMAND = "lyrics";
-	private static final String SHORTCUT = "l";
-	private static final String SYMBOL = null;
-	private static final String DESCRIPTION = "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track";
+public class LyricsCommand extends CommandInfo implements ServerCommand {
+	
+	public LyricsCommand() {
+		super(LyricsCommand.class.getSimpleName(), null, "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track");
+	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
@@ -49,26 +49,6 @@ public class LyricsCommand implements ServerCommand {
 			}
 		}
 		MessageManager.sendEmbedMessage("**Unable to find lyrics**", ChannelManager.getChannel(channel), true);
-	}
-	
-	@Override
-	public String getDescription() {
-		return DESCRIPTION;
-	}
-
-	@Override
-	public String getCommand() {
-		return COMMAND;
-	}
-
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
-
-	@Override
-	public String getSymbol() {
-		return SYMBOL;
 	}
 	
 }

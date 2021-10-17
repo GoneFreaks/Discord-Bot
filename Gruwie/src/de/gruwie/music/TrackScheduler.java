@@ -1,11 +1,11 @@
 package de.gruwie.music;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
@@ -69,7 +69,7 @@ public class TrackScheduler extends AudioEventAdapter {
 				view = new ViewDTO(track_view, queue_view);
 				queue.setView(view);
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM", "" + guild_id));
 			}
 			
@@ -91,7 +91,11 @@ public class TrackScheduler extends AudioEventAdapter {
 			closeAudio(guild, player, queue);
 		}
 
-		view.deleteView();
+		try {
+			view.deleteView();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		if(endReason.mayStartNext) {
 			try {
@@ -107,6 +111,16 @@ public class TrackScheduler extends AudioEventAdapter {
 		player.stopTrack();
 		queue.clearQueue();
 		manager.closeAudioConnection();
+	}
+	
+	@Override
+	public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
+		System.out.println("TRACK-EXCEPTION");
+	}
+	
+	@Override
+	public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs) {
+	    System.out.println("STEPBROTHER IM STUCK");
 	}
 
 }

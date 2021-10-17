@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.gruwie.ConfigManager;
+import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.db.PlaylistManager;
+import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.PlaylistsDTO;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,24 +19,20 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
-public class GetPlaylistsCommand implements ServerCommand {
+public class GetPlaylistsCommand extends CommandInfo implements ServerCommand {
 
-	private static final String COMMAND = "getplaylists";
-	private static final String SHORTCUT = "gp";
-	private static final String SYMBOL = null;
-	private static final String DESCRIPTION = "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are two type of buttons:\n *Guild-Playlists* which can only be played if you're on the right server and\n*User-Playlists* which are private and bound to your account (these playlists can be used globally)";
+	public GetPlaylistsCommand() {
+		super(GetPlaylistsCommand.class.getSimpleName(), null, "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are two type of buttons:\n *Guild-Playlists* which can only be played if you're on the right server and\n*User-Playlists* which are private and bound to your account (these playlists can be used globally)");
+	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
 		if(ConfigManager.getBoolean("database")) {
 			PlaylistsDTO playlists = PlaylistManager.getPlaylists(channel.getGuild().getIdLong(), member.getIdLong());
-			
 			showPlaylists(playlists, channel);
 		}
-		else {
-			MessageManager.sendEmbedMessage("**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, true);
-		}
+		else MessageManager.sendEmbedMessage("**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, true);
 	}
 	
 	private static void showPlaylists(PlaylistsDTO playlists, TextChannel channel) {
@@ -73,31 +71,9 @@ public class GetPlaylistsCommand implements ServerCommand {
 		if(rows.size() > 0) {
 			MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A PLAYLIST***").build();
 			MessageAction action = output_channel.sendMessageEmbeds(message_embed);
-			action.setActionRows(rows).queue();
+			action.setActionRows(rows).queue(null, ErrorClass.getErrorHandler());
 		}
-		else {
-			MessageManager.sendEmbedMessage("**NO PLAYLIST EITHER FOR YOUR ACCOUNT OR FOR THE SERVER WERE FOUND**", output_channel, true);
-		}
-	}
-
-	@Override
-	public String getDescription() {
-		return DESCRIPTION;
-	}
-
-	@Override
-	public String getCommand() {
-		return COMMAND;
-	}
-
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
-
-	@Override
-	public String getSymbol() {
-		return SYMBOL;
+		else MessageManager.sendEmbedMessage("**NO PLAYLIST EITHER FOR YOUR ACCOUNT OR FOR THE SERVER WERE FOUND**", output_channel, true);
 	}
 
 }

@@ -6,14 +6,14 @@ import java.sql.Statement;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import de.gruwie.db.GetDataBaseConnection;
+import de.gruwie.db.ConnectionManager;
 
 public class ChannelOutputDA {
 
 	public static ConcurrentHashMap<Long, Long> readOutputChannels(){
 		ConcurrentHashMap<Long, Long> result = new ConcurrentHashMap<>();
 		
-		try (Statement stmt = GetDataBaseConnection.getConnection().createStatement()){
+		try (Statement stmt = ConnectionManager.getConnection().createStatement()){
 			try(ResultSet rs = stmt.executeQuery("SELECT * FROM OUTPUT_CHANNEL")) {
 				while(rs.next()) {
 					result.put(rs.getLong("guildId"), rs.getLong("channelId"));
@@ -29,7 +29,7 @@ public class ChannelOutputDA {
 		
 		deleteModifiedData(modified);
 		
-		try (PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement("INSERT INTO output_channel (channelId, guildId) VALUES(?,?)")){
+		try (PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement("INSERT INTO output_channel (channelId, guildId) VALUES(?,?)")){
 		
 			for (Long i : modified) {
 				pstmt.setLong(1, channels.get(i));
@@ -43,7 +43,7 @@ public class ChannelOutputDA {
 	}
 	
 	private static void deleteModifiedData(Set<Long> modified) {
-		try (PreparedStatement pstmt = GetDataBaseConnection.getConnection().prepareStatement("DELETE FROM output_channel WHERE guildId = ?")){
+		try (PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement("DELETE FROM output_channel WHERE guildId = ?")){
 			
 			for (Long i : modified) {
 				pstmt.setLong(1, i);

@@ -3,6 +3,7 @@ package de.gruwie.music.commands;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
 import de.gruwie.Gruwie_Startup;
+import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.music.AudioLoadResult;
@@ -15,12 +16,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
-public class PlayCommand implements ServerCommand {
+public class PlayCommand extends CommandInfo implements ServerCommand {
 
-	private static final String COMMAND = "play";
-	private static final String SHORTCUT = "p";
-	private static final String SYMBOL = null;
-	private static final String DESCRIPTION = "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*";
+	public PlayCommand() {
+		super(PlayCommand.class.getSimpleName(), null, "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*");
+	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
@@ -48,28 +48,6 @@ public class PlayCommand implements ServerCommand {
 			}
 			apm.loadItem(url, new AudioLoadResult(controller, url));
 		}
-		else {
-			MessageManager.sendEmbedMessage("**YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY**", ChannelManager.getChannel(channel), true);
-		}
-	}
-
-	@Override
-	public String getDescription() {
-		return DESCRIPTION;
-	}
-
-	@Override
-	public String getCommand() {
-		return COMMAND;
-	}
-
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
-
-	@Override
-	public String getSymbol() {
-		return SYMBOL;
+		else MessageManager.sendEmbedMessage("**YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY**", ChannelManager.getChannel(channel), true);
 	}
 }

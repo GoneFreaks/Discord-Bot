@@ -1,5 +1,6 @@
 package de.gruwie.util.dto;
 
+import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -15,13 +16,13 @@ public class ViewDTO {
 		this.current_queue_view = queue_view;
 		
 		for (int i = 0; i < EMOTES.length; i++) {
-			if(current_queue_view != null) current_queue_view.addReaction(EMOTES[i]).queue();
+			if(current_queue_view != null) current_queue_view.addReaction(EMOTES[i]).queue(null, ErrorClass.getErrorHandler());
 		}
 	}
 	
-	public void deleteView() {
-		if(current_track_view != null) current_track_view.delete().complete();
-		if(current_queue_view != null) current_queue_view.delete().complete();
+	public void deleteView() throws Exception {
+		if(current_track_view != null) current_track_view.delete().queue(null, ErrorClass.getErrorHandler());
+		if(current_queue_view != null) current_queue_view.delete().queue(null, ErrorClass.getErrorHandler());
 		current_track_view = null;
 		current_queue_view = null;
 	}

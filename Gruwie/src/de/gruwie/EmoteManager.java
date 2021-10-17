@@ -35,7 +35,7 @@ public class EmoteManager {
 		this.emote_to_cmd.put("⏭️", "next");
 		
 		this.emote_type.put("🆕", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("🆕", "clear");
+		this.emote_to_cmd.put("🆕", "clearqueue");
 		
 		this.emote_type.put("⏯️", EmoteType.CMD_ALT);
 		this.emote_to_cmd.put("⏯️", "resumepause");
