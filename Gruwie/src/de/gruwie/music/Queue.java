@@ -8,7 +8,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
-import de.gruwie.ConfigManager;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.ViewDTO;
 

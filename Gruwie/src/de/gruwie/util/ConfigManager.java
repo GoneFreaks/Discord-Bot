@@ -1,4 +1,4 @@
-package de.gruwie;
+package de.gruwie.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,6 +49,14 @@ public class ConfigManager {
 			return Integer.parseInt(config.getProperty(name));
 		} catch (Exception e) {
 			return 5;
+		}
+	}
+	
+	public static double getDouble(String name) {
+		try {
+			return Double.parseDouble(config.getProperty("name"));
+		} catch (Exception e) {
+			return 0.5;
 		}
 	}
 	

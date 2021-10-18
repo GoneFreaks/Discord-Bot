@@ -15,6 +15,7 @@ import de.gruwie.db.management.DatabaseManagement;
 import de.gruwie.listener.SystemListener;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.ErrorDTO;

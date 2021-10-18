@@ -3,11 +3,11 @@ package de.gruwie.music.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.gruwie.ConfigManager;
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.db.PlaylistManager;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.PlaylistsDTO;

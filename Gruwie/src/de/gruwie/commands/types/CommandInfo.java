@@ -1,6 +1,6 @@
 package de.gruwie.commands.types;
 
-import de.gruwie.ConfigManager;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.CommandDTO;
 

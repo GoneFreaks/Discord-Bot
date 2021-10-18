@@ -1,8 +1,10 @@
 package de.gruwie.listener;
 
-import de.gruwie.ConfigManager;
+import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.ErrorClass;
+import de.gruwie.util.GuessMeantCommand;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.entities.Message;
@@ -30,8 +32,11 @@ public class CommandListener extends ListenerAdapter {
 			if(args.length > 0) {
 				Message message = event.getMessage();
 				try {
-					if(Gruwie_Startup.INSTANCE.getCmdMan().perform(args[0], event.getMember(), channel, message)) {
-						MessageManager.sendEmbedMessage("**I DON'T KNOW THIS COMMAND (╯°□°）╯︵ ┻━┻**", channel, true);
+					CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
+					if(cmdMan.perform(args[0], event.getMember(), channel, message)) {
+						String meant_cmd = GuessMeantCommand.probableCommand(cmdMan.getCommandArray(), args[0], symbol);
+						if(meant_cmd == null) MessageManager.sendEmbedMessage("**I DON'T KNOW THIS COMMAND (╯°□°）╯︵ ┻━┻**", channel, true);
+						else MessageManager.sendEmbedMessage("**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel, true);
 					}
 				} catch (Exception e) {
 					ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), channel.getGuild().getId()));

@@ -1,5 +1,6 @@
 package de.gruwie;
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.gruwie.commands.ClearCommand;
@@ -24,6 +25,7 @@ import de.gruwie.music.commands.RepeatCommand;
 import de.gruwie.music.commands.ResumePauseCommand;
 import de.gruwie.music.commands.ShuffleCommand;
 import de.gruwie.music.commands.StopCommand;
+import de.gruwie.util.ConfigManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -104,6 +106,17 @@ public class CommandManager {
 	
 	public ServerCommand getServerCommand(String cmd) {
 		return storage.get(cmd);
+	}
+	
+	public String[] getCommandArray() {
+		Set<String> temp1 = storage.keySet();
+		Object[] temp2 = temp1.toArray();
+		
+		String[] result = new String[temp1.size()];
+		for (int i = 0; i < temp2.length; i++) {
+			result[i] = temp2[i].toString();
+		}
+		return result;
 	}
 	
 }

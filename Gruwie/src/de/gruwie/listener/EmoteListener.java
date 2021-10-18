@@ -22,13 +22,12 @@ public class EmoteListener extends ListenerAdapter {
 	
 	public void onMessageReactionUpdate(GenericMessageReactionEvent event) {
 		
-		if(event.getMember().getUser().isBot()) return;
+		if(event.getMember() == null || event.getMember().getUser().isBot()) return;
 		
 		String emote_name = event.getReactionEmote().getName();
 		
 		try {
 			if(Gruwie_Startup.INSTANCE.getEmMan().performEmoteCommand(event)) {
-				System.out.println("UNKNOWN: EMOTE");
 			}
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, emote_name, event.getMember().getEffectiveName(), event.getGuild().getId()));

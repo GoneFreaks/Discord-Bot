@@ -10,9 +10,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
-import de.gruwie.ConfigManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.ErrorDTO;

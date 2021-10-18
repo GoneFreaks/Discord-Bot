@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import de.gruwie.ConfigManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.music.MusicController;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

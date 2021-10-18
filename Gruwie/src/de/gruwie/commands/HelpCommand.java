@@ -1,11 +1,11 @@
 package de.gruwie.commands;
 
 import de.gruwie.CommandManager;
-import de.gruwie.ConfigManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

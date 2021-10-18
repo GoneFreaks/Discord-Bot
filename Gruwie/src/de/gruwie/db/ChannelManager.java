@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import de.gruwie.ConfigManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.da.ChannelOutputDA;
+import de.gruwie.util.ConfigManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ChannelManager {
