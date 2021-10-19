@@ -16,7 +16,7 @@ public class ViewDTO {
 		this.current_queue_view = queue_view;
 		
 		for (int i = 0; i < EMOTES.length; i++) {
-			if(current_queue_view != null) current_queue_view.addReaction(EMOTES[i]).queue(null, ErrorClass.getErrorHandler());
+			if(current_track_view != null) current_track_view.addReaction(EMOTES[i]).queue(null, ErrorClass.getErrorHandler());
 		}
 	}
 	
