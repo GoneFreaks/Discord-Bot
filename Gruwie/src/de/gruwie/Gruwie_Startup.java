@@ -20,7 +20,6 @@ import de.gruwie.util.ErrorClass;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
@@ -31,7 +30,6 @@ public class Gruwie_Startup {
 	public static long start_time;
 	
 	private CommandManager cmdMan;
-	private EmoteManager emMan;
 	private AdminCommandManager acmdMan;
 	private ShardManager shardMan;
 	private AudioPlayerManager audioPlayerManager;
@@ -39,14 +37,11 @@ public class Gruwie_Startup {
 
 	public static void main(String[] args) {
 		
-		System.out.println("Running OS:\t\t" + System.getProperty("os.name"));
-		System.out.println("Running Java-Version:\t" + System.getProperty("java.version"));
+		System.out.println("Running OS:\t\t" + System.getProperty("os.name") + "\nRunning Java-Version:\t" + System.getProperty("java.version"));
 		Formatter.printBorderline("=");
 		
 		start_time = System.currentTimeMillis();
-		
 		if(ConfigManager.startup()) {																
-			
 			if(ConfigManager.getBoolean("dbmanagement")) DatabaseManagement.boot();
 			else {
 				try {
@@ -73,17 +68,14 @@ public class Gruwie_Startup {
 		INSTANCE = this;
 		
 		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
-		builder.setActivity(Activity.listening("help"));
-		builder.setStatus(OnlineStatus.ONLINE);
 		builder.addEventListeners(new SystemListener());
-		this.shardMan = builder.build();
 		
-		this.audioPlayerManager = new DefaultAudioPlayerManager();
+		this.shardMan = builder.build();
 		this.playerManager = new PlayerManager();
 		this.cmdMan = new CommandManager();
-		this.emMan = new EmoteManager();
 		this.acmdMan = new AdminCommandManager();
 		
+		this.audioPlayerManager = new DefaultAudioPlayerManager();
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
 		shutdownTerminal();
@@ -113,9 +105,9 @@ public class Gruwie_Startup {
 	public void shutdown() {
 		if (shardMan != null) {
 			
-			List<Guild> guilds = shardMan.getGuilds();
+			List<Guild> guilds = Gruwie_Startup.INSTANCE.getShardMan().getGuilds();
 			for (Guild i : guilds) {
-				MusicController controller = playerManager.getController(i.getIdLong());
+				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(i.getIdLong());
 				AudioPlayer player = null;
 				if((player = controller.getPlayer()) != null) player.destroy();
 			}
@@ -127,10 +119,6 @@ public class Gruwie_Startup {
 
 	public CommandManager getCmdMan() {
 		return this.cmdMan;
-	}
-	
-	public EmoteManager getEmMan() {
-		return this.emMan;
 	}
 	
 	public AdminCommandManager getACmdMan() {

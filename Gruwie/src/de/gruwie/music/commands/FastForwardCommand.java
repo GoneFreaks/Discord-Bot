@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class FastForwardCommand extends CommandInfo implements ServerCommand {
 	
 	public FastForwardCommand() {
-		super(FastForwardCommand.class.getSimpleName(), ":fast_forward:", "You can customize the Fast-Forward-Time by providing an argument\nYou can jump forward and backwards by using diffrent signs (*+ -*)");
+		super(true, FastForwardCommand.class.getSimpleName(), ":fast_forward:", "You can customize the Fast-Forward-Time by providing an argument\nYou can jump forward and backwards by using diffrent signs (*+ -*)");
 	}
 	
 	@Override

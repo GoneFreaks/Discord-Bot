@@ -10,6 +10,7 @@ public class CommandInfo {
 	private String shortcut;
 	private String symbol;
 	private String description;
+	private boolean wip;
 	
 	public CommandInfo(String classname, String symbol, String description) {
 		CommandDTO dto = Formatter.createNames(classname);
@@ -17,6 +18,12 @@ public class CommandInfo {
 		this.shortcut = dto.getShortcut();
 		this.symbol = symbol;
 		this.description = description;
+		this.wip = false;
+	}
+	
+	public CommandInfo(boolean wip, String classname, String symbol, String description) {
+		this(classname, symbol, description);
+		this.wip = wip;
 	}
 
 	public String getCommand() {
@@ -38,11 +45,11 @@ public class CommandInfo {
 	@Override
 	public String toString() {
 		String cmd_symbol = ConfigManager.getString("symbol");
-		StringBuilder b = new StringBuilder("");
+		StringBuilder b = new StringBuilder(wip? "**WIP**------------------------------\n" : "");
 		b.append("Command: *" + cmd_symbol + command + "*\n");
 		if(shortcut != null) b.append("Shortcut: *" + cmd_symbol + shortcut + "*\n");
 		if(symbol != null) b.append("Symbol: *" + symbol + "*\n");
-		return b.toString();
+		return b.toString() + (wip? "-----------------------------------\n" : "");
 	}
 	
 }

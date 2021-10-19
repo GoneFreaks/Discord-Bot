@@ -17,7 +17,7 @@ public class EqualizerCommand extends CommandInfo implements ServerCommand {
 	private final EqualizerFactory equalizer;
 	
 	public EqualizerCommand() {
-		super(EqualizerCommand.class.getSimpleName(), null, null);
+		super(true, EqualizerCommand.class.getSimpleName(), null, null);
 		this.equalizer = new EqualizerFactory();
 	}
 	

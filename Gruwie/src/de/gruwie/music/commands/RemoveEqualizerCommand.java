@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class RemoveEqualizerCommand extends CommandInfo implements ServerCommand {
 
 	public RemoveEqualizerCommand() {
-		super(RemoveEqualizerCommand.class.getSimpleName(), null, null);
+		super(true, RemoveEqualizerCommand.class.getSimpleName(), null, null);
 	}
 	
 	@Override

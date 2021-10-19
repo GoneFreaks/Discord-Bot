@@ -10,6 +10,8 @@ import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.Formatter;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ShutdownEvent;
@@ -29,6 +31,8 @@ public class SystemListener extends ListenerAdapter {
 		Formatter.printBorderline("=");
 		
 		Formatter.printBorderline("=");
+		shardMan.setActivity(Activity.listening("help"));
+		shardMan.setStatus(OnlineStatus.ONLINE);
 		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
 		System.out.println("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
 		Formatter.printBorderline("=");
@@ -47,7 +51,6 @@ public class SystemListener extends ListenerAdapter {
 	
 	@Override
 	public void onShutdown(ShutdownEvent event) {
-		
 		ChannelManager.shutdown();
 		ErrorClass.shutdown();
 		ConnectionManager.closeConnection();
