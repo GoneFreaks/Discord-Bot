@@ -2,7 +2,6 @@ package de.gruwie.commands;
 
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.Permission;
@@ -28,9 +27,9 @@ public class ClearCommand extends CommandInfo implements ServerCommand {
 					});
 				});
 			}
-			else MessageManager.sendEmbedMessage("**WRONG PATTERN USE, YOU HAVE TO PROVIDE EXACTLY ONE ARGUMENT**", ChannelManager.getChannel(channel), true);
+			else MessageManager.sendEmbedMessage("**WRONG PATTERN USE, YOU HAVE TO PROVIDE EXACTLY ONE ARGUMENT**", channel, true);
 		}
-		else MessageManager.sendEmbedMessage("**YOU DONT HAVE THE PERMISSION TO USE THIS COMMAND**", ChannelManager.getChannel(channel), true);
+		else MessageManager.sendEmbedMessage("**YOU DONT HAVE THE PERMISSION TO USE THIS COMMAND**", channel, true);
 	}
 
 }

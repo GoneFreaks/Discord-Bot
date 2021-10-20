@@ -15,33 +15,30 @@ public class GuessMeantCommand {
 		CHARACTER_MULTIPLIER = ConfigManager.getInteger("character_multiplier");
 		LENGTH_MULTIPLIER = ConfigManager.getInteger("length_multiplier");
 		
-		if(ConfigManager.getBoolean("guess_command")) {
-			int[] order = orderComparison(cmd, input);
-			int[] character = characterComparison(cmd, input);
-			int[] length = matchingLength(cmd, input);
+		int[] order = orderComparison(cmd, input);
+		int[] character = characterComparison(cmd, input);
+		int[] length = matchingLength(cmd, input);
 			
-			int temp = max(order) + max(character) + max(length);
-			if(temp > 1) {
+		int[] final_result = new int[cmd.length];
+		for (int i = 0; i < length.length; i++) {
+			if((order[i] + character[i] + length[i]) < 2) final_result[i] = 0;
+			else final_result[i] = order[i] * ORDER_MULTIPLIER + character[i] * CHARACTER_MULTIPLIER + length[i] * LENGTH_MULTIPLIER;
+		}
 				
-				int[] final_result = new int[cmd.length];
-				for (int i = 0; i < length.length; i++) {
-					final_result[i] = order[i] * ORDER_MULTIPLIER + character[i] * CHARACTER_MULTIPLIER + length[i] * LENGTH_MULTIPLIER;
+		int max = max(final_result);
+				
+		if(max > 0) {
+			List<Integer> index = new ArrayList<>();
+			for (int i = 0; i < final_result.length; i++) {
+				if(final_result[i] == max) index.add(i);
+			}
+				
+			StringBuilder b = new StringBuilder("");
+			if(index.size() <= 2) {
+				for (int i = 0; i < index.size(); i++) {
+					b.append(symbol + cmd[index.get(i)] + (i + 1 == index.size()? "" : ","));
 				}
-				
-				int max = max(final_result);
-				
-				List<Integer> index = new ArrayList<>();
-				for (int i = 0; i < final_result.length; i++) {
-					if(final_result[i] == max) index.add(i);
-				}
-				
-				StringBuilder b = new StringBuilder("");
-				if(index.size() <= 2) {
-					for (int i = 0; i < index.size(); i++) {
-						b.append(symbol + cmd[index.get(i)] + (i + 1 == index.size()? "" : ","));
-					}
-					return b.toString();
-				}
+				return b.toString();
 			}
 		}
 		return null;

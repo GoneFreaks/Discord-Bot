@@ -2,6 +2,7 @@ package de.gruwie.util;
 
 import java.util.concurrent.TimeUnit;
 
+import de.gruwie.db.ChannelManager;
 import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -10,8 +11,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class MessageManager {
 	
-	public static Message sendEmbedMessage (String message, TextChannel channel, boolean delete) {
+	public static Message sendEmbedMessage(String message, long guildId, boolean delete) {
+		
+		TextChannel channel = ChannelManager.getChannel(guildId);
 		try {
+			
 			if(delete && ConfigManager.getBoolean("delete?")) {
 				return sendEmbedMessage(message, channel, ConfigManager.getInteger("delete_time"));
 			}
@@ -21,6 +25,8 @@ public class MessageManager {
 			return null;
 		}
 	}
+	
+	public static Message sendEmbedMessage (String message, TextChannel temp, boolean delete) {return sendEmbedMessage(message, temp.getGuild().getIdLong(), delete);}
 	
 	private static Message sendEmbedMessage (String message, TextChannel channel, long delete) throws Exception {
 		

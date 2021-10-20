@@ -12,11 +12,12 @@ public class ViewDTO {
 	private Message current_queue_view;
 	
 	public ViewDTO(Message track_view, Message queue_view) {
+		
 		this.current_track_view = track_view;
 		this.current_queue_view = queue_view;
 		
 		for (int i = 0; i < EMOTES.length; i++) {
-			if(current_track_view != null) current_track_view.addReaction(EMOTES[i]).queue(null, ErrorClass.getErrorHandler());
+			current_queue_view.addReaction(EMOTES[i]).queue(null, ErrorClass.getErrorHandler());
 		}
 	}
 	
@@ -26,19 +27,8 @@ public class ViewDTO {
 		current_track_view = null;
 		current_queue_view = null;
 	}
-
-	public Message getCurrentTrackView() {
-		return current_track_view;
-	}
-
-	public Message getCurrentQueueView() {
-		return current_queue_view;
-	}
 	
 	public void editCurrentQueueView(String new_message) {
 		if(current_queue_view != null) MessageManager.editMessage(current_queue_view, new_message);
 	}
-	
-	
-	
 }

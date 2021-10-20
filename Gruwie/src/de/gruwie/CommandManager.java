@@ -11,7 +11,7 @@ import de.gruwie.games.commands.CreateTTTLobbyCommand;
 import de.gruwie.games.commands.DeleteTTTLobbyCommand;
 import de.gruwie.music.commands.ClearQueueCommand;
 import de.gruwie.music.commands.EarRapeCommand;
-import de.gruwie.music.commands.EqualizerCommand;
+import de.gruwie.music.commands.ShowEqualizerCommand;
 import de.gruwie.music.commands.ExportGuildPlaylistCommand;
 import de.gruwie.music.commands.ExportUserPlaylistCommand;
 import de.gruwie.music.commands.FastForwardCommand;
@@ -19,7 +19,6 @@ import de.gruwie.music.commands.GetPlaylistsCommand;
 import de.gruwie.music.commands.LyricsCommand;
 import de.gruwie.music.commands.NextCommand;
 import de.gruwie.music.commands.PlayCommand;
-import de.gruwie.music.commands.RemoveEqualizerCommand;
 import de.gruwie.music.commands.RemoveTrackCommand;
 import de.gruwie.music.commands.RepeatCommand;
 import de.gruwie.music.commands.ResumePauseCommand;
@@ -55,9 +54,8 @@ public class CommandManager {
 				new RemoveTrackCommand(),
 				new LyricsCommand(),
 				
+				new ShowEqualizerCommand(),
 				new EarRapeCommand(),
-				new EqualizerCommand(),
-				new RemoveEqualizerCommand(),
 				
 				new HelpCommand(),
 				new ClearCommand(),

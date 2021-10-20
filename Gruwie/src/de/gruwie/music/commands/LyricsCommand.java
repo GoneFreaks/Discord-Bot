@@ -3,7 +3,6 @@ package de.gruwie.music.commands;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.util.Formatter;
@@ -36,7 +35,7 @@ public class LyricsCommand extends CommandInfo implements ServerCommand {
 		String[] uri = Formatter.getURL(query);
 		
 		if(uri == null) {
-			MessageManager.sendEmbedMessage("**Unable to find lyrics**", ChannelManager.getChannel(channel), true);
+			MessageManager.sendEmbedMessage("**Unable to find lyrics**", channel, true);
 			return;
 		}
 		
@@ -44,11 +43,11 @@ public class LyricsCommand extends CommandInfo implements ServerCommand {
 			String temp = GruwieIO.doWebBrowsing(uri[i]);
 			if (temp != null) {
 				String output = Formatter.formatWebsite(temp);
-				MessageManager.sendEmbedMessage(output, ChannelManager.getChannel(channel), false);
+				MessageManager.sendEmbedMessage(output, channel, false);
 				return;
 			}
 		}
-		MessageManager.sendEmbedMessage("**Unable to find lyrics**", ChannelManager.getChannel(channel), true);
+		MessageManager.sendEmbedMessage("**Unable to find lyrics**", channel, true);
 	}
 	
 }

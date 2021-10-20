@@ -5,7 +5,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.music.AudioLoadResult;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
@@ -48,6 +47,6 @@ public class PlayCommand extends CommandInfo implements ServerCommand {
 			}
 			apm.loadItem(url, new AudioLoadResult(controller, url));
 		}
-		else MessageManager.sendEmbedMessage("**YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY**", ChannelManager.getChannel(channel), true);
+		else MessageManager.sendEmbedMessage("**YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY**", channel, true);
 	}
 }

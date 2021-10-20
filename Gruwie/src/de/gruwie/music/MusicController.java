@@ -12,9 +12,11 @@ public class MusicController {
 	private AudioPlayer player;
 	private Queue queue;
 	private VoiceChannel vc;
+	private TrackEqualizer equalizer;
 	
 	public MusicController(Guild guild) {
 		this.guild = guild;
+		this.equalizer = new TrackEqualizer();
 		this.player = Gruwie_Startup.INSTANCE.getAudioPlayerManager().createPlayer();
 		this.queue = new Queue(this);
 		
@@ -25,6 +27,10 @@ public class MusicController {
 	
 	public AudioPlayer getPlayer() {
 		return player;
+	}
+	
+	public TrackEqualizer getEqualizer() {
+		return equalizer;
 	}
 
 	public Guild getGuild() {

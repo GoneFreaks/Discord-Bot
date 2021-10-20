@@ -3,7 +3,6 @@ package de.gruwie.games;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import de.gruwie.db.ChannelManager;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -28,7 +27,7 @@ public class TicTacToeLobby {
 		storage.put(guildId, this);
 		this.game = new TicTacToeGame(player1, player2);
 		
-		this.game_view = MessageManager.sendEmbedMessage(game.toString(), ChannelManager.getChannel(guildId), false);
+		this.game_view = MessageManager.sendEmbedMessage(game.toString(), guildId, false);
 		addReactions();
 	}
 	

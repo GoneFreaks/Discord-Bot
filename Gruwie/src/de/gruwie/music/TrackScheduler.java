@@ -5,7 +5,6 @@ import java.net.URL;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
@@ -65,7 +64,7 @@ public class TrackScheduler extends AudioEventAdapter {
 				builder.setImage("attachment://thumbnail.png");
 				
 				Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
-				Message queue_view = MessageManager.sendEmbedMessage(queue.toString(), channel, false);
+				Message queue_view = MessageManager.sendEmbedMessage(queue.toString(), ChannelManager.getChannel(channel), false);
 				view = new ViewDTO(track_view, queue_view);
 				queue.setView(view);
 				
@@ -111,16 +110,6 @@ public class TrackScheduler extends AudioEventAdapter {
 		player.stopTrack();
 		queue.clearQueue();
 		manager.closeAudioConnection();
-	}
-	
-	@Override
-	public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
-		System.out.println("TRACK-EXCEPTION");
-	}
-	
-	@Override
-	public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs) {
-	    System.out.println("STEPBROTHER IM STUCK");
 	}
 
 }

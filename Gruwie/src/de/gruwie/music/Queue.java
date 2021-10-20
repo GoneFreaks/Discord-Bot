@@ -105,77 +105,29 @@ public class Queue {
 	public void editQueueMessage() {
 		if(view != null) view.editCurrentQueueView(this.toString());
 	}
-
+	
 	@Override
 	public String toString() {
 		
 		if(queuelist.size() == 0) return "**THE QUEUE IS EMPTY**";
 		
-		StringBuilder b = new StringBuilder("");
+		StringBuilder strBuilder = new StringBuilder("");
 		
-		b.append("__**Queue: **__\n");
-		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
+		strBuilder.append("__**Queue: **__\n");
+		strBuilder.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
+		
 		int next_track = queuelist.indexOf(current_track);
-		
 		for (int i = 0; i < queuelist.size(); i++) {
-			if(i == next_track) b.append("***:arrow_right:*** ");
-			else b.append(":black_small_square: ");
+			if(i == next_track) strBuilder.append("***:arrow_right:*** ");
+			else strBuilder.append(":black_small_square: ");
 			AudioTrackInfo info = queuelist.get(i).getInfo();
-			b.append(info.title + " ");
-			b.append("**" + Formatter.formatTime(info.length) + "**");
-			b.append("\n");
-			
+			strBuilder.append(info.title + " ");
+			strBuilder.append("**" + Formatter.formatTime(info.length) + "**");
+			strBuilder.append("\n");
 		}
 		
-		b.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
-		return b.toString();
-	}
-	
-	public List<String> createStrings() {
-		if(queuelist.size() == 0) return null;
-		
-		StringBuilder b = new StringBuilder("");
-		
-		b.append("__**Queue: **__\n");
-		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
-		int next_track = queuelist.indexOf(current_track);
-		
-		List<String> result = new ArrayList<>();
-		for (int i = 0; i < queuelist.size(); i++) {
-			AudioTrackInfo info = queuelist.get(i).getInfo();
-			
-			if(b.length() + info.title.length() <= 5000) {
-				
-			}
-			else {
-				
-			}
-			
-		}
-		for (AudioTrack track : queuelist) {
-			String i = track.getInfo().title;
-			if(b.length() + i.length() <= 5000) {
-				b.append(i);
-			}
-			else {
-				result.add(b.toString());
-				b = new StringBuilder("");
-				b.append(i);
-			}
-		}
-		result.add(b.toString());
-		return result;
-	}
-	
-	public StringBuilder getElement(int i, int next_track, StringBuilder b, AudioTrackInfo info) {
-		if(i == next_track) b.append("***:arrow_right:*** ");
-		else b.append(":black_small_square: ");
-		
-		b.append(info.title + " ");
-		b.append("**" + Formatter.formatTime(info.length) + "**");
-		b.append("\n");
-		
-		return b;
+		strBuilder.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
+		return strBuilder.toString();
 	}
 	
 	public boolean removeTrack (AudioTrack track) {

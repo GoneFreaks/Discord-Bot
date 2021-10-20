@@ -2,7 +2,6 @@ package de.gruwie.games.commands;
 
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.games.TicTacToeLobby;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
@@ -30,13 +29,13 @@ public class CreateTTTLobbyCommand extends CommandInfo implements ServerCommand 
 					if(!TicTacToeLobby.lobbyExists(channel.getGuild().getIdLong())) {
 						new TicTacToeLobby(player1, player2, channel.getGuild().getIdLong());
 					}
-					else MessageManager.sendEmbedMessage("THERE'S ALREADY A RUNNING LOBBY", ChannelManager.getChannel(channel), true);
+					else MessageManager.sendEmbedMessage("THERE'S ALREADY A RUNNING LOBBY", channel, true);
 				}
-				else MessageManager.sendEmbedMessage("YOU CAN'T PLAY AGAINST YOURSELF", ChannelManager.getChannel(channel), true);
+				else MessageManager.sendEmbedMessage("YOU CAN'T PLAY AGAINST YOURSELF", channel, true);
 			}
-			else MessageManager.sendEmbedMessage("YOU HAVE TO MENTION ANOTHER PLAYER (@other_user)", ChannelManager.getChannel(channel), true);
+			else MessageManager.sendEmbedMessage("YOU HAVE TO MENTION ANOTHER PLAYER (@other_user)", channel, true);
 		}
-		else MessageManager.sendEmbedMessage("USE THE COMMAND LIKE THIS -cmd @other_user", ChannelManager.getChannel(channel), true);
+		else MessageManager.sendEmbedMessage("USE THE COMMAND LIKE THIS -cmd @other_user", channel, true);
 	}
 
 }

@@ -4,7 +4,6 @@ import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
@@ -23,7 +22,7 @@ public class HelpCommand extends CommandInfo implements ServerCommand{
 		String[] args = message.getContentRaw().split(" ");
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		
-		if(args.length == 1) MessageManager.sendEmbedMessage(cmdMan.toString(), ChannelManager.getChannel(channel), false);
+		if(args.length == 1) MessageManager.sendEmbedMessage(cmdMan.toString(), channel, false);
 		else {
 			String command_symbol = ConfigManager.getString("symbol");
 			
@@ -35,9 +34,9 @@ public class HelpCommand extends CommandInfo implements ServerCommand{
 				b.append(scmd + "\n" + scmd.getDescription());
 				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
 				
-				MessageManager.sendEmbedMessage(b.toString(), ChannelManager.getChannel(channel), false);
+				MessageManager.sendEmbedMessage(b.toString(), channel, false);
 			}
-			else MessageManager.sendEmbedMessage("**YOU HAVE PROVIDED AN UNKNOWN COMMAND**", ChannelManager.getChannel(channel), true);
+			else MessageManager.sendEmbedMessage("**YOU HAVE PROVIDED AN UNKNOWN COMMAND**", channel, true);
 		}
 	}
 }

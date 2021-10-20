@@ -2,7 +2,6 @@ package de.gruwie.games.commands;
 
 import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.games.TicTacToeLobby;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.Permission;
@@ -23,10 +22,10 @@ public class DeleteTTTLobbyCommand extends CommandInfo implements ServerCommand 
 			if(TicTacToeLobby.lobbyExists(channel.getGuild().getIdLong())) {
 				TicTacToeLobby.getLobbyByGuildId(channel.getGuild().getIdLong()).endLobby();
 			}
-			else MessageManager.sendEmbedMessage("NO LOBBY RUNNING ON THIS SERVER", ChannelManager.getChannel(channel), true);
+			else MessageManager.sendEmbedMessage("NO LOBBY RUNNING ON THIS SERVER", channel, true);
 		}
 		else {
-			MessageManager.sendEmbedMessage("YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND", ChannelManager.getChannel(channel), true);
+			MessageManager.sendEmbedMessage("YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND", channel, true);
 		}
 	}
 	
