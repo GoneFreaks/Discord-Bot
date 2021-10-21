@@ -69,7 +69,6 @@ public class SystemListener extends ListenerAdapter {
 			case "gpus": {
 				try {
 					PlaylistManager.playPlaylist(event.getTextChannel(), event.getMember(), data, true);
-					event.getMessage().delete().queue();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -77,11 +76,18 @@ public class SystemListener extends ListenerAdapter {
 			case "gpgu": {
 				try {
 					PlaylistManager.playPlaylist(event.getTextChannel(), event.getMember(), data, false);
-					event.getMessage().delete().queue();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+			case "rand": {
+				try {
+					PlaylistManager.randPlaylist(event.getMember(), event.getTextChannel());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			event.getMessage().delete().queue(null, ErrorClass.getErrorHandler());
 		}
 	}
 	

@@ -26,19 +26,43 @@ public class PlaylistManager {
 		return PlaylistDA.writePlaylist(tracks, name, iD, isUser);
 	}
 	
+	private static MusicController checkAndJoin(Member member, TextChannel channel) throws Exception {
+		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
+		if(controller != null) {
+			VoiceChannel vc = member.getVoiceState().getChannel();
+			controller.setVoiceChannel(vc);
+			AudioManager manager = vc.getGuild().getAudioManager();
+			manager.openAudioConnection(vc);
+			manager.setSelfDeafened(true);
+			return controller;
+		}
+		else return null;
+	}
+	
 	public static void playPlaylist(TextChannel channel, Member member, String playlist, boolean isUser) throws Exception {
 		
-		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
-		if(controller == null) return;
-		VoiceChannel vc = member.getVoiceState().getChannel();
-		controller.setVoiceChannel(vc);
-		AudioManager manager = vc.getGuild().getAudioManager();
+		MusicController controller = checkAndJoin(member, channel);
 		AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
-		manager.openAudioConnection(vc);
-		manager.setSelfDeafened(true);
 		
-		List<String> list = PlaylistDA.readPlaylist(playlist, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
+		if(controller != null) {
+			List<String> list = PlaylistDA.readPlaylist(playlist, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
+			if(list != null) {
+				AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
+				for (String i : list) {
+					apm.loadItem(i, lazy);
+				}
+			}
+		}
+	}
+	
+	public static void randPlaylist (Member member, TextChannel channel) throws Exception {
+		
+		MusicController controller = checkAndJoin(member, channel);
+		AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
+		
+		List<String> list = PlaylistDA.readRandom();
 		if(list != null) {
+			System.out.println(list.size());
 			AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
 			for (String i : list) {
 				apm.loadItem(i, lazy);

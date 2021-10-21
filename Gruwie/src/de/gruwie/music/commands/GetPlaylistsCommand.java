@@ -22,7 +22,7 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 public class GetPlaylistsCommand extends CommandInfo implements ServerCommand {
 
 	public GetPlaylistsCommand() {
-		super(GetPlaylistsCommand.class.getSimpleName(), null, "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are two type of buttons:\n *Guild-Playlists* which can only be played if you're on the right server and\n*User-Playlists* which are private and bound to your account (these playlists can be used globally)");
+		super(GetPlaylistsCommand.class.getSimpleName(), null, "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are three type of buttons:\n***Guild-Playlists:*** which can only be played if you're on the right server\n***User-Playlists:*** which are private and bound to your account (these playlists can be used globally)\n***Random-Playlist:*** which can be used by everyone, Gruwie will try to retrieve up to n-Tracks depending on youre config");
 	}
 	
 	@Override
@@ -42,6 +42,7 @@ public class GetPlaylistsCommand extends CommandInfo implements ServerCommand {
 		
 		List<String> guild = playlists.getGuild_playlists();
 		if(guild != null) {
+			buttons.add(Button.primary("rand", "RANDOM"));
 			for (int i = 0; i < guild.size(); i++) {
 				buttons.add(Button.primary("gpgu" + guild.get(i), "GUILD: " + guild.get(i)));
 				if((i+1) % 5 == 0) {
@@ -67,7 +68,7 @@ public class GetPlaylistsCommand extends CommandInfo implements ServerCommand {
 			if(buttons.size() > 0) rows.add(ActionRow.of(buttons));
 		}
 		
-		TextChannel output_channel = ChannelManager.getChannel(channel);
+		TextChannel output_channel = ChannelManager.getChannel(channel.getGuild().getIdLong());
 		if(rows.size() > 0) {
 			MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A PLAYLIST***").build();
 			MessageAction action = output_channel.sendMessageEmbeds(message_embed);

@@ -11,7 +11,8 @@ The config has three datatypes:
 
 				boolean (default)
 				String
-				Number
+				number
+				float/double
 										
 If you use an unmatching datatype for a property the Bot will use default-values instead.
 

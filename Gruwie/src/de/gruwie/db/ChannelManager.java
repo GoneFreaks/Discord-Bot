@@ -29,9 +29,8 @@ public class ChannelManager {
 		modified.add(guild_id);
 	}
 	
-	public static TextChannel getChannel(TextChannel channel) {
-		long guild_id = channel.getGuild().getIdLong();
-		return getChannel(guild_id);
+	public static TextChannel getChannel (TextChannel channel) {
+		return getChannel(channel.getGuild().getIdLong());
 	}
 	
 	public static TextChannel getChannel(long guild_id) {

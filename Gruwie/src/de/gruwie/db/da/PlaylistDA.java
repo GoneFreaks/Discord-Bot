@@ -9,6 +9,7 @@ import java.util.List;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.db.ConnectionManager;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.dto.InsertTrackDTO;
 
 public class PlaylistDA {
@@ -137,6 +138,18 @@ public class PlaylistDA {
 		}
 		test.removeAll(available_urls);
 		return new InsertTrackDTO(available_id, test);
+	}
+	
+	public static List<String> readRandom () throws Exception {
+		List<String> urls = new ArrayList<>();
+		
+		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement("SELECT url FROM track ORDER BY RANDOM() LIMIT ?")){
+			pstmt.setInt(1, ConfigManager.getInteger("random_count"));
+			try(ResultSet rs = pstmt.executeQuery()) {
+				while(rs.next()) urls.add(rs.getString(1));
+				return urls;
+			}
+		}
 	}
 	
 }
