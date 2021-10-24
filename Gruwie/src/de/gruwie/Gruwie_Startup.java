@@ -3,7 +3,6 @@ package de.gruwie;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -112,9 +111,6 @@ public class Gruwie_Startup {
 				AudioPlayer player = null;
 				if((player = controller.getPlayer()) != null) player.destroy();
 			}
-			
-			TimeUnit.MILLISECONDS.sleep(100);
-			
 			shardMan.setStatus(OnlineStatus.OFFLINE);
 			shardMan.shutdown();
 		}

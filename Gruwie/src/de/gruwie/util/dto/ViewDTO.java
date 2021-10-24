@@ -22,8 +22,8 @@ public class ViewDTO {
 	}
 	
 	public void deleteView() throws Exception {
-		if(current_track_view != null) current_track_view.delete().queue(null, ErrorClass.getErrorHandler());
-		if(current_queue_view != null) current_queue_view.delete().queue(null, ErrorClass.getErrorHandler());
+		if(current_track_view != null) current_track_view.delete().complete();
+		if(current_queue_view != null) current_queue_view.delete().complete();
 		current_track_view = null;
 		current_queue_view = null;
 	}

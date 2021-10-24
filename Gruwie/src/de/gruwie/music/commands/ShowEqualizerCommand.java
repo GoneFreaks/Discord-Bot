@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShowEqualizerCommand extends CommandInfo implements ServerCommand {
 
 	public ShowEqualizerCommand() {
-		super(true, ShowEqualizerCommand.class.getSimpleName(), null, null);
+		super(true, ShowEqualizerCommand.class.getSimpleName(), null, "Display all 15-Frequency-Bands of the equalizer");
 	}
 	
 	@Override
@@ -21,5 +21,4 @@ public class ShowEqualizerCommand extends CommandInfo implements ServerCommand {
 		if(controller == null) return;
 		MessageManager.sendEmbedMessage(controller.getEqualizer().toString(), channel, true);
 	}
-
 }

@@ -1,29 +1,12 @@
 package de.gruwie;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import de.gruwie.commands.ClearCommand;
-import de.gruwie.commands.HelpCommand;
-import de.gruwie.commands.SetCommand;
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.games.commands.CreateTTTLobbyCommand;
-import de.gruwie.games.commands.DeleteTTTLobbyCommand;
-import de.gruwie.music.commands.ClearQueueCommand;
-import de.gruwie.music.commands.EarRapeCommand;
-import de.gruwie.music.commands.ShowEqualizerCommand;
-import de.gruwie.music.commands.ExportGuildPlaylistCommand;
-import de.gruwie.music.commands.ExportUserPlaylistCommand;
-import de.gruwie.music.commands.FastForwardCommand;
-import de.gruwie.music.commands.GetPlaylistsCommand;
-import de.gruwie.music.commands.LyricsCommand;
-import de.gruwie.music.commands.NextCommand;
-import de.gruwie.music.commands.PlayCommand;
-import de.gruwie.music.commands.RemoveTrackCommand;
-import de.gruwie.music.commands.RepeatCommand;
-import de.gruwie.music.commands.ResumePauseCommand;
-import de.gruwie.music.commands.ShuffleCommand;
-import de.gruwie.music.commands.StopCommand;
 import de.gruwie.util.ConfigManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -31,41 +14,13 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class CommandManager {
 	
-	private ServerCommand[] commands;
+	private List<ServerCommand> commands;
 	private ConcurrentHashMap<String, ServerCommand> storage;
 	
 	public CommandManager () {
 		
-		ServerCommand[] temp = {
-				new PlayCommand(),
-				
-				new GetPlaylistsCommand(),
-				new ExportUserPlaylistCommand(),
-				new ExportGuildPlaylistCommand(),
-				
-				new StopCommand(),
-				new ResumePauseCommand(),
-				new FastForwardCommand(),
-				new NextCommand(),
-				new RepeatCommand(),
-				new ShuffleCommand(),
-				new ClearQueueCommand(),
-				
-				new RemoveTrackCommand(),
-				new LyricsCommand(),
-				
-				new ShowEqualizerCommand(),
-				new EarRapeCommand(),
-				
-				new HelpCommand(),
-				new ClearCommand(),
-				new SetCommand(),
-				
-				new CreateTTTLobbyCommand(),
-				new DeleteTTTLobbyCommand()
-		};
-		
-		this.commands = temp;
+		this.commands = new ArrayList<>();
+		createServerCommands();
 		this.storage = initializeMap();
 	}
 	
@@ -80,9 +35,9 @@ public class CommandManager {
 	
 	public ConcurrentHashMap<String, ServerCommand> initializeMap() {
 		ConcurrentHashMap<String, ServerCommand> result = new ConcurrentHashMap<>();
-		for (int i = 0; i < commands.length; i++) {
-			result.put(commands[i].getCommand(), commands[i]);
-			if(commands[i].getShortcut() != null) result.put(commands[i].getShortcut(), commands[i]);
+		for (ServerCommand i : commands) {
+			result.put(i.getCommand(), i);
+			if(i.getShortcut() != null) result.put(i.getShortcut(), i);
 		}
 		return result;
 	}
@@ -93,8 +48,8 @@ public class CommandManager {
 		String cmd_symbol = ConfigManager.getString("symbol");
 		b.append("**Current command symbol " + cmd_symbol + "**\n\n");
 		
-		for (int i = 0; i < commands.length; i++) {
-			b.append(commands[i] + "\n");
+		for (ServerCommand i : commands) {
+			b.append(i + "\n");
 		}
 		
 		b.append("\n**You can use *" + cmd_symbol + "help <command>* in order to get help for a specific command**\n");
@@ -115,6 +70,30 @@ public class CommandManager {
 			result[i] = temp2[i].toString();
 		}
 		return result;
+	}
+	
+	private void createServerCommands() {
+		try {
+			String path1 = new File(".").getAbsolutePath().replace(".", "\\src\\");
+			String path2 = this.getClass().getPackageName().replace(".", "\\");
+			diffrentPackages(path1, path2, ".music.commands");
+			diffrentPackages(path1, path2, ".commands");
+			diffrentPackages(path1, path2, ".games.commands");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void diffrentPackages(String path1, String path2, String package_name) throws Exception {
+		File file = new File(path1 + path2 + package_name.replace(".", "\\"));
+		File[] files = file.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			if(!files[i].isFile()) continue;
+			String class_name = files[i].getName().replace(".java", "");
+			Class<?> cls = Class.forName(this.getClass().getPackageName() + package_name + "." + class_name);
+			ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
+			commands.add(scmd);
+		}
 	}
 	
 }

@@ -4,7 +4,7 @@ import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.CommandDTO;
 
-public class CommandInfo {
+public class CommandInfo{
 
 	private String command;
 	private String shortcut;

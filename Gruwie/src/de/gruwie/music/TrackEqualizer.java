@@ -7,17 +7,17 @@ public class TrackEqualizer {
 
 	//private static final float[] BASS = {0.15f, 0.1f, 0.05f, 0.0f, 0.0f, -0.05f, -0.1f, -0.1f, -0.1f, -0.1f, -0.1f,-0.1f, -0.1f, -0.1f, -0.1f};
 	private final EqualizerFactory equalizer;
+	private final AudioPlayer player;
 	
-	public TrackEqualizer() {
+	public TrackEqualizer(AudioPlayer player) {
+		this.player = player;
 		this.equalizer = new EqualizerFactory();
+		this.player.setFrameBufferDuration(500);
+		this.player.setFilterFactory(equalizer);
 	}
 	
-	public void changeFreq(int[] gain, AudioPlayer player) {
-		player.setFrameBufferDuration(500);
-		player.setFilterFactory(equalizer);
-		for (int i = 0; i < gain.length; i++) {
-			equalizer.setGain(i, gain[i]);
-		}
+	public void changeFreq(float[] gain) {
+		for (int i = 0; i < gain.length; i++) equalizer.setGain(i, gain[i]);
 	}
 	
 	@Override

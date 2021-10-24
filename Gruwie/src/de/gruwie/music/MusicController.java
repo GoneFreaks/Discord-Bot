@@ -16,8 +16,8 @@ public class MusicController {
 	
 	public MusicController(Guild guild) {
 		this.guild = guild;
-		this.equalizer = new TrackEqualizer();
 		this.player = Gruwie_Startup.INSTANCE.getAudioPlayerManager().createPlayer();
+		this.equalizer = new TrackEqualizer(player);
 		this.queue = new Queue(this);
 		
 		this.guild.getAudioManager().setSendingHandler(new AudioPlayerSendHandler(player));
