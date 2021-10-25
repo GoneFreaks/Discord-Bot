@@ -12,18 +12,17 @@ public class CommandInfo{
 	private String description;
 	private boolean wip;
 	
-	public CommandInfo(String classname, String symbol, String description) {
-		CommandDTO dto = Formatter.createNames(classname);
+	public CommandInfo(boolean wip, boolean tryShortcut, String classname, String symbol, String description) {
+		CommandDTO dto = Formatter.createNames(classname, tryShortcut);
+		this.wip = wip;
 		this.command = dto.getCommand();
 		this.shortcut = dto.getShortcut();
 		this.symbol = symbol;
 		this.description = description;
-		this.wip = false;
 	}
 	
-	public CommandInfo(boolean wip, String classname, String symbol, String description) {
-		this(classname, symbol, description);
-		this.wip = wip;
+	public CommandInfo(boolean wip, boolean tryShortcut, String classname) {
+		this(wip, tryShortcut, classname, null, null);
 	}
 
 	public String getCommand() {

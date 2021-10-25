@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ClearCommand extends CommandInfo implements ServerCommand {
 	
 	public ClearCommand() {
-		super(ClearCommand.class.getSimpleName(), null, "Delete the given amount of messages in the current channel\nYou need the permission to manage messages in order to use this command");
+		super(false, true, ClearCommand.class.getSimpleName(), null, "Delete the given amount of messages in the current channel\nYou need the permission to manage messages in order to use this command");
 	}
 	
 	@Override

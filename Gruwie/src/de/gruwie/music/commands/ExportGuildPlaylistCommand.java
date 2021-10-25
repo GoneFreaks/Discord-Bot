@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ExportGuildPlaylistCommand extends CommandInfo implements ServerCommand {
 
 	public ExportGuildPlaylistCommand() {
-		super(ExportGuildPlaylistCommand.class.getSimpleName(), null, "Save the current music-queue as a server-specific playlist with the provided name (no spaces are allowed)\nOnly Admins of the server can use this command");
+		super(true, true, ExportGuildPlaylistCommand.class.getSimpleName(), null, "Save the current music-queue as a server-specific playlist with the provided name (no spaces are allowed)\nOnly Admins of the server can use this command");
 	}
 	
 	@Override

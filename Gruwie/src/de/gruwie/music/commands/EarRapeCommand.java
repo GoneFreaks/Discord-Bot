@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class EarRapeCommand extends CommandInfo implements ServerCommand {
 
 	public EarRapeCommand() {
-		super(true, EarRapeCommand.class.getSimpleName(), null, "Push the player for a short period of time to its limits");
+		super(true, true, EarRapeCommand.class.getSimpleName(), null, "Push the player for a short period of time to its limits");
 	}
 	
 	@Override

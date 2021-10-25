@@ -114,15 +114,15 @@ public class Formatter {
 		return ready;
 	}
 	
-	public static CommandDTO createNames(String input) {
+	public static CommandDTO createNames(String input, boolean tryShortcut) {
 		String command = input.replaceAll("Command", "").replaceAll("Lobby", "");
 		StringBuilder b = new StringBuilder("");
 		for (int i = 0; i < command.length(); i++) {
 			if(command.charAt(i) > 'A' && command.charAt(i) < 'Z') b.append(command.charAt(i));
 		}
 		String shortcut = b.toString().toLowerCase();
-		if(shortcuts.contains(shortcut)) shortcut = null;
-		else shortcuts.add(shortcut);
+		if(tryShortcut) shortcuts.add(shortcut);
+		else shortcut = null;
 		
 		return new CommandDTO(command.toLowerCase(), shortcut);
 	}

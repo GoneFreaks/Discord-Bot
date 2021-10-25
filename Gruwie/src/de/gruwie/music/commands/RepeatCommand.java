@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class RepeatCommand extends CommandInfo implements ServerCommand {
 	
 	public RepeatCommand() {
-		super(RepeatCommand.class.getSimpleName(), ":repeat:", "If active playing a track will not affect the music-queue, if it is not active the next track will be pulled/removed from the music-queue");
+		super(false, false, RepeatCommand.class.getSimpleName(), ":repeat:", "If active playing a track will not affect the music-queue, if it is not active the next track will be pulled/removed from the music-queue");
 	}
 	
 	@Override

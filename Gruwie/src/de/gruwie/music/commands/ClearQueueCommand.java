@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ClearQueueCommand extends CommandInfo implements ServerCommand {
 
 	public ClearQueueCommand() {
-		super(ClearQueueCommand.class.getSimpleName(), ":new:", "Clear the music-queue");
+		super(false, true, ClearQueueCommand.class.getSimpleName(), ":new:", "Clear the music-queue");
 	}
 	
 	@Override

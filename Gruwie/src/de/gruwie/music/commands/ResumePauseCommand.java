@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ResumePauseCommand extends CommandInfo implements ServerCommand {
 	
 	public ResumePauseCommand() {
-		super(ResumePauseCommand.class.getSimpleName(), ":play_pause:", "Either pause or resume the playing of the track");
+		super(false, true, ResumePauseCommand.class.getSimpleName(), ":play_pause:", "Either pause or resume the playing of the track");
 	}
 	
 	@Override
