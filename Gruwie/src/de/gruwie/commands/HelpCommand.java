@@ -22,7 +22,7 @@ public class HelpCommand extends CommandInfo implements ServerCommand{
 		String[] args = message.getContentRaw().split(" ");
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		
-		if(args.length == 1) MessageManager.sendEmbedMessage(cmdMan.toString(), channel, ConfigManager.getInteger("delete_time") * 3);
+		if(args.length == 1) MessageManager.sendEmbedMessage(cmdMan.toString(), channel, false);
 		else {
 			String command_symbol = ConfigManager.getString("symbol");
 			
@@ -35,7 +35,7 @@ public class HelpCommand extends CommandInfo implements ServerCommand{
 				b.append(scmd + "\n" + (desc != null? desc : "NA"));
 				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
 				
-				MessageManager.sendEmbedMessage(b.toString(), channel, ConfigManager.getInteger("delete_time") * 3);
+				MessageManager.sendEmbedMessage(b.toString(), channel, false);
 			}
 			else MessageManager.sendEmbedMessage("**YOU HAVE PROVIDED AN UNKNOWN COMMAND**", channel, true);
 		}

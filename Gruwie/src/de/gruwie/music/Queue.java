@@ -93,7 +93,8 @@ public class Queue {
 	}
 	
 	public String getCurrentTrackTitle() {
-		return current_track.getInfo().title;
+		if(current_track != null) return current_track.getInfo().title;
+		else return null;
 	}
 	
 	public void changeRepeat() {

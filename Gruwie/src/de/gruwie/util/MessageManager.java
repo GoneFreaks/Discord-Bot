@@ -17,7 +17,9 @@ public class MessageManager {
 		try {
 			
 			if(delete && ConfigManager.getBoolean("delete?")) {
-				return sendEmbedMessage(message, channel, ConfigManager.getInteger("delete_time"));
+				Message output = channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
+				output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, ErrorClass.getErrorHandler(), null);
+				return output;
 			}
 			else return channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
 		} catch (Exception e) {
@@ -27,12 +29,6 @@ public class MessageManager {
 	}
 	
 	public static Message sendEmbedMessage(String message, TextChannel channel, boolean delete) {return sendEmbedMessage(message, channel.getGuild().getIdLong(), delete);}
-	
-	public static Message sendEmbedMessage(String message, TextChannel channel, int delete) {
-		Message output = channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
-		output.delete().queueAfter(delete, TimeUnit.MILLISECONDS, null, ErrorClass.getErrorHandler(), null);
-		return output;
-	}
 	
 	public static EmbedBuilder buildEmbedMessage (String message) {
 		

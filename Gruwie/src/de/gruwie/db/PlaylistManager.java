@@ -62,7 +62,6 @@ public class PlaylistManager {
 		
 		List<String> list = PlaylistDA.readRandom();
 		if(list != null) {
-			System.out.println(list.size());
 			AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
 			for (String i : list) {
 				apm.loadItem(i, lazy);

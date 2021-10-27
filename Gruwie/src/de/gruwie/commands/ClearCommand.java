@@ -27,7 +27,7 @@ public class ClearCommand extends CommandInfo implements ServerCommand {
 					});
 				});
 			}
-			else MessageManager.sendEmbedMessage("**WRONG PATTERN USE, YOU HAVE TO PROVIDE EXACTLY ONE ARGUMENT**", channel, true);
+			else MessageManager.sendEmbedMessage("**WRONG PATTERN, YOU HAVE TO PROVIDE EXACTLY ONE ARGUMENT**", channel, true);
 		}
 		else MessageManager.sendEmbedMessage("**YOU DONT HAVE THE PERMISSION TO USE THIS COMMAND**", channel, true);
 	}
