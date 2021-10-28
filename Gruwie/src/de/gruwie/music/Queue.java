@@ -100,6 +100,7 @@ public class Queue {
 	public void changeRepeat() {
 		repeat = !repeat;
 		if(!repeat) queuelist.remove(current_track);
+		else queuelist.add(current_track);
 		editQueueMessage();
 	}
 	
