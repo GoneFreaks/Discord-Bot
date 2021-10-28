@@ -14,8 +14,8 @@ public class ErrorClass {
 	private static List<ErrorDTO> storage = new ArrayList<>();
 	
 	public static void reportError(ErrorDTO err) {
-		err.getException().printStackTrace();
 		if(ConfigManager.getBoolean("log")) storage.add(err);
+		else err.getException().printStackTrace();
 	}
 	
 	public static void shutdown() {

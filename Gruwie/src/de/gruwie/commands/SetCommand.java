@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class SetCommand extends CommandInfo implements ServerCommand {
 	
 	public SetCommand() {
-		super(false, false, SetCommand.class.getSimpleName(), null, "Choose which channel Gruwie should use as the output-channel");
+		super(false, false, SetCommand.class.getSimpleName(), null, "Set Output-Channel" ,"Choose which channel Gruwie should use as the output-channel\nGruwie will react to messages regardless of the channel they were sent in");
 	}
 	
 	@Override

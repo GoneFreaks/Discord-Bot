@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class CreateTTTLobbyCommand extends CommandInfo implements ServerCommand {
 	
 	public CreateTTTLobbyCommand() {
-		super(false, true, CreateTTTLobbyCommand.class.getSimpleName(), null, "Create a new TicTacToeLobby in order to use this command you have to add another player.\nJust use *@<another_player>* to choose your opponent");
+		super(false, true, CreateTTTLobbyCommand.class.getSimpleName(), null, "Create a new TTT-Lobby", "Create a new TicTacToeLobby in order to use this command you have to add another player.\nJust use *@<another_player>* to choose your opponent");
 	}
 	
 	@Override

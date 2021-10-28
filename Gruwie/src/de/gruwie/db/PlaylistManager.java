@@ -41,31 +41,34 @@ public class PlaylistManager {
 	
 	public static void playPlaylist(TextChannel channel, Member member, String playlist, boolean isUser) throws Exception {
 		
-		MusicController controller = checkAndJoin(member, channel);
-		AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
+		List<String> list = PlaylistDA.readPlaylist(playlist, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
 		
-		if(controller != null) {
-			List<String> list = PlaylistDA.readPlaylist(playlist, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
-			if(list != null) {
-				AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
-				for (String i : list) {
-					apm.loadItem(i, lazy);
-				}
+		if(list != null && list.size() > 0) {
+			MusicController controller = checkAndJoin(member, channel);
+			AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
+			
+			AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
+			for (String i : list) {
+				apm.loadItem(i, lazy);
 			}
+			
 		}
 	}
 	
 	public static void randPlaylist (Member member, TextChannel channel) throws Exception {
 		
-		MusicController controller = checkAndJoin(member, channel);
-		AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
-		
 		List<String> list = PlaylistDA.readRandom();
-		if(list != null) {
-			AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
-			for (String i : list) {
-				apm.loadItem(i, lazy);
-			}
+		if(list != null && list.size() > 0) {
+			
+			MusicController controller = checkAndJoin(member, channel);
+			AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
+			
+			if(list != null) {
+				AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
+				for (String i : list) {
+					apm.loadItem(i, lazy);
+				}
+			}	
 		}
 	}
 }

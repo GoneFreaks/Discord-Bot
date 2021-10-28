@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class SetEqualizerCommand extends CommandInfo implements ServerCommand {
 
 	public SetEqualizerCommand () {
-		super(true, false, SetEqualizerCommand.class.getSimpleName());
+		super(SetEqualizerCommand.class.getSimpleName());
 	}
 	
 	@Override

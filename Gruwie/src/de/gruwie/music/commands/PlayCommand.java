@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 public class PlayCommand extends CommandInfo implements ServerCommand {
 
 	public PlayCommand() {
-		super(false, true, PlayCommand.class.getSimpleName(), null, "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*");
+		super(false, true, PlayCommand.class.getSimpleName(), null, "Play a track", "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*");
 	}
 	
 	@Override

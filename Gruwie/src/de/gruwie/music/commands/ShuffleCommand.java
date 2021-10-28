@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShuffleCommand extends CommandInfo implements ServerCommand {
 	
 	public ShuffleCommand() {
-		super(false, false, ShuffleCommand.class.getSimpleName(), ":twisted_rightwards_arrows:", "Shuffle the complete music-queue");
+		super(false, false, ShuffleCommand.class.getSimpleName(), ":twisted_rightwards_arrows:", "Shuffle queue", "Shuffle the complete music-queue");
 	}
 	
 	@Override
