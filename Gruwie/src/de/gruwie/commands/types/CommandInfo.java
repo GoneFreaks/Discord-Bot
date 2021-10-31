@@ -3,8 +3,11 @@ package de.gruwie.commands.types;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.CommandDTO;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class CommandInfo{
+public class CommandInfo implements ServerCommand{
 
 	private String command;
 	private String shortcut;
@@ -27,20 +30,29 @@ public class CommandInfo{
 		this(true, false, classname, null, null, null);
 	}
 
+	@Override
 	public String getCommand() {
 		return command;
 	}
 
+	@Override
 	public String getShortcut() {
 		return shortcut;
 	}
 
+	@Override
 	public String getSymbol() {
 		return symbol;
 	}
-
+	
+	@Override
 	public String getDescription() {
 		return description;
+	}
+	
+	@Override
+	public boolean isWip() {
+		return wip;
 	}
 	
 	@Override
@@ -52,6 +64,11 @@ public class CommandInfo{
 		if(symbol != null) b.append("Symbol: *" + symbol + "*\n");
 		if(short_description != null) b.append("Description: *" + short_description + "*\n");
 		return b.toString() + (wip? "-----------------------------------\n" : "");
+	}
+
+	@Override
+	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+		System.out.println("NOT YET IMPLEMENTED");
 	}
 	
 }

@@ -11,6 +11,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
+import de.gruwie.music.helper.ProgressBar;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
@@ -65,7 +66,12 @@ public class TrackScheduler extends AudioEventAdapter {
 				
 				Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
 				Message queue_view = MessageManager.sendEmbedMessage(queue.toString(), guild_id, false);
-				view = new ViewDTO(track_view, queue_view);
+				
+				if(ConfigManager.getBoolean("progressbar") && track.getDuration() > 30 * 1000) {
+					view = new ViewDTO(track_view, queue_view, new ProgressBar(queue_view, track));
+				}
+				else view = new ViewDTO(track_view, queue_view, null);
+				
 				queue.setView(view);
 				
 			} catch (Exception e) {

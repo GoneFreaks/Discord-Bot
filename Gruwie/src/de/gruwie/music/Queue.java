@@ -8,6 +8,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
+import de.gruwie.music.helper.FilterManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.ViewDTO;
@@ -20,11 +21,13 @@ public class Queue {
 	private List<AudioTrack> queuelist;
 	private boolean repeat;
 	private AudioTrack current_track;
+	private FilterManager filter;
 
 	public Queue(MusicController controller) {
 		this.audioPlayer = controller.getPlayer();
 		this.queuelist = new ArrayList<>();
 		this.repeat = ConfigManager.getBoolean("repeat");
+		this.filter = controller.getFilterManager();
 	}
 	
 	public void shuffle() {
@@ -111,11 +114,10 @@ public class Queue {
 	@Override
 	public String toString() {
 		
-		if(queuelist.size() == 0) return "**THE QUEUE IS EMPTY**";
-		
 		StringBuilder strBuilder = new StringBuilder("");
 		
 		strBuilder.append("__**Queue: **__\n");
+		strBuilder.append("Current Filter: *" + filter.getCurrentFilter() + "*\n");
 		strBuilder.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
 		
 		int next_track = queuelist.indexOf(current_track);
@@ -128,6 +130,8 @@ public class Queue {
 			strBuilder.append("\n");
 		}
 		
+		if(queuelist.size() == 0) strBuilder.append("**THE QUEUE IS EMPTY**\n");
+		
 		strBuilder.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
 		return strBuilder.toString();
 	}
@@ -139,6 +143,9 @@ public class Queue {
 	}
 	
 	public boolean removeTrack (String track) {
+		
+		if(track.equals("")) return removeTrack(current_track);
+		
 		for (AudioTrack i : queuelist) {
 			String title = i.getInfo().title;
 			if(track.equals(title)) return removeTrack(i);

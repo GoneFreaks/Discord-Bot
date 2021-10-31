@@ -1,14 +1,13 @@
 package de.gruwie.music.commands;
 
 import de.gruwie.commands.types.CommandInfo;
-import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class SetEqualizerCommand extends CommandInfo implements ServerCommand {
+public class SetEqualizerCommand extends CommandInfo {
 
 	public SetEqualizerCommand () {
 		super(SetEqualizerCommand.class.getSimpleName());
@@ -19,7 +18,16 @@ public class SetEqualizerCommand extends CommandInfo implements ServerCommand {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller != null) {
 			
-			String[] args = message.getContentRaw().split(" ");
+			String[] temp = message.getContentRaw().split(" ");
+			String[] args = new String[temp.length - 1];
+			for (int i = 1; i < temp.length; i++) {
+				args[i-1] = temp[i];
+			}
+			
+			if(args.length == 0) {
+				controller.getEqualizer().removeEqualizer();
+			}
+			
 			if(args.length == 5) {
 				float[] gain = new float[15];
 				for(int i = 0; i < 5; i++) {

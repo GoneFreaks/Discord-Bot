@@ -2,14 +2,13 @@ package de.gruwie.music.commands;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.CommandInfo;
-import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class NextCommand extends CommandInfo implements ServerCommand{
+public class NextCommand extends CommandInfo {
 
 	public NextCommand() {
 		super(false, true, NextCommand.class.getSimpleName(), ":track_next:", "Next Track in queue", "Play the next track in the music-queue");

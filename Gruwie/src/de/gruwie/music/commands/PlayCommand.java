@@ -4,7 +4,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.CommandInfo;
-import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.AudioLoadResult;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
@@ -15,7 +14,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
-public class PlayCommand extends CommandInfo implements ServerCommand {
+public class PlayCommand extends CommandInfo {
 
 	public PlayCommand() {
 		super(false, true, PlayCommand.class.getSimpleName(), null, "Play a track", "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*");

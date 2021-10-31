@@ -1,14 +1,13 @@
 package de.gruwie.games.commands;
 
 import de.gruwie.commands.types.CommandInfo;
-import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.games.TicTacToeLobby;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class CreateTTTLobbyCommand extends CommandInfo implements ServerCommand {
+public class CreateTTTLobbyCommand extends CommandInfo {
 	
 	public CreateTTTLobbyCommand() {
 		super(false, true, CreateTTTLobbyCommand.class.getSimpleName(), null, "Create a new TTT-Lobby", "Create a new TicTacToeLobby in order to use this command you have to add another player.\nJust use *@<another_player>* to choose your opponent");

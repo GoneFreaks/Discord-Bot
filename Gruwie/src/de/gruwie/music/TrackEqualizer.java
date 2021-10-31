@@ -20,6 +20,12 @@ public class TrackEqualizer {
 		for (int i = 0; i < gain.length; i++) equalizer.setGain(i, gain[i]);
 	}
 	
+	public void removeEqualizer() {
+		for (int i = 0; i < 15; i++) {
+			equalizer.setGain(i, 0);
+		}
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder("**EQUALIZER:**\n```");

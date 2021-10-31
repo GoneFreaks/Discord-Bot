@@ -15,4 +15,6 @@ public interface ServerCommand{
 	public String getShortcut();
 	
 	public String getSymbol();
+	
+	public boolean isWip();
 }

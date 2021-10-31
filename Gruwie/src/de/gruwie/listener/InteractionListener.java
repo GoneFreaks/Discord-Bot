@@ -7,6 +7,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
+import de.gruwie.music.helper.CheckVoiceState;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
@@ -56,27 +57,42 @@ public class InteractionListener extends ListenerAdapter {
 		switch (type) {
 			case "gpus": {
 				try {
-					PlaylistManager.playPlaylist(event.getTextChannel(), event.getMember(), data, true);
+					PlaylistManager.playCertainPlaylist(event.getTextChannel(), event.getMember(), data, true);
+					break;
 				} catch (Exception e) {
-					e.printStackTrace();
+					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
+					break;
 				}
 			}
 			case "gpgu": {
 				try {
-					PlaylistManager.playPlaylist(event.getTextChannel(), event.getMember(), data, false);
+					PlaylistManager.playCertainPlaylist(event.getTextChannel(), event.getMember(), data, false);
+					break;
 				} catch (Exception e) {
-					e.printStackTrace();
+					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
+					break;
 				}
 			}
 			case "rand": {
 				try {
 					PlaylistManager.randPlaylist(event.getMember(), event.getTextChannel());
+					break;
 				} catch (Exception e) {
-					e.printStackTrace();
+					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
+					break;
 				}
 			}
-			event.getMessage().delete().queue(null, ErrorClass.getErrorHandler());
+			case "gtef": {
+				try {
+					MusicController controller = CheckVoiceState.checkVoiceState(event.getMember(), event.getTextChannel());
+					controller.getFilterManager().applyFilter(data);
+				} catch (Exception e) {
+					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
+					break;
+				}
+			}
 		}
+		event.getMessage().delete().queue(null, ErrorClass.getErrorHandler());
 	}
 	
 	@Override

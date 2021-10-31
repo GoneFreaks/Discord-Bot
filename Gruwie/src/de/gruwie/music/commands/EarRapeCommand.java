@@ -5,17 +5,16 @@ import java.util.concurrent.TimeUnit;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import de.gruwie.commands.types.CommandInfo;
-import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class EarRapeCommand extends CommandInfo implements ServerCommand {
+public class EarRapeCommand extends CommandInfo {
 
 	public EarRapeCommand() {
-		super(true, true, EarRapeCommand.class.getSimpleName(), null, "No comment", "Push the player for a short period of time to its limits");
+		super(false, true, EarRapeCommand.class.getSimpleName(), null, "No comment", "Push the player for a short period of time to its limits");
 	}
 	
 	@Override

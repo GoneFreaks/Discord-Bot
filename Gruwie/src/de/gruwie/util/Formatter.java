@@ -20,8 +20,8 @@ public class Formatter {
 		
 		String h = hours + ":";
 		String m = ((minutes < 10 && hours > 0)? "0" + minutes : minutes) + ":";
-		String s = ((seconds < 10 && minutes > 0)? "0" + seconds : seconds) + "";
-		return (hours > 0? h : "") + (minutes > 0? m : "") + s;
+		String s = ((seconds < 10)? "0" + seconds : seconds) + "";
+		return (hours > 0? h : "") + (minutes > 0? m : "0:") + s;
 	}
 	
 	public static String getTime() {

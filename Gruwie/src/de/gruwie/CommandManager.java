@@ -92,6 +92,8 @@ public class CommandManager {
 			String class_name = files[i].getName().replace(".java", "");
 			Class<?> cls = Class.forName(this.getClass().getPackageName() + package_name + "." + class_name);
 			ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
+			
+			if(!ConfigManager.getBoolean("wip") && scmd.isWip()) continue; 
 			commands.add(scmd);
 		}
 	}

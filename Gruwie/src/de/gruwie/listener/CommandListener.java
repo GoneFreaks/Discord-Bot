@@ -29,24 +29,22 @@ public class CommandListener extends ListenerAdapter {
 		if(message_content.startsWith(symbol) || message_content.equals("help")) {
 			String[] args = message_content.replaceFirst(symbol, "").split(" ");
 			
-			new Thread(() -> {
-				if(args.length > 0) {
-					Message message = event.getMessage();
-					try {
-						CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
-						if(cmdMan.perform(args[0], event.getMember(), channel, message)) {
-							if(ConfigManager.getBoolean("guess_command")) {
-								String meant_cmd = GuessMeantCommand.probableCommand(cmdMan.getCommandArray(), args[0], symbol);
-								if(meant_cmd == null) MessageManager.sendEmbedMessage("**I DON'T KNOW THIS COMMAND (╯°□°）╯︵ ┻━┻**", channel, true);
-								else MessageManager.sendEmbedMessage("**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel, true);
-							}
+			if(args.length > 0) {
+				Message message = event.getMessage();
+				try {
+					CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
+					if(cmdMan.perform(args[0], event.getMember(), channel, message)) {
+						if(ConfigManager.getBoolean("guess_command")) {
+							String meant_cmd = GuessMeantCommand.probableCommand(cmdMan.getCommandArray(), args[0], symbol);
+							if(meant_cmd == null) MessageManager.sendEmbedMessage("**I DON'T KNOW THIS COMMAND (╯°□°）╯︵ ┻━┻**", channel, true);
+							else MessageManager.sendEmbedMessage("**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel, true);
 						}
-					} catch (Exception e) {
-						ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), channel.getGuild().getId()));
 					}
-					message.delete().queue(null, ErrorClass.getErrorHandler());
+				} catch (Exception e) {
+						ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), channel.getGuild().getId()));
 				}
-			}).start();
+				message.delete().queue(null, ErrorClass.getErrorHandler());
+			}
 		}
 	}
 	
