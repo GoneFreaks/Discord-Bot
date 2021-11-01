@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class HelpCommand extends CommandInfo {
 	
 	public HelpCommand() {
-		super(false, true, HelpCommand.class.getSimpleName(), null, "Help/Manual-Pages", "A collection of all commands available\nAlso the command to get help for other commands");
+		super(false, true, HelpCommand.class, null, "Help/Manual-Pages", "A collection of all commands available\nAlso the command to get help for other commands");
 	}
 	
 	@Override

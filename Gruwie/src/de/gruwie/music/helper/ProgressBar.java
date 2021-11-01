@@ -45,7 +45,7 @@ public class ProgressBar implements Runnable {
 	
 	private String listToString() {
 		StringBuilder b = new StringBuilder("\n");
-		b.append(Formatter.formatTime(track.getPosition()));
+		b.append(Formatter.formatTime(track.getPosition()) + "/" + Formatter.formatTime(track.getDuration()));
 		b.append(" `");
 		for (String i : progress_list) {
 			b.append(i);

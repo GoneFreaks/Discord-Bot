@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class SetEqualizerCommand extends CommandInfo {
 
 	public SetEqualizerCommand () {
-		super(SetEqualizerCommand.class.getSimpleName());
+		super(SetEqualizerCommand.class);
 	}
 	
 	@Override

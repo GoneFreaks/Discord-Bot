@@ -21,7 +21,7 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 public class GetPlaylistsCommand extends CommandInfo {
 
 	public GetPlaylistsCommand() {
-		super(false, true, GetPlaylistsCommand.class.getSimpleName(), null, "Load saved playlists", "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are three type of buttons:\n***Guild-Playlists:*** which can only be played if you're on the right server\n***User-Playlists:*** which are private and bound to your account (these playlists can be used globally)\n***Random-Playlist:*** which can be used by everyone, Gruwie will try to retrieve up to n-Tracks depending on youre config");
+		super(true, true, GetPlaylistsCommand.class, null, "Load saved playlists", "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are three type of buttons:\n***Guild-Playlists:*** which can only be played if you're on the right server\n***User-Playlists:*** which are private and bound to your account (these playlists can be used globally)\n***Random-Playlist:*** which can be used by everyone, Gruwie will try to retrieve up to n-Tracks depending on youre config");
 	}
 	
 	@Override

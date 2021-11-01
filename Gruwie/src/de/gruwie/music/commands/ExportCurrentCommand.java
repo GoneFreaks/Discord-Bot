@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ExportCurrentCommand extends CommandInfo {
 
 	public ExportCurrentCommand() {
-		super(false, true, ExportCurrentCommand.class.getSimpleName(), null, "Export current track", "Export the currently played track.\nSongs which have been exported will appear in the random-playlist");
+		super(false, true, ExportCurrentCommand.class, null, "Export current track", "Export the currently played track.\nSongs which have been exported will appear in the random-playlist");
 	}
 	
 	@Override

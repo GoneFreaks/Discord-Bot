@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 public class StopCommand extends CommandInfo {
 	
 	public StopCommand() {
-		super(false, true, StopCommand.class.getSimpleName(), ":stop_button:", "Stop playing", "Gruwie will do the following things: *Stop playing music, Clearing the music-queue, leaving the voice-channel*\nIf noone except Gruwie is connected to a voice-channel this command will be executed automatically");
+		super(false, true, StopCommand.class, ":stop_button:", "Stop playing", "Gruwie will do the following things: *Stop playing music, Clearing the music-queue, leaving the voice-channel*\nIf noone except Gruwie is connected to a voice-channel this command will be executed automatically");
 	}
 	
 	@Override

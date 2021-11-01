@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ExportUserPlaylistCommand extends CommandInfo {
 
 	public ExportUserPlaylistCommand() {
-		super(true, true, ExportUserPlaylistCommand.class.getSimpleName(), null, "Save queue as User-Playlist", "Save the current music-queue as an account-specific playlist with the provided name (no spaces are allowed)\nEveryone can use this command");
+		super(true, true, ExportUserPlaylistCommand.class, null, "Save queue as User-Playlist", "Save the current music-queue as an account-specific playlist with the provided name (no spaces are allowed)\nEveryone can use this command");
 	}
 	
 	@Override

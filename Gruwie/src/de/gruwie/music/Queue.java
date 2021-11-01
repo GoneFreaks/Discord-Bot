@@ -78,7 +78,15 @@ public class Queue {
 	
 	public void addPlaylistToQueue(List<AudioTrack> tracks) throws Exception {
 		
-		queuelist = tracks;
+		for (AudioTrack i : tracks) {
+			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
+				for (AudioTrack j : queuelist) {
+					if(j.getInfo().title.equals(i.getInfo().title)) break;
+				}
+				queuelist.add(i);
+			}
+			else break;
+		}
 		
 		if(view != null) editQueueMessage();
 
@@ -119,19 +127,34 @@ public class Queue {
 		strBuilder.append("Current Filter: *" + filter.getCurrentFilter() + "*\n");
 		strBuilder.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
 		
-		int next_track = queuelist.indexOf(current_track);
-		for (int i = 0; i < queuelist.size(); i++) {
-			if(i == next_track) strBuilder.append("***:arrow_right:*** ");
+		int current_track_index = queuelist.indexOf(current_track);
+		
+		if(queuelist.size() <= 25) strBuilder.append(toStringHelper(0, queuelist.size(), current_track_index));
+		else {
+			int end = (int) Math.min(queuelist.size(), current_track_index + 25);
+			int start = current_track_index;
+			if(end - current_track_index < 25) start -= 25 - (end - current_track_index);
+			
+			if(start != 0) strBuilder.append("**:arrow_up: " + start + " Track" + (start > 1? "s" : "") + "**\n\n");
+			strBuilder.append(toStringHelper(start, end, current_track_index));
+			if(end != queuelist.size()) strBuilder.append("\n**:arrow_down: " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**");
+		}
+		if(queuelist.size() == 0) strBuilder.append("**THE QUEUE IS EMPTY**\n");
+		
+		strBuilder.append("\n\n\nLooping is **" + (repeat? "active" : "not active") + "**");
+		return strBuilder.toString();
+	}
+	
+	private String toStringHelper(int start, int end, int current_track_index) {
+		StringBuilder strBuilder = new StringBuilder("");
+		for (int i = start; i < end; i++) {
+			if(i == current_track_index) strBuilder.append("***:arrow_right:*** ");
 			else strBuilder.append(":black_small_square: ");
 			AudioTrackInfo info = queuelist.get(i).getInfo();
 			strBuilder.append(info.title + " ");
 			strBuilder.append("**" + Formatter.formatTime(info.length) + "**");
 			strBuilder.append("\n");
 		}
-		
-		if(queuelist.size() == 0) strBuilder.append("**THE QUEUE IS EMPTY**\n");
-		
-		strBuilder.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
 		return strBuilder.toString();
 	}
 	

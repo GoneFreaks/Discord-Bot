@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class NextCommand extends CommandInfo {
 
 	public NextCommand() {
-		super(false, true, NextCommand.class.getSimpleName(), ":track_next:", "Next Track in queue", "Play the next track in the music-queue");
+		super(false, true, NextCommand.class, ":track_next:", "Next Track in queue", "Play the next track in the music-queue");
 	}
 	
 	@Override

@@ -15,19 +15,21 @@ public class CommandInfo implements ServerCommand{
 	private String short_description;
 	private String description;
 	private boolean wip;
+	private String package_name;
 	
-	public CommandInfo(boolean wip, boolean tryShortcut, String classname, String symbol, String short_description, String description) {
-		CommandDTO dto = Formatter.createNames(classname, tryShortcut);
+	public CommandInfo(boolean wip, boolean tryShortcut, Class<?> callingClass, String symbol, String short_description, String description) {
+		CommandDTO dto = Formatter.createNames(callingClass.getSimpleName(), tryShortcut);
 		this.wip = wip;
 		this.command = dto.getCommand();
 		this.shortcut = dto.getShortcut();
 		this.symbol = symbol;
 		this.short_description = short_description;
 		this.description = description;
+		this.package_name = callingClass.getPackageName();
 	}
 	
-	public CommandInfo(String classname) {
-		this(true, false, classname, null, null, null);
+	public CommandInfo(Class<?> callingClass) {
+		this(true, false, callingClass, null, null, null);
 	}
 
 	@Override
@@ -56,6 +58,11 @@ public class CommandInfo implements ServerCommand{
 	}
 	
 	@Override
+	public String getPackageName() {
+		return package_name;
+	}
+	
+	@Override
 	public String toString() {
 		String cmd_symbol = ConfigManager.getString("symbol");
 		StringBuilder b = new StringBuilder(wip? "**WIP**------------------------------\n" : "");
@@ -69,6 +76,12 @@ public class CommandInfo implements ServerCommand{
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		System.out.println("NOT YET IMPLEMENTED");
+	}
+
+	@Override
+	public int compareTo(ServerCommand other) {
+		if(this.package_name.equals(other.getPackageName())) return this.getCommand().compareTo(other.getCommand());
+		else return this.getPackageName().compareTo(other.getPackageName());
 	}
 	
 }

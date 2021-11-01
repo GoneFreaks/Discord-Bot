@@ -2,9 +2,13 @@ package de.gruwie;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
@@ -21,6 +25,7 @@ public class CommandManager {
 		
 		this.commands = new ArrayList<>();
 		createServerCommands();
+		Collections.sort(commands);
 		this.storage = initializeMap();
 	}
 	
@@ -74,11 +79,31 @@ public class CommandManager {
 	
 	private void createServerCommands() {
 		try {
-			String path1 = new File(".").getAbsolutePath().replace(".", "\\src\\");
-			String path2 = this.getClass().getPackageName().replace(".", "\\");
-			diffrentPackages(path1, path2, ".music.commands");
-			diffrentPackages(path1, path2, ".commands");
-			diffrentPackages(path1, path2, ".games.commands");
+			
+			File jarFile = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+			if(jarFile.isFile()) {
+				try(JarFile jar = new JarFile(jarFile)) {
+					Enumeration<JarEntry> entries = jar.entries();
+					while(entries.hasMoreElements()) {
+						String name = entries.nextElement().getName();
+						if(name.startsWith("de/gruwie/")) {
+							if(name.contains("Command") && name.contains("commands") && !name.contains("types") && !name.contains("admin")) {
+								Class<?> cls = Class.forName(name.replace(".class", "").replaceAll("/", "."));
+								ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
+								if(!ConfigManager.getBoolean("wip") && scmd.isWip()) continue; 
+								commands.add(scmd);
+							}
+						}
+					}
+				}
+			}
+			else {
+				String path1 = new File(".").getAbsolutePath().replace(".", "\\src\\");
+				String path2 = this.getClass().getPackageName().replace(".", "\\");
+				diffrentPackages(path1, path2, ".music.commands");
+				diffrentPackages(path1, path2, ".commands");
+				diffrentPackages(path1, path2, ".games.commands");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

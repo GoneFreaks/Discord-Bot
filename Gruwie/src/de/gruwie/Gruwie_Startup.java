@@ -83,12 +83,10 @@ public class Gruwie_Startup {
 	}
 
 	private void shutdownTerminal() {
-		
-		new Thread(() -> {
-
+		new Thread (() -> {
 			String line = "";
-			try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-				
+			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				while ((line = reader.readLine()) != null) {
 					if (line.equalsIgnoreCase("exit")) {
 						shutdown();
@@ -104,7 +102,6 @@ public class Gruwie_Startup {
 	
 	public void shutdown() throws Exception{
 		if (shardMan != null) {
-			
 			List<Guild> guilds = Gruwie_Startup.INSTANCE.getShardMan().getGuilds();
 			for (Guild i : guilds) {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(i.getIdLong());

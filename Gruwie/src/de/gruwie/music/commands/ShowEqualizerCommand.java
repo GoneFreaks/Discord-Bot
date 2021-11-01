@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShowEqualizerCommand extends CommandInfo {
 
 	public ShowEqualizerCommand() {
-		super(false, true, ShowEqualizerCommand.class.getSimpleName(), null, "Show current frequency bands", "Displays the current frequency-bands from 0-14.\n0 is the band with the lowest frequency, 14 is therefore the band with the highest frequency");
+		super(false, true, ShowEqualizerCommand.class, null, "Show current frequency bands", "Displays the current frequency-bands from 0-14.\n0 is the band with the lowest frequency, 14 is therefore the band with the highest frequency");
 	}
 	
 	@Override
