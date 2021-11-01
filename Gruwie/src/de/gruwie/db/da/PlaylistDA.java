@@ -48,7 +48,7 @@ public class PlaylistDA {
 		}
 		return false;
 	}
-
+	
 	public static boolean writePlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) {
 		
 		if(playlistsExists(iD, isUser, name)) return false;
@@ -81,7 +81,7 @@ public class PlaylistDA {
 	public static List<String> readPlaylist(String name, long id, boolean isUser) {
 		List<String> urls = new ArrayList<>();
 		
-		String query = "SELECT url FROM track t JOIN playlist p ON t.iD = p.track WHERE p.id = ? AND isUser = ? AND playlist_name = ?";
+		String query = "SELECT url FROM track t JOIN playlist p ON t.iD = p.track WHERE p.id = ? AND isUser = ? AND playlist_name = ? ORDER BY t.iD";
 		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(query)){
 			pstmt.setLong(1, id);
 			pstmt.setBoolean(2, isUser);

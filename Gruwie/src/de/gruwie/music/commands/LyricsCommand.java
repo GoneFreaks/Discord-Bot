@@ -31,7 +31,7 @@ public class LyricsCommand extends CommandInfo {
 		else {
 			MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 			Queue queue = controller.getQueue();
-			query = queue.getCurrentTrackTitle();
+			query = queue.getCurrentTrack() == null? null : queue.getCurrentTrack().getInfo().title;
 		}
 		
 		if(query != null) {

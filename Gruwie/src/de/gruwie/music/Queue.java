@@ -95,9 +95,8 @@ public class Queue {
 		return queuelist;
 	}
 	
-	public String getCurrentTrackTitle() {
-		if(current_track != null) return current_track.getInfo().title;
-		else return null;
+	public AudioTrack getCurrentTrack() {
+		return current_track;
 	}
 	
 	public void changeRepeat() {
