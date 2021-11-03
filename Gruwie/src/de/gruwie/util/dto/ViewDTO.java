@@ -19,6 +19,7 @@ public class ViewDTO {
 		this.current_track_view = track_view;
 		this.current_queue_view = queue_view;
 		this.current_progress_bar = current_progress_bar;
+		
 		if(current_progress_bar != null) {
 			this.current_progress_bar_thread = new Thread(current_progress_bar);
 			this.current_progress_bar_thread.start();
@@ -30,7 +31,7 @@ public class ViewDTO {
 		}
 	}
 	
-	public void deleteView() throws Exception {
+	public void deleteView() {
 		if(current_track_view != null) current_track_view.delete().complete();
 		if(current_queue_view != null) current_queue_view.delete().complete();
 		if(current_progress_bar != null) current_progress_bar_thread.interrupt();

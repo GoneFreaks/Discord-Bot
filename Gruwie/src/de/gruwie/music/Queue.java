@@ -141,7 +141,7 @@ public class Queue {
 		}
 		if(queuelist.size() == 0) strBuilder.append("**THE QUEUE IS EMPTY**\n");
 		
-		strBuilder.append("\n\n\nLooping is **" + (repeat? "active" : "not active") + "**");
+		strBuilder.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
 		return strBuilder.toString();
 	}
 	

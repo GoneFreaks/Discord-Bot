@@ -82,6 +82,7 @@ public class TrackScheduler extends AudioEventAdapter {
 		
 	}
 
+	private AudioTrack last_failed = null;
 	@Override
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
 		
@@ -91,15 +92,23 @@ public class TrackScheduler extends AudioEventAdapter {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
 		Queue queue = controller.getQueue();
 		
+		view.deleteView();
+		
+		if(endReason.equals(AudioTrackEndReason.LOAD_FAILED)) {
+			if(track.equals(last_failed)) {
+				queue.removeTrack(track);
+				last_failed = null;
+			}
+			else {
+				player.playTrack(track.makeClone());
+				last_failed = track;
+			}
+		}
+		last_failed = null;
+		
 		VoiceChannel vc = controller.getVoiceChannel();
 		if(ConfigManager.getBoolean("afk") && vc.getMembers().size() == 1) {
 			closeAudio(guild, player, queue);
-		}
-
-		try {
-			view.deleteView();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		
 		if(endReason.mayStartNext) {

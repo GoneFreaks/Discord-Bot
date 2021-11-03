@@ -24,8 +24,6 @@ public class SystemListener extends ListenerAdapter {
 		shardMan.addEventListener(new CommandListener());
 		shardMan.addEventListener(new InteractionListener());
 		Formatter.printBorderline("=");
-		
-		Formatter.printBorderline("=");
 		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
 		System.out.println("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
 		Formatter.printBorderline("=");
@@ -35,7 +33,7 @@ public class SystemListener extends ListenerAdapter {
 		for (int i = 0; i < guilds.size(); i++) {
 			Guild current = guilds.get(i);
 			System.out.println((i + 1) + ": " + current.getName());
-			System.out.println("\tMembers: " + current.getMemberCount() + " Owner: <@!" + current.getOwnerId() + ">");
+			System.out.println("\tMembers: " + current.getMemberCount() + "\tOwner: <@!" + current.getOwnerId() + ">");
 			if(i + 1 != guilds.size()) Formatter.printBorderline("-");
 		}
 		Formatter.printBorderline("=");
