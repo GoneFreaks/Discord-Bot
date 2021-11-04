@@ -32,8 +32,8 @@ public class ViewDTO {
 	}
 	
 	public void deleteView() {
-		if(current_track_view != null) current_track_view.delete().complete();
-		if(current_queue_view != null) current_queue_view.delete().complete();
+		if(current_track_view != null) current_track_view.delete().queue();
+		if(current_queue_view != null) current_queue_view.delete().queue();
 		if(current_progress_bar != null) current_progress_bar_thread.interrupt();
 		current_track_view = null;
 		current_queue_view = null;

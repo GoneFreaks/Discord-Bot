@@ -3,7 +3,6 @@ package de.gruwie.db;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -39,12 +38,8 @@ public class ConnectionManager {
 			
 	}
 	
-	public static void closeConnection() {
-			try {
-				if(connection != null) connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+	public static void closeConnection() throws Exception {
+		if(connection != null) connection.close();
 	}
 	
 	public static void initializeDatabase() throws Exception {

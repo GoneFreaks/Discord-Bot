@@ -1,6 +1,7 @@
 package de.gruwie.listener;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
@@ -44,10 +45,15 @@ public class SystemListener extends ListenerAdapter {
 	
 	@Override
 	public void onShutdown(ShutdownEvent event) {
-		ChannelManager.shutdown();
-		ErrorClass.shutdown();
-		ConnectionManager.closeConnection();
-		System.out.println("BOT has been shutdown");
-		System.exit(0);
+		try {
+			ChannelManager.shutdown();
+			ErrorClass.shutdown();
+			ConnectionManager.closeConnection();
+			System.out.println("BOT has been shutdown");
+			TimeUnit.SECONDS.sleep(3);
+			System.exit(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
