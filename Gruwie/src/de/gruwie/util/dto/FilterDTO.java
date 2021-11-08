@@ -6,7 +6,7 @@ public class FilterDTO {
 	private float[] filter;
 	
 	public FilterDTO (String name, double ... input) {
-		this.name = name.toUpperCase();
+		this.name = name;
 		this.filter = new float[15];
 		for (int i = 0; i < input.length; i++) {
 			filter[i] = (float) input[i];

@@ -25,7 +25,7 @@ public class CommandInfo implements ServerCommand{
 		this.symbol = symbol;
 		this.short_description = short_description;
 		this.description = description;
-		this.package_name = callingClass.getPackageName();
+		this.package_name = callingClass.getPackage().getName();
 	}
 	
 	public CommandInfo(Class<?> callingClass) {

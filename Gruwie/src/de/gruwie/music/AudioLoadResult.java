@@ -20,32 +20,36 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 
 	@Override
 	public void trackLoaded(AudioTrack track) {
-		Queue queue = controller.getQueue();
-		try {
-			queue.addTrackToQueue(track);
-		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
+		if(controller != null) {
+			Queue queue = controller.getQueue();
+			try {
+				queue.addTrackToQueue(track);
+			} catch (Exception e) {
+				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
+			}
 		}
 	}
 
 	@Override
 	public void playlistLoaded(AudioPlaylist playlist) {
 
-		Queue queue = controller.getQueue();
+		if(controller != null) {
+			Queue queue = controller.getQueue();
 
-		if (uri.startsWith("ytsearch:")) {
+			if (uri.startsWith("ytsearch:")) {
+				try {
+					queue.addTrackToQueue(playlist.getTracks().get(0));
+				} catch (Exception e) {
+					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
+				}
+				return;
+			}
+
 			try {
-				queue.addTrackToQueue(playlist.getTracks().get(0));
+				queue.addPlaylistToQueue(playlist.getTracks());
 			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
-			}
-			return;
-		}
-
-		try {
-			queue.addPlaylistToQueue(playlist.getTracks());
-		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
+			}	
 		}
 	}
 

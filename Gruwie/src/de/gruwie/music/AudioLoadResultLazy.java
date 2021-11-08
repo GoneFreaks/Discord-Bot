@@ -23,11 +23,13 @@ public class AudioLoadResultLazy implements AudioLoadResultHandler {
 	
 	@Override
 	public void trackLoaded(AudioTrack track) {
-		try {
-			tracks.add(track);
-			if(tracks.size() >= size) controller.getQueue().addPlaylistToQueue(tracks);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(controller != null) {
+			try {
+				tracks.add(track);
+				if(tracks.size() >= size) controller.getQueue().addPlaylistToQueue(tracks);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
 		}
 	}
 

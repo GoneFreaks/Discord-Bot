@@ -1,6 +1,5 @@
 package de.gruwie.music.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.gruwie.commands.types.CommandInfo;
@@ -14,8 +13,8 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
+import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu.Builder;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class GetPlaylistsCommand extends CommandInfo {
@@ -36,44 +35,27 @@ public class GetPlaylistsCommand extends CommandInfo {
 	
 	private static void showPlaylists(PlaylistsDTO playlists, TextChannel channel) {
 		
-		List<Button> buttons = new ArrayList<>();
-		List<ActionRow> rows = new ArrayList<>();
+		Builder builder = SelectionMenu.create("gpsm");
+		builder.addOption("Random", "rand", "Load some random tracks");
 		
 		List<String> guild = playlists.getGuild_playlists();
 		if(guild != null) {
-			buttons.add(Button.primary("rand", "RANDOM"));
-			for (int i = 0; i < guild.size(); i++) {
-				buttons.add(Button.primary("gpgu" + guild.get(i), "GUILD: " + guild.get(i)));
-				if((i+1) % 5 == 0) {
-					rows.add(ActionRow.of(buttons));
-					buttons = new ArrayList<>();
-				}
-			}
-			if(buttons.size() > 0) {
-				rows.add(ActionRow.of(buttons));
-				buttons = new ArrayList<>();
+			for (String i : guild) {
+				builder.addOption("GUILD: " + i, "gpgu" + i);
 			}
 		}
 		
 		List<String> user = playlists.getUser_playlists();
 		if(user != null) {
-			for (int i = 0; i < user.size(); i++) {
-				buttons.add(Button.primary("gpus" + user.get(i), "USER: " + user.get(i)));
-				if((i+1) % 5 == 0) {
-					rows.add(ActionRow.of(buttons));
-					buttons = new ArrayList<>();
-				}
+			for (String i : user) {
+				builder.addOption("USER: " + i, "gpus" + i);
 			}
-			if(buttons.size() > 0) rows.add(ActionRow.of(buttons));
 		}
 		
 		TextChannel output_channel = ChannelManager.getChannel(channel);
-		if(rows.size() > 0) {
-			MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A PLAYLIST***").build();
-			MessageAction action = output_channel.sendMessageEmbeds(message_embed);
-			action.setActionRows(rows).queue(null, ErrorClass.getErrorHandler());
-		}
-		else MessageManager.sendEmbedMessage("**NO PLAYLIST EITHER FOR YOUR ACCOUNT OR FOR THE SERVER WERE FOUND**", output_channel, true);
+		MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A PLAYLIST***\n\n*USER-Playlist*: Only visible to you, can be used globally\n*GUILD-Playlist*: Visible only on the server they were created on").build();
+		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
+		action.setActionRow(builder.build()).queue(null, ErrorClass.getErrorHandler());
 	}
 
 }

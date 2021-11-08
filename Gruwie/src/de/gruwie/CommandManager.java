@@ -58,7 +58,7 @@ public class CommandManager {
 		}
 		
 		b.append("\n**You can use *" + cmd_symbol + "help <command>* in order to get help for a specific command**\n");
-		b.append("\n\nMod-Creator:\n<@!690659763998031902>\n<@!690255106272526399>\nHosted by: <@!" + ConfigManager.getString("owner_id") + ">");
+		b.append("\n\nBOT-Creator:\n<@!690659763998031902>\n<@!690255106272526399>\nHosted by: <@!" + ConfigManager.getString("owner_id") + ">");
 		return b.toString();
 	}
 	
@@ -99,7 +99,7 @@ public class CommandManager {
 			}
 			else {
 				String path1 = new File(".").getAbsolutePath().replace(".", "\\src\\");
-				String path2 = this.getClass().getPackageName().replace(".", "\\");
+				String path2 = this.getClass().getPackage().getName().replace(".", "\\");
 				diffrentPackages(path1, path2, ".music.commands");
 				diffrentPackages(path1, path2, ".commands");
 				diffrentPackages(path1, path2, ".games.commands");
@@ -111,11 +111,12 @@ public class CommandManager {
 	
 	private void diffrentPackages(String path1, String path2, String package_name) throws Exception {
 		File file = new File(path1 + path2 + package_name.replace(".", "\\"));
+		System.out.println(file.getAbsolutePath());
 		File[] files = file.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			if(!files[i].isFile()) continue;
 			String class_name = files[i].getName().replace(".java", "");
-			Class<?> cls = Class.forName(this.getClass().getPackageName() + package_name + "." + class_name);
+			Class<?> cls = Class.forName(this.getClass().getPackage().getName() + package_name + "." + class_name);
 			ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
 			
 			if(!ConfigManager.getBoolean("wip") && scmd.isWip()) continue; 

@@ -37,7 +37,7 @@ public class Gruwie_Startup {
 
 	public static void main(String[] args) {
 		
-		System.out.println("Running OS:\t\t" + System.getProperty("os.name") + "\nRunning Java-Version:\t" + System.getProperty("java.version"));
+		System.out.println("Running OS:\t\t" + System.getProperty("os.name") + "\nRunning Java-Version:\t" + System.getProperty("java.version") + "\nAvailable Processors:\t" + Runtime.getRuntime().availableProcessors());
 		Formatter.printBorderline("=");
 		
 		start_time = System.currentTimeMillis();
@@ -83,7 +83,7 @@ public class Gruwie_Startup {
 	}
 
 	private void shutdownTerminal() {
-		new Thread (() -> {
+		Thread shutdown = new Thread (() -> {
 			String line = "";
 			try {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -97,7 +97,10 @@ public class Gruwie_Startup {
 			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));
 			}
-		}).start();
+		});
+		shutdown.setName("Shutdown-Terminal");
+		shutdown.setDaemon(true);
+		shutdown.start();
 	}
 	
 	public void shutdown() throws Exception{

@@ -132,7 +132,7 @@ public class Queue {
 		if(queuelist.size() <= 25) strBuilder.append(toStringHelper(0, queuelist.size(), current_track_index));
 		else {
 			int end = (int) Math.min(queuelist.size(), current_track_index + 25);
-			int start = current_track_index;
+			int start = current_track_index != -1? current_track_index : 0;
 			if(end - current_track_index < 25) start -= 25 - (end - current_track_index);
 			
 			if(start != 0) strBuilder.append("**:arrow_up: " + start + " Track" + (start > 1? "s" : "") + "**\n\n");

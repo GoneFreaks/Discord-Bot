@@ -1,7 +1,6 @@
 package de.gruwie.listener;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
@@ -25,9 +24,6 @@ public class SystemListener extends ListenerAdapter {
 		shardMan.addEventListener(new CommandListener());
 		shardMan.addEventListener(new InteractionListener());
 		Formatter.printBorderline("=");
-		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
-		System.out.println("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
-		Formatter.printBorderline("=");
 		
 		List<Guild> guilds = event.getJDA().getGuilds();
 		System.out.println("Connected to:");
@@ -39,8 +35,12 @@ public class SystemListener extends ListenerAdapter {
 		}
 		Formatter.printBorderline("=");
 		
-		shardMan.setActivity(Activity.listening("help"));
 		shardMan.setStatus(OnlineStatus.ONLINE);
+		shardMan.setActivity(Activity.listening("help"));
+		
+		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
+		System.out.println("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
+		Formatter.printBorderline("=");
 	}
 	
 	@Override
@@ -49,9 +49,7 @@ public class SystemListener extends ListenerAdapter {
 			ChannelManager.shutdown();
 			ErrorClass.shutdown();
 			ConnectionManager.closeConnection();
-			System.out.println("BOT has been shutdown");
-			TimeUnit.SECONDS.sleep(3);
-			System.exit(0);
+			System.out.println("BOT is offline");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

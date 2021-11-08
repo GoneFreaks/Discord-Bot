@@ -23,6 +23,7 @@ public class ConnectionManager {
 		boolean newFile = false;
 			
 		File file = new File("data.db");
+		System.out.println(file.getAbsolutePath());
 		if(!file.exists()) {
 			System.out.println("No Database found --> creating an empty default-Database");
 			Formatter.printBorderline("-");

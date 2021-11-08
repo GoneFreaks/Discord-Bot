@@ -12,7 +12,9 @@ public class ConfigManager {
 	public static boolean startup() {
 		config = new Properties();
 		try {
-			InputStream in = new FileInputStream(new File("config.properties"));
+			File temp = new File("config.properties");
+			System.out.println(temp.getAbsolutePath());
+			InputStream in = new FileInputStream(temp);
 			config.load(in);
 			in.close();
 			return true;
