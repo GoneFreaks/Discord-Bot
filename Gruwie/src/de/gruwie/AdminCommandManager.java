@@ -3,6 +3,7 @@ package de.gruwie;
 import java.util.LinkedHashMap;
 
 import de.gruwie.commands.admin.HelpCommand;
+import de.gruwie.commands.admin.IpConfigCommand;
 import de.gruwie.commands.admin.ReloadCommand;
 import de.gruwie.commands.admin.ShowConfigCommand;
 import de.gruwie.commands.admin.ShutdownCommand;
@@ -21,6 +22,7 @@ public class AdminCommandManager {
 		storage.put("reload", new ReloadCommand());
 		storage.put("shutdown", new ShutdownCommand());
 		storage.put("config", new ShowConfigCommand());
+		storage.put("ipconfig", new IpConfigCommand());
 	}
 	
 	public boolean performCommand(String cmd, Message message, PrivateChannel privateChannel) throws Exception {

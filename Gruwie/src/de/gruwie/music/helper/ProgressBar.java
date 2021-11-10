@@ -1,8 +1,5 @@
 package de.gruwie.music.helper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.Gruwie_Startup;
@@ -14,7 +11,6 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class ProgressBar implements Runnable {
 
-	private List<String> progress_list;
 	private Message queue_view;
 	private Queue queue;
 	private AudioTrack track;
@@ -22,7 +18,6 @@ public class ProgressBar implements Runnable {
 	public ProgressBar(Message queue_view, AudioTrack track) {
 		this.queue_view = queue_view;
 		this.queue = Gruwie_Startup.INSTANCE.getPlayerManager().getController(queue_view.getGuild().getIdLong()).getQueue();
-		this.progress_list = new ArrayList<>();
 		this.track = track;
 	}
 
@@ -31,7 +26,6 @@ public class ProgressBar implements Runnable {
 		try {
 			while(!Thread.currentThread().isInterrupted()) {
 				Thread.sleep(ConfigManager.getInteger("refresh") * 1000);
-				checkProcess();
 				editMessage();
 			}
 		} catch (Exception e) {
@@ -46,27 +40,21 @@ public class ProgressBar implements Runnable {
 	private String listToString() {
 		StringBuilder b = new StringBuilder("\n");
 		b.append(Formatter.formatTime(track.getPosition()) + "/" + Formatter.formatTime(track.getDuration()));
-		b.append(" `");
-		for (String i : progress_list) {
-			b.append(i);
-		}
-		for (int i = 0; i < ConfigManager.getInteger("accuracy") - progress_list.size(); i++) {
-			b.append(" ");
-		}
-		b.append("`");
+		b.append(" `" + checkProcess() + "`");
 		return b.toString();
 	}
 	
-	private void checkProcess() {
+	private String checkProcess() {
+		
+		StringBuilder b = new StringBuilder("");
 		
 		double percentage = ((track.getPosition() + 0.0) / track.getDuration());
 		int progress = (int) Math.ceil((percentage * ConfigManager.getInteger("accuracy")));
 		
-		if(progress != progress_list.size()) {
-			for (int i = 0; i < progress - progress_list.size(); i++) {
-				progress_list.add("█");
-			}
-		}
+		for (int i = 0; i < progress; i++) b.append("█");
+		for (int i = 0; i < ConfigManager.getInteger("accuracy") - progress; i++) b.append(" ‎");
+		
+		return b.toString();
 		
 	}
 }
