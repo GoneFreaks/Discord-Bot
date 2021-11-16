@@ -17,7 +17,7 @@ public class ExportGuildPlaylistCommand extends CommandInfo {
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		if(member.hasPermission(Permission.ADMINISTRATOR)) ExportPlaylistCommand.exportPlaylist(member, channel, message, false);
-		else MessageManager.sendEmbedMessage("**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, true);
+		else MessageManager.sendEmbedMessage("**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel);
 	}
 	
 }

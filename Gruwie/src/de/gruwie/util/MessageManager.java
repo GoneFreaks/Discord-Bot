@@ -11,12 +11,12 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class MessageManager {
 	
-	public static Message sendEmbedMessage(String message, long guildId, boolean delete) {
+	public static Message sendEmbedMessage(String message, long guildId) {
 		
 		TextChannel channel = ChannelManager.getChannel(guildId);
 		try {
 			
-			if(delete && ConfigManager.getBoolean("delete?")) {
+			if(ConfigManager.getBoolean("delete?")) {
 				Message output = channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
 				output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, ErrorClass.getErrorHandler(), null);
 				return output;
@@ -28,7 +28,12 @@ public class MessageManager {
 		}
 	}
 	
-	public static Message sendEmbedMessage(String message, TextChannel channel, boolean delete) {return sendEmbedMessage(message, channel.getGuild().getIdLong(), delete);}
+	public static Message sendEmbedMessage(long guildId, String message) {
+		TextChannel channel = ChannelManager.getChannel(guildId);
+		return channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
+	}
+	
+	public static Message sendEmbedMessage(String message, TextChannel channel) {return sendEmbedMessage(message, channel.getGuild().getIdLong());}
 	
 	public static EmbedBuilder buildEmbedMessage (String message) {
 		

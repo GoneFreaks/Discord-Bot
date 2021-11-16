@@ -23,9 +23,9 @@ public class ExportCurrentCommand extends CommandInfo {
 		if(ConfigManager.getBoolean("database")) {
 			MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 			Queue queue = controller.getQueue();
-			if(TrackDA.writeTrack(queue.getCurrentTrack().getInfo().uri)) MessageManager.sendEmbedMessage("**TRACK HAS BEEN SAVED**", channel, true);
-			else MessageManager.sendEmbedMessage("**TRACK HAS NOT BEEN SAVED, PROBABLY IT'S ALREADY HAVE BEEN SAVED**", channel, true);
+			if(TrackDA.writeTrack(queue.getCurrentTrack().getInfo().uri)) MessageManager.sendEmbedMessage("**TRACK HAS BEEN SAVED**", channel);
+			else MessageManager.sendEmbedMessage("**TRACK HAS NOT BEEN SAVED, PROBABLY IT'S ALREADY HAVE BEEN SAVED**", channel);
 		}
-		else MessageManager.sendEmbedMessage("**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, true); 
+		else MessageManager.sendEmbedMessage("**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel); 
 	}
 }

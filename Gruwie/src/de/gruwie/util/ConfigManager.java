@@ -31,7 +31,7 @@ public class ConfigManager {
 		return b.toString();
 	}
 
-public static boolean getBoolean(String name) {
+	public static boolean getBoolean(String name) {
 		
 		String value = config.getProperty(name);
 		if(value.equals("0") || value.equals("1")) {

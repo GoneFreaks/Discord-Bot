@@ -35,7 +35,7 @@ public class Queue {
 		editQueueMessage();
 	}
 	
-	public boolean next() throws Exception {
+	public boolean next() {
 		
 		if(queuelist.size() > 0) {
 			
@@ -61,7 +61,7 @@ public class Queue {
 		this.view = view;
 	}
 
-	public void addTrackToQueue(AudioTrack track) throws Exception {
+	public void addTrackToQueue(AudioTrack track) {
 
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
@@ -76,7 +76,7 @@ public class Queue {
 		if (audioPlayer.getPlayingTrack() == null) next();
 	}
 	
-	public void addPlaylistToQueue(List<AudioTrack> tracks) throws Exception {
+	public void addPlaylistToQueue(List<AudioTrack> tracks) {
 		
 		for (AudioTrack i : tracks) {
 			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
@@ -118,44 +118,50 @@ public class Queue {
 		if(view != null) view.editCurrentQueueView(this.toString());
 	}
 	
+	private static final int SIZE = 10;
+	
 	@Override
 	public String toString() {
 		
-		StringBuilder strBuilder = new StringBuilder("");
+		StringBuilder b = new StringBuilder("");
 		
-		strBuilder.append("__**Queue: **__\n");
-		strBuilder.append("Current Filter: *" + filter.getCurrentFilter() + "*\n");
-		strBuilder.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
+		b.append("__**Queue: **__\n");
+		b.append("Current Filter: *" + filter.getCurrentFilter() + "*\n");
+		b.append("Volume: *" + audioPlayer.getVolume() + "*\n");
+		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
 		
 		int current_track_index = queuelist.indexOf(current_track);
 		
-		if(queuelist.size() <= 25) strBuilder.append(toStringHelper(0, queuelist.size(), current_track_index));
+		if(queuelist.size() <= SIZE) b.append(toStringHelper(0, queuelist.size(), current_track_index));
 		else {
-			int end = (int) Math.min(queuelist.size(), current_track_index + 25);
-			int start = current_track_index != -1? current_track_index : 0;
-			if(end - current_track_index < 25) start -= 25 - (end - current_track_index);
+			int end = (int) Math.min(queuelist.size(), current_track_index + SIZE);
+			int start = current_track_index < 0? 0 : current_track_index;
+			if(end - current_track_index < SIZE) start -= SIZE - (end - current_track_index);
 			
-			if(start != 0) strBuilder.append("**:arrow_up: " + start + " Track" + (start > 1? "s" : "") + "**\n\n");
-			strBuilder.append(toStringHelper(start, end, current_track_index));
-			if(end != queuelist.size()) strBuilder.append("\n**:arrow_down: " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**");
+			if(start != 0) b.append("**:arrow_up: " + start + " Track" + (start > 1? "s" : "") + "**\n\n");
+			b.append(toStringHelper(start, end, current_track_index));
+			if(end != queuelist.size()) b.append("\n**:arrow_down: " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**");
 		}
-		if(queuelist.size() == 0) strBuilder.append("**THE QUEUE IS EMPTY**\n");
+		if(queuelist.size() == 0) b.append("**THE QUEUE IS EMPTY**\n");
 		
-		strBuilder.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
-		return strBuilder.toString();
+		b.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
+		return b.toString();
 	}
 	
-	private String toStringHelper(int start, int end, int current_track_index) {
-		StringBuilder strBuilder = new StringBuilder("");
+	private static final int TITLE_SIZE = 55;
+	public String toStringHelper(int start, int end, int current_track_index) {
+		StringBuilder b = new StringBuilder("");
 		for (int i = start; i < end; i++) {
-			if(i == current_track_index) strBuilder.append("***:arrow_right:*** ");
-			else strBuilder.append(":black_small_square: ");
+			if(i == current_track_index) b.append("***:arrow_right:*** ");
+			else b.append(":black_small_square: ");
 			AudioTrackInfo info = queuelist.get(i).getInfo();
-			strBuilder.append(info.title + " ");
-			strBuilder.append("**" + Formatter.formatTime(info.length) + "**");
-			strBuilder.append("\n");
+			String title = info.title;
+			if(title.length() > TITLE_SIZE) b.append(title.substring(0, TITLE_SIZE) + "...");
+			else b.append(title + "");
+			b.append(" **" + Formatter.formatTime(info.length) + "**");
+			b.append("\n");
 		}
-		return strBuilder.toString();
+		return b.toString();
 	}
 	
 	public boolean removeTrack (AudioTrack track) {
@@ -173,5 +179,9 @@ public class Queue {
 			if(track.equals(title)) return removeTrack(i);
 		}
 		return false;
+	}
+	
+	public int size () {
+		return queuelist.size();
 	}
 }

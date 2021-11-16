@@ -15,6 +15,8 @@ public class ProgressBar implements Runnable {
 	private Queue queue;
 	private AudioTrack track;
 	
+	private long last_position;
+	
 	public ProgressBar(Message queue_view, AudioTrack track) {
 		this.queue_view = queue_view;
 		this.queue = Gruwie_Startup.INSTANCE.getPlayerManager().getController(queue_view.getGuild().getIdLong()).getQueue();
@@ -26,7 +28,8 @@ public class ProgressBar implements Runnable {
 		try {
 			while(!Thread.currentThread().isInterrupted()) {
 				Thread.sleep(ConfigManager.getInteger("refresh") * 1000);
-				editMessage();
+				if(last_position != track.getPosition()) editMessage();
+				last_position = track.getPosition();
 			}
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
@@ -37,9 +40,18 @@ public class ProgressBar implements Runnable {
 		MessageManager.editMessage(queue_view, queue.toString() + listToString());
 	}
 	
+	private boolean shown = false;
+	private int counter = 0;
 	private String listToString() {
 		StringBuilder b = new StringBuilder("\n");
-		b.append(Formatter.formatTime(track.getPosition()) + "/" + Formatter.formatTime(track.getDuration()));
+		if(shown) b.append(":arrow_forward:"); 
+		else b.append(":black_medium_square:");
+		counter++;
+		if(counter >= 2) {
+			shown = !shown;
+			counter = 0;
+		}
+		b.append(" " + Formatter.formatTime(track.getPosition()) + "/" + Formatter.formatTime(track.getDuration()));
 		b.append(" `" + checkProcess() + "`");
 		return b.toString();
 	}

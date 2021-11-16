@@ -30,7 +30,7 @@ public class GetPlaylistsCommand extends CommandInfo {
 			PlaylistsDTO playlists = PlaylistManager.getPlaylists(channel.getGuild().getIdLong(), member.getIdLong());
 			showPlaylists(playlists, channel);
 		}
-		else MessageManager.sendEmbedMessage("**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, true);
+		else MessageManager.sendEmbedMessage("**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel);
 	}
 	
 	private static void showPlaylists(PlaylistsDTO playlists, TextChannel channel) {

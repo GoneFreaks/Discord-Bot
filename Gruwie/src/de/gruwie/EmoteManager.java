@@ -46,6 +46,12 @@ public class EmoteManager {
 		this.emote_type.put("🔀", EmoteType.CMD_ALT);
 		this.emote_to_cmd.put("🔀", "shuffle");
 		
+		this.emote_type.put("🔉", EmoteType.CMD_ALT);
+		this.emote_to_cmd.put("🔉", "volumedown");
+		
+		this.emote_type.put("🔊", EmoteType.CMD_ALT);
+		this.emote_to_cmd.put("🔊", "volumeup");
+		
 	}
 	
 	public boolean performEmoteCommand (GenericMessageReactionEvent event) throws Exception {

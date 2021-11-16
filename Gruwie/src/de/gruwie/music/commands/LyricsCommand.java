@@ -41,13 +41,13 @@ public class LyricsCommand extends CommandInfo {
 					String temp = GruwieIO.doWebBrowsing(uri[i]);
 					if (temp != null) {
 						String output = Formatter.formatWebsite(temp);
-						MessageManager.sendEmbedMessage(output, channel, false);
+						MessageManager.sendEmbedMessage(output, channel);
 						return;
 					}
 				}
 			}
 		}
-		MessageManager.sendEmbedMessage("**Unable to find lyrics**", channel, true);
+		MessageManager.sendEmbedMessage("**Unable to find lyrics**", channel);
 	}
 	
 }

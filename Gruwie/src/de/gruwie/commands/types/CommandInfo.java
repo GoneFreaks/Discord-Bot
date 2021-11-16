@@ -2,6 +2,7 @@ package de.gruwie.commands.types;
 
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.CommandDTO;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -75,7 +76,8 @@ public class CommandInfo implements ServerCommand{
 
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		System.out.println("NOT YET IMPLEMENTED");
+		MessageManager.sendEmbedMessage("**NOT YET IMPLEMENTED**", channel);
+		System.out.println(command);
 	}
 
 	@Override

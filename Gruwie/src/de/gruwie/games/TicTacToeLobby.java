@@ -27,7 +27,7 @@ public class TicTacToeLobby {
 		storage.put(guildId, this);
 		this.game = new TicTacToeGame(player1, player2);
 		
-		this.game_view = MessageManager.sendEmbedMessage(game.toString(), guildId, false);
+		this.game_view = MessageManager.sendEmbedMessage(guildId, game.toString());
 		addReactions();
 	}
 	

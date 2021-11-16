@@ -20,9 +20,9 @@ public class SetCommand extends CommandInfo {
 		
 		if(member.hasPermission(Permission.MANAGE_CHANNEL)) {
 			ChannelManager.putChannel(member.getGuild().getIdLong(), channel.getIdLong());
-			MessageManager.sendEmbedMessage("**OUTPUT-CHANNEL HAS BEEN SET**" + (ConfigManager.getBoolean("database")? "" : " TEMPORARILY"), channel, true);
+			MessageManager.sendEmbedMessage("**OUTPUT-CHANNEL HAS BEEN SET**" + (ConfigManager.getBoolean("database")? "" : " TEMPORARILY"), channel);
 		}
-		else MessageManager.sendEmbedMessage("**YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND**", channel, true);
+		else MessageManager.sendEmbedMessage("**YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND**", channel);
 	}
 	
 }

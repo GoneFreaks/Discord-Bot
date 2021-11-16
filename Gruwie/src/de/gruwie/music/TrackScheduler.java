@@ -65,7 +65,7 @@ public class TrackScheduler extends AudioEventAdapter {
 				builder.setImage("attachment://thumbnail.png");
 				
 				Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
-				Message queue_view = MessageManager.sendEmbedMessage(queue.toString(), guild_id, false);
+				Message queue_view = MessageManager.sendEmbedMessage(guild_id, queue.toString());
 				
 				if(ConfigManager.getBoolean("progressbar") && track.getDuration() > 30 * 1000) {
 					view = new ViewDTO(track_view, queue_view, new ProgressBar(queue_view, track));
@@ -98,6 +98,7 @@ public class TrackScheduler extends AudioEventAdapter {
 			if(track.equals(last_failed)) {
 				queue.removeTrack(track);
 				last_failed = null;
+				MessageManager.sendEmbedMessage("**UNABLE TO PLAY:** " + track.getInfo().title, guild_id);
 			}
 			else {
 				player.playTrack(track.makeClone());
