@@ -1,6 +1,6 @@
-# Gruwie the successor of Groovy
+# Gruwie the "successor" of Groovy
 
-## Maybe some day this will be the private "successor" of groovy
+## This Bot is currently WIP and is just a fun-project and therefore a possibility to try and use JDA/Git
 
 Start the bot by typing ***java -jar Gruwie.jar*** into your console.
 
