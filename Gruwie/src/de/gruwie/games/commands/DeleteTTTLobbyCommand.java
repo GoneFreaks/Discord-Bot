@@ -1,6 +1,6 @@
 package de.gruwie.games.commands;
 
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.games.TicTacToeLobby;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.Permission;
@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class DeleteTTTLobbyCommand extends CommandInfo {
+public class DeleteTTTLobbyCommand extends ServerCommand {
 	
 	public DeleteTTTLobbyCommand() {
 		super(false, true, DeleteTTTLobbyCommand.class, null, "Delete TTT-Lobby", "Delete the TicTacToe-Lobby for this server.\nPermission *Administrator* needed");

@@ -2,7 +2,6 @@ package de.gruwie.commands;
 
 import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.commands.types.CommandInfo;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.MessageManager;
@@ -10,7 +9,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class HelpCommand extends CommandInfo {
+public class HelpCommand extends ServerCommand {
 	
 	public HelpCommand() {
 		super(false, true, HelpCommand.class, null, "Help/Manual-Pages", "A collection of all commands available\nAlso the command to get help for other commands");

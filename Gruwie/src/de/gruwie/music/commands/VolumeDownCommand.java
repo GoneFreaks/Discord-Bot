@@ -2,14 +2,14 @@ package de.gruwie.music.commands;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class VolumeDownCommand extends CommandInfo {
+public class VolumeDownCommand extends ServerCommand {
 
 	public VolumeDownCommand() {
 		super(false, true, VolumeDownCommand.class, "🔉", "Decrease player-volume", "Decrease player-volume by 25 per step (min. 25)");

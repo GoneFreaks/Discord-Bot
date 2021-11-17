@@ -1,6 +1,6 @@
 package de.gruwie.commands;
 
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.MessageManager;
@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class SetCommand extends CommandInfo {
+public class SetCommand extends ServerCommand {
 	
 	public SetCommand() {
 		super(false, false, SetCommand.class, null, "Set Output-Channel" ,"Choose which channel Gruwie should use as the output-channel\nGruwie will react to messages regardless of the channel they were sent in");

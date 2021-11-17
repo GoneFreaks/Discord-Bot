@@ -1,6 +1,6 @@
 package de.gruwie.music.commands;
 
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.helper.ExportPlaylistCommand;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.Permission;
@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ExportGuildPlaylistCommand extends CommandInfo {
+public class ExportGuildPlaylistCommand extends ServerCommand {
 
 	public ExportGuildPlaylistCommand() {
 		super(true, true, ExportGuildPlaylistCommand.class, null, "Save queue as Guild-Playlist", "Save the current music-queue as a server-specific playlist with the provided name (no spaces are allowed)\nOnly Admins of the server can use this command");

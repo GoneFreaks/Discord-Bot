@@ -2,7 +2,7 @@ package de.gruwie.music.commands;
 
 import java.util.List;
 
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu.Builder;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
-public class GetFilterCommand extends CommandInfo {
+public class GetFilterCommand extends ServerCommand {
 
 	public GetFilterCommand() {
 		super(true, true, GetFilterCommand.class, null , "Get all filters", "Get and load a filter, which can be applied to the music-equalizer.\nMore filters will be added in the future");

@@ -3,7 +3,7 @@ package de.gruwie.music.commands;
 import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.helper.RemoveTrackHelper;
@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class RemoveTrackCommand extends CommandInfo {
+public class RemoveTrackCommand extends ServerCommand {
 	
 	public RemoveTrackCommand() {
 		super(false, true, RemoveTrackCommand.class, null, "Remove track from queue", "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query");

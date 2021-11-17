@@ -1,7 +1,7 @@
 package de.gruwie.music.commands;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.util.ConfigManager;
@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class LyricsCommand extends CommandInfo {
+public class LyricsCommand extends ServerCommand {
 	
 	public LyricsCommand() {
 		super(false, true, LyricsCommand.class, null, "Get Lyrics for tracks", "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track");

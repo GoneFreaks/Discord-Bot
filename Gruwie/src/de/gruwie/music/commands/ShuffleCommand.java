@@ -1,14 +1,14 @@
 package de.gruwie.music.commands;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ShuffleCommand extends CommandInfo {
+public class ShuffleCommand extends ServerCommand {
 	
 	public ShuffleCommand() {
 		super(false, false, ShuffleCommand.class, ":twisted_rightwards_arrows:", "Shuffle queue", "Shuffle the complete music-queue");

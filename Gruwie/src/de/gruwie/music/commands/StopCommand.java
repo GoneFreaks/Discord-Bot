@@ -2,7 +2,7 @@ package de.gruwie.music.commands;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
-import de.gruwie.commands.types.CommandInfo;
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.helper.CheckVoiceState;
@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
-public class StopCommand extends CommandInfo {
+public class StopCommand extends ServerCommand {
 	
 	public StopCommand() {
 		super(false, true, StopCommand.class, ":stop_button:", "Stop playing", "Gruwie will do the following things: *Stop playing music, Clearing the music-queue, leaving the voice-channel*\nIf noone except Gruwie is connected to a voice-channel this command will be executed automatically");
