@@ -41,7 +41,7 @@ public class Gruwie_Startup {
 		Formatter.printBorderline("=");
 		
 		start_time = System.currentTimeMillis();
-		if(ConfigManager.startup()) {																
+		if(ConfigManager.startup() && args.length == 1) {																
 			if(ConfigManager.getBoolean("dbmanagement")) DatabaseManagement.boot();
 			else {
 				try {
@@ -53,7 +53,7 @@ public class Gruwie_Startup {
 						}
 					}
 					ChannelManager.startup();
-					new Gruwie_Startup().startup(ConfigManager.getString("token"));
+					new Gruwie_Startup().startup(args[0]);
 					
 				} catch (Exception e) {
 					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));
