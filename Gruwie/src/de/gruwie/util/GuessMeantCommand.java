@@ -92,7 +92,8 @@ public class GuessMeantCommand {
 		
 		for (int i = 0; i < input.length(); i++) {
 			char temp = input.charAt(i);
-			characters[temp - 'a']++;
+			int pos = temp - 'a';
+			if(pos >= 0 && pos < characters.length) characters[pos]++;
 		}
 		return characters;
 	}

@@ -119,7 +119,6 @@ public class Queue {
 	}
 	
 	private static final int SIZE = 10;
-	
 	@Override
 	public String toString() {
 		
