@@ -111,7 +111,7 @@ public class CommandManager {
 	
 	private void diffrentPackages(String path1, String path2, String package_name) throws Exception {
 		File file = new File(path1 + path2 + package_name.replace(".", "\\"));
-		System.out.println(file.getAbsolutePath());
+		if(ConfigManager.getBoolean("log")) System.out.println(file.getAbsolutePath());
 		File[] files = file.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			if(!files[i].isFile()) continue;

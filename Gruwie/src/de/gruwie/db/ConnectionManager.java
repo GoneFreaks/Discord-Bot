@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.List;
 
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.GruwieIO;
 
@@ -23,7 +24,7 @@ public class ConnectionManager {
 		boolean newFile = false;
 			
 		File file = new File("data.db");
-		System.out.println(file.getAbsolutePath());
+		if(ConfigManager.getBoolean("log")) System.out.println(file.getAbsolutePath());
 		if(!file.exists()) {
 			System.out.println("No Database found --> creating an empty default-Database");
 			Formatter.printBorderline("-");

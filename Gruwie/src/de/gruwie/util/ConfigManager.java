@@ -13,7 +13,6 @@ public class ConfigManager {
 		config = new Properties();
 		try {
 			File temp = new File("config.properties");
-			System.out.println(temp.getAbsolutePath());
 			InputStream in = new FileInputStream(temp);
 			config.load(in);
 			in.close();
