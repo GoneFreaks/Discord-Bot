@@ -44,7 +44,7 @@ public class PlayCommand extends ServerCommand {
 			if(!url.startsWith("http")) {
 				url = "ytsearch:" + url;
 			}
-			apm.loadItem(url, new AudioLoadResult(controller, url));
+			apm.loadItem(url, new AudioLoadResult(controller, url, member.getIdLong()));
 		}
 		else MessageManager.sendEmbedMessage("**YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY**", channel);
 	}

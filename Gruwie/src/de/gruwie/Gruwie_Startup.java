@@ -17,7 +17,6 @@ import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.ErrorClass;
-import de.gruwie.util.Filter;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -37,8 +36,6 @@ public class Gruwie_Startup {
 	private PlayerManager playerManager;
 
 	public static void main(String[] args) {
-		
-		Filter.filter();
 		
 		System.out.println("Running OS:\t\t" + System.getProperty("os.name") + "\nRunning Java-Version:\t" + System.getProperty("java.version") + "\nAvailable Processors:\t" + Runtime.getRuntime().availableProcessors());
 		Formatter.printBorderline("=");

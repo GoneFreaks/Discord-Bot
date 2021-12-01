@@ -22,6 +22,7 @@ public class ViewDTO {
 		
 		if(current_progress_bar != null) {
 			this.current_progress_bar_thread = new Thread(current_progress_bar);
+			this.current_progress_bar_thread.setDaemon(true);
 			this.current_progress_bar_thread.start();
 		}
 		else current_progress_bar_thread = null;

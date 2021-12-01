@@ -8,6 +8,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
+import de.gruwie.db.da.PlayedDA;
+import de.gruwie.db.da.TrackDA;
 import de.gruwie.music.helper.FilterManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
@@ -61,7 +63,7 @@ public class Queue {
 		this.view = view;
 	}
 
-	public void addTrackToQueue(AudioTrack track) {
+	public void addTrackToQueue(long userId, AudioTrack track) {
 
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
@@ -69,6 +71,10 @@ public class Queue {
 			if(i.getInfo().title.equals(track.getInfo().title)) return;
 		}
 		
+		if(ConfigManager.getBoolean("database")) {
+			TrackDA.writeTrack(track.getInfo().uri);
+			PlayedDA.incrementCount(userId, track.getInfo().uri);
+		}
 		this.queuelist.add(track);
 		
 		if(view != null) editQueueMessage();
@@ -118,7 +124,7 @@ public class Queue {
 		if(view != null) view.editCurrentQueueView(this.toString());
 	}
 	
-	private static final int SIZE = 10;
+	private static final int SIZE = 6;
 	@Override
 	public String toString() {
 		

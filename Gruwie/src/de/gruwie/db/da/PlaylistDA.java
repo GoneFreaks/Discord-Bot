@@ -152,4 +152,23 @@ public class PlaylistDA {
 		}
 	}
 	
+	public static List<String> getRecommendedTracks (long userId) throws Exception {
+		List<String> urls = new ArrayList<>();
+		
+		String part1 = "SELECT url FROM track WHERE iD IN ";
+		String part2 = "(SELECT DISTINCT trackId FROM played WHERE userId IN ";
+		String part3 = "(SELECT userId FROM ";
+		String part4 = "(SELECT userId, COUNT(*) AS COUNT FROM played WHERE trackId IN ";
+		String part5 = "(SELECT trackId FROM played WHERE userId = ? ORDER BY COUNT DESC LIMIT 5) GROUP BY userId) WHERE COUNT > 3) ORDER BY RANDOM() LIMIT ?)";
+		
+		try(PreparedStatement pstmt = ConnectionManager.getConnection().prepareStatement(part1 + part2 + part3 + part4 + part5)){
+			pstmt.setLong(1, userId);
+			pstmt.setInt(2, ConfigManager.getInteger("random_count"));
+			try(ResultSet rs = pstmt.executeQuery()) {
+				while(rs.next()) urls.add(rs.getString(1));
+				return urls;
+			}
+		} 
+	}
+	
 }

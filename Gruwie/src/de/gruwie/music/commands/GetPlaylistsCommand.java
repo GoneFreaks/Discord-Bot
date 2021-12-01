@@ -37,6 +37,7 @@ public class GetPlaylistsCommand extends ServerCommand {
 		
 		Builder builder = SelectionMenu.create("gpsm");
 		builder.addOption("Random", "rand", "Load some random tracks");
+		builder.addOption("Recommended", "recl", "Load random tracks which you may like");
 		
 		List<String> guild = playlists.getGuild_playlists();
 		if(guild != null) {

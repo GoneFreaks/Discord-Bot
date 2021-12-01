@@ -147,6 +147,10 @@ public class InteractionListener extends ListenerAdapter {
 					PlaylistManager.randPlaylist(event.getMember(), event.getTextChannel());
 					break;
 				}
+				case "recl": {
+					PlaylistManager.getRecommendedPlaylist(event.getMember(), event.getTextChannel());
+					break;
+				}
 			}
 		}
 	}

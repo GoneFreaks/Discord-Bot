@@ -82,7 +82,6 @@ public class TrackScheduler extends AudioEventAdapter {
 		
 	}
 
-	private AudioTrack last_failed = null;
 	@Override
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
 		
@@ -93,19 +92,6 @@ public class TrackScheduler extends AudioEventAdapter {
 		Queue queue = controller.getQueue();
 		
 		view.deleteView();
-		
-		if(endReason.equals(AudioTrackEndReason.LOAD_FAILED)) {
-			if(track.equals(last_failed)) {
-				queue.removeTrack(track);
-				last_failed = null;
-				MessageManager.sendEmbedMessage("**UNABLE TO PLAY:** " + track.getInfo().title, guild_id);
-			}
-			else {
-				player.playTrack(track.makeClone());
-				last_failed = track;
-			}
-		}
-		last_failed = null;
 		
 		VoiceChannel vc = controller.getVoiceChannel();
 		if(ConfigManager.getBoolean("afk") && vc.getMembers().size() == 1) {
