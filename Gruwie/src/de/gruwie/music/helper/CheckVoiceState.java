@@ -20,12 +20,12 @@ public class CheckVoiceState {
 				return controller;
 			}
 			else {
-				MessageManager.sendEmbedMessage("**YOU HAVE TO BE IN A VOICE-CHANNEL**", ChannelManager.getChannel(channel));
+				MessageManager.sendEmbedMessage(true, "**YOU HAVE TO BE IN A VOICE-CHANNEL**", ChannelManager.getChannel(channel), null);
 				return null;
 			}
 		}
 		else {
-			MessageManager.sendEmbedMessage("**YOU HAVE TO BE IN A VOICE-CHANNEL**", ChannelManager.getChannel(channel));
+			MessageManager.sendEmbedMessage(true, "**YOU HAVE TO BE IN A VOICE-CHANNEL**", ChannelManager.getChannel(channel), null);
 			return null;
 		}
 	}

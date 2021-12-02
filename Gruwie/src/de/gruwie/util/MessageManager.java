@@ -11,34 +11,28 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class MessageManager {
 	
-	public static Message sendEmbedMessage(String message, long guildId) {
-		
+	public static Message sendEmbedMessage(boolean delete, String message, long guildId, String footer) {
 		TextChannel channel = ChannelManager.getChannel(guildId);
 		try {
-			
-			if(ConfigManager.getBoolean("delete?")) {
-				Message output = channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
+			if(ConfigManager.getBoolean("delete?") && delete) {
+				Message output = channel.sendMessageEmbeds(buildEmbedMessage(message, footer).build()).complete();
 				output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, ErrorClass.getErrorHandler(), null);
 				return output;
 			}
-			else return channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
+			else return channel.sendMessageEmbeds(buildEmbedMessage(message, footer).build()).complete();
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM", channel.getGuild().getId()));
 			return null;
 		}
 	}
 	
-	public static Message sendEmbedMessage(long guildId, String message) {
-		TextChannel channel = ChannelManager.getChannel(guildId);
-		return channel.sendMessageEmbeds(buildEmbedMessage(message).build()).complete();
-	}
+	public static Message sendEmbedMessage(boolean delete, String message, TextChannel channel, String footer) {return sendEmbedMessage(delete, message, channel.getGuild().getIdLong(), footer);}
 	
-	public static Message sendEmbedMessage(String message, TextChannel channel) {return sendEmbedMessage(message, channel.getGuild().getIdLong());}
-	
-	public static EmbedBuilder buildEmbedMessage (String message) {
+	public static EmbedBuilder buildEmbedMessage (String message, String footer) {
 		
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setDescription(message);
+		if(footer != null) builder.setFooter(footer);
 		String color = ConfigManager.getString("embed-color");
 		try {
 			builder.setColor(Integer.decode(color));
@@ -51,13 +45,13 @@ public class MessageManager {
 	public static void editMessage (Message m, String message) {
 		
 		try {
-			m.editMessageEmbeds(buildEmbedMessage(message).build()).queue(null, ErrorClass.getErrorHandler());
+			m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, ErrorClass.getErrorHandler());
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM", m.getGuild().getId()));
 		}
 	}
 	
 	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message) {
-		channel.sendMessageEmbeds(buildEmbedMessage(message).build()).queue(null, ErrorClass.getErrorHandler());
+		channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, ErrorClass.getErrorHandler());
 	}
 }

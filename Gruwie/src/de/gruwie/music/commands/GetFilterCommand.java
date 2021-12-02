@@ -35,7 +35,7 @@ public class GetFilterCommand extends ServerCommand {
 			}
 			
 			TextChannel output_channel = ChannelManager.getChannel(channel);
-			MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A FILTER***").build();
+			MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A FILTER***", null).build();
 			MessageAction action = output_channel.sendMessageEmbeds(message_embed);
 			action.setActionRow(builder.build()).queue(null, ErrorClass.getErrorHandler());
 		}

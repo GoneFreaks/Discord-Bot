@@ -25,15 +25,15 @@ public class ExportPlaylistCommand {
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();
 				if(tracks.size() > 0) {
 					if(PlaylistManager.exportPlaylist(tracks, args[1], isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser)) {
-						MessageManager.sendEmbedMessage("**A PLAYLIST NAMED " + args[1] + " HAS BEEN CREATED**", channel);
+						MessageManager.sendEmbedMessage(true, "**A PLAYLIST NAMED " + args[1] + " HAS BEEN CREATED**", channel, null);
 					}
-					else MessageManager.sendEmbedMessage("**SOMETHING WENT WRONG WHILE SAVING THE PLAYLIST\n--> TRY A DIFFRENT NAME**", channel);
+					else MessageManager.sendEmbedMessage(true, "**SOMETHING WENT WRONG WHILE SAVING THE PLAYLIST\n--> TRY A DIFFRENT NAME**", channel, null);
 				}
-				else MessageManager.sendEmbedMessage("**THE QUEUE IS EMPTY, NOTHING TO SAVE**", channel);
+				else MessageManager.sendEmbedMessage(true, "**THE QUEUE IS EMPTY, NOTHING TO SAVE**", channel, null);
 			}
-			else MessageManager.sendEmbedMessage("**YOU HAVE TO PROVIDE A NAME FOR YOU'RE PLAYLIST**", channel);
+			else MessageManager.sendEmbedMessage(true, "**YOU HAVE TO PROVIDE A NAME FOR YOU'RE PLAYLIST**", channel, null);
 		}
-		else MessageManager.sendEmbedMessage("**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel);
+		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
 	}
 	
 }

@@ -43,7 +43,7 @@ public class TrackScheduler extends AudioEventAdapter {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
 		Queue queue = controller.getQueue();
 		
-		EmbedBuilder builder = MessageManager.buildEmbedMessage("");
+		EmbedBuilder builder = MessageManager.buildEmbedMessage("", null);
 		AudioTrackInfo info = track.getInfo();
 		builder.setDescription("Playing: " + info.title);
 		
@@ -65,7 +65,7 @@ public class TrackScheduler extends AudioEventAdapter {
 				builder.setImage("attachment://thumbnail.png");
 				
 				Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
-				Message queue_view = MessageManager.sendEmbedMessage(guild_id, queue.toString());
+				Message queue_view = MessageManager.sendEmbedMessage(false, queue.toString(), guild_id, null);
 				
 				if(ConfigManager.getBoolean("progressbar") && track.getDuration() > 30 * 1000) {
 					view = new ViewDTO(track_view, queue_view, new ProgressBar(queue_view, track));

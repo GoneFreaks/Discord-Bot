@@ -21,7 +21,7 @@ public class ShowQueueCommand extends ServerCommand {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 		Queue queue = controller.getQueue();
 		String info = queue.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs";
-		MessageManager.sendEmbedMessage(channel.getGuild().getIdLong(), info + "\n\n" + queue.toStringHelper(0, queue.size(), -1));
+		MessageManager.sendEmbedMessage(false, info + "\n\n" + queue.toStringHelper(0, queue.size(), -1), channel, null);
 	}
 
 }

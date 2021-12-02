@@ -1,7 +1,7 @@
 package de.gruwie.music;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -27,7 +27,7 @@ public class Queue {
 
 	public Queue(MusicController controller) {
 		this.audioPlayer = controller.getPlayer();
-		this.queuelist = new ArrayList<>();
+		this.queuelist = new LinkedList<>();
 		this.repeat = ConfigManager.getBoolean("repeat");
 		this.filter = controller.getFilterManager();
 	}
@@ -101,7 +101,7 @@ public class Queue {
 	}
 	
 	public void clearQueue() {
-		this.queuelist = new ArrayList<>();
+		this.queuelist = new LinkedList<>();
 		editQueueMessage();
 	}
 	
@@ -124,7 +124,7 @@ public class Queue {
 		if(view != null) view.editCurrentQueueView(this.toString());
 	}
 	
-	private static final int SIZE = 6;
+	private static final int SIZE = 5;
 	@Override
 	public String toString() {
 		
@@ -136,6 +136,7 @@ public class Queue {
 		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
 		
 		int current_track_index = queuelist.indexOf(current_track);
+		if(current_track_index < 0) current_track_index = 0;
 		
 		if(queuelist.size() <= SIZE) b.append(toStringHelper(0, queuelist.size(), current_track_index));
 		else {
@@ -157,7 +158,7 @@ public class Queue {
 	public String toStringHelper(int start, int end, int current_track_index) {
 		StringBuilder b = new StringBuilder("");
 		for (int i = start; i < end; i++) {
-			if(i == current_track_index) b.append("***:arrow_right:*** ");
+			if(i == current_track_index && repeat) b.append("***:arrow_right:*** ");
 			else b.append(":black_small_square: ");
 			AudioTrackInfo info = queuelist.get(i).getInfo();
 			String title = info.title;

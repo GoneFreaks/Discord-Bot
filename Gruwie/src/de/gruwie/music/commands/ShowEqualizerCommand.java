@@ -18,6 +18,6 @@ public class ShowEqualizerCommand extends ServerCommand {
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller == null) return;
-		MessageManager.sendEmbedMessage(controller.getEqualizer().toString(), channel);
+		MessageManager.sendEmbedMessage(true, controller.getEqualizer().toString(), channel, null);
 	}
 }

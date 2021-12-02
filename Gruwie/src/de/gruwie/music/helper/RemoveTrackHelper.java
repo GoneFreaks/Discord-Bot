@@ -29,7 +29,7 @@ public class RemoveTrackHelper {
 		c.append("\n\n**Which track should be deleted?**");
 		
 		TextChannel output_channel = ChannelManager.getChannel(channel);
-		MessageEmbed message_embed = MessageManager.buildEmbedMessage(c.toString()).build();
+		MessageEmbed message_embed = MessageManager.buildEmbedMessage(c.toString(), null).build();
 		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
 		
 		Builder builder = SelectionMenu.create("reth");

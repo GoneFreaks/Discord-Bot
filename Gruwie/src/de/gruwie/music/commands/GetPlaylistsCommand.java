@@ -30,7 +30,7 @@ public class GetPlaylistsCommand extends ServerCommand {
 			PlaylistsDTO playlists = PlaylistManager.getPlaylists(channel.getGuild().getIdLong(), member.getIdLong());
 			showPlaylists(playlists, channel);
 		}
-		else MessageManager.sendEmbedMessage("**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel);
+		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
 	}
 	
 	private static void showPlaylists(PlaylistsDTO playlists, TextChannel channel) {
@@ -54,7 +54,7 @@ public class GetPlaylistsCommand extends ServerCommand {
 		}
 		
 		TextChannel output_channel = ChannelManager.getChannel(channel);
-		MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A PLAYLIST***\n\n*USER-Playlist*: Only visible to you, can be used globally\n*GUILD-Playlist*: Visible only on the server they were created on").build();
+		MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A PLAYLIST***\n\n*USER-Playlist*: Only visible to you, can be used globally\n*GUILD-Playlist*: Visible only on the server they were created on", null).build();
 		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
 		action.setActionRow(builder.build()).queue(null, ErrorClass.getErrorHandler());
 	}

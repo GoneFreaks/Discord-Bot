@@ -46,6 +46,6 @@ public class PlayCommand extends ServerCommand {
 			}
 			apm.loadItem(url, new AudioLoadResult(controller, url, member.getIdLong()));
 		}
-		else MessageManager.sendEmbedMessage("**YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY**", channel);
+		else MessageManager.sendEmbedMessage(true, "**YOU HAVE TO ADD EITHER A LINK OR A SEARCH-QUERY**", channel, null);
 	}
 }

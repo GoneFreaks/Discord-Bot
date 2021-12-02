@@ -20,9 +20,9 @@ public class ClearCommand extends ServerCommand {
 			String[] args = message.getContentRaw().split(" ");
 			if(args.length == 2) deleteMessages(Integer.parseInt(args[1]), channel, message);
 			if(args.length == 1) deleteMessages(1, channel, message);
-			if(args.length != 1 && args.length != 2) MessageManager.sendEmbedMessage("**WRONG PATTERN, YOU HAVE TO PROVIDE EITHER ONE ARGUMENT OR NONE**", channel);
+			if(args.length != 1 && args.length != 2) MessageManager.sendEmbedMessage(true, "**WRONG PATTERN, YOU HAVE TO PROVIDE EITHER ONE ARGUMENT OR NONE**", channel, null);
 		}
-		else MessageManager.sendEmbedMessage("**YOU DONT HAVE THE PERMISSION TO USE THIS COMMAND**", channel);
+		else MessageManager.sendEmbedMessage(true, "**YOU DONT HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
 	}
 	
 	private void deleteMessages(int delete, TextChannel channel, Message message) {

@@ -28,13 +28,13 @@ public class CreateTTTLobbyCommand extends ServerCommand {
 					if(!TicTacToeLobby.lobbyExists(channel.getGuild().getIdLong())) {
 						new TicTacToeLobby(player1, player2, channel.getGuild().getIdLong());
 					}
-					else MessageManager.sendEmbedMessage("THERE'S ALREADY A RUNNING LOBBY", channel);
+					else MessageManager.sendEmbedMessage(true, "THERE'S ALREADY A RUNNING LOBBY", channel, null);
 				}
-				else MessageManager.sendEmbedMessage("YOU CAN'T PLAY AGAINST YOURSELF", channel);
+				else MessageManager.sendEmbedMessage(true, "YOU CAN'T PLAY AGAINST YOURSELF", channel, null);
 			}
-			else MessageManager.sendEmbedMessage("YOU HAVE TO MENTION ANOTHER PLAYER (@other_user)", channel);
+			else MessageManager.sendEmbedMessage(true, "YOU HAVE TO MENTION ANOTHER PLAYER (@other_user)", channel, null);
 		}
-		else MessageManager.sendEmbedMessage("USE THE COMMAND LIKE THIS -cmd @other_user", channel);
+		else MessageManager.sendEmbedMessage(true, "USE THE COMMAND LIKE THIS -cmd @other_user", channel, null);
 	}
 
 }
