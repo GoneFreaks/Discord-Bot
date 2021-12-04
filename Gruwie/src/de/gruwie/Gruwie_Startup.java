@@ -39,7 +39,6 @@ public class Gruwie_Startup {
 	private PlayerManager playerManager;
 
 	public static void main(String[] args) {
-		
 		Filter.filter();
 		
 		System.out.println("Running OS:\t\t" + System.getProperty("os.name") + "\nRunning Java-Version:\t" + System.getProperty("java.version") + "\nAvailable Processors:\t" + Runtime.getRuntime().availableProcessors());
