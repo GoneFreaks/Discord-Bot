@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class EarRapeCommand extends ServerCommand {
 
 	public EarRapeCommand() {
-		super(false, true, EarRapeCommand.class, null, "No comment", "Push the player for a short period of time to its limits");
+		super(false, true, EarRapeCommand.class, "No comment", "Push the player for a short period of time to its limits");
 	}
 	
 	@Override

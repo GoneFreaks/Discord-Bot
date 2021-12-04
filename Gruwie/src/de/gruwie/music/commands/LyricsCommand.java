@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class LyricsCommand extends ServerCommand {
 	
 	public LyricsCommand() {
-		super(false, true, LyricsCommand.class, null, "Get Lyrics for tracks", "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track");
+		super(false, true, LyricsCommand.class, "Get Lyrics for tracks", "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track");
 	}
 	
 	@Override

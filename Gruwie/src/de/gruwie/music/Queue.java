@@ -124,11 +124,11 @@ public class Queue {
 		if(view != null) view.editCurrentQueueView(this.toString());
 	}
 	
-	private static final int SIZE = 5;
 	@Override
 	public String toString() {
 		
 		StringBuilder b = new StringBuilder("");
+		int size = ConfigManager.getInteger("queue_show");
 		
 		b.append("__**Queue: **__\n");
 		b.append("Current Filter: *" + filter.getCurrentFilter() + "*\n");
@@ -138,11 +138,11 @@ public class Queue {
 		int current_track_index = queuelist.indexOf(current_track);
 		if(current_track_index < 0) current_track_index = 0;
 		
-		if(queuelist.size() <= SIZE) b.append(toStringHelper(0, queuelist.size(), current_track_index));
+		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size(), current_track_index));
 		else {
-			int end = (int) Math.min(queuelist.size(), current_track_index + SIZE);
+			int end = (int) Math.min(queuelist.size(), current_track_index + size);
 			int start = current_track_index < 0? 0 : current_track_index;
-			if(end - current_track_index < SIZE) start -= SIZE - (end - current_track_index);
+			if(end - current_track_index < size) start -= size - (end - current_track_index);
 			
 			if(start != 0) b.append("**:arrow_up: " + start + " Track" + (start > 1? "s" : "") + "**\n\n");
 			b.append(toStringHelper(start, end, current_track_index));
@@ -154,15 +154,15 @@ public class Queue {
 		return b.toString();
 	}
 	
-	private static final int TITLE_SIZE = 55;
 	public String toStringHelper(int start, int end, int current_track_index) {
 		StringBuilder b = new StringBuilder("");
+		int title_size = ConfigManager.getInteger("queue_character_count");
 		for (int i = start; i < end; i++) {
 			if(i == current_track_index && repeat) b.append("***:arrow_right:*** ");
 			else b.append(":black_small_square: ");
 			AudioTrackInfo info = queuelist.get(i).getInfo();
 			String title = info.title;
-			if(title.length() > TITLE_SIZE) b.append(title.substring(0, TITLE_SIZE) + "...");
+			if(title.length() > title_size) b.append(title.substring(0, title_size) + "...");
 			else b.append(title + "");
 			b.append(" **" + Formatter.formatTime(info.length) + "**");
 			b.append("\n");

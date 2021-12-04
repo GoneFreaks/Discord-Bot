@@ -1,5 +1,10 @@
 package de.gruwie.util.dto;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.helper.ProgressBar;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
@@ -7,7 +12,7 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class ViewDTO {
 
-	private final static String[] EMOTES = {"⏹️", "⏯️", "⏩", "⏭️", "🔁", "🔀", "🆕", "🔊", "🔉"};
+	private static List<Symbol> emotes = new ArrayList<>();
 	
 	private Message current_track_view;
 	private Message current_queue_view;
@@ -27,8 +32,8 @@ public class ViewDTO {
 		}
 		else current_progress_bar_thread = null;
 		
-		for (int i = 0; i < EMOTES.length; i++) {
-			current_queue_view.addReaction(EMOTES[i]).queue(null, ErrorClass.getErrorHandler());
+		for (int i = 0; i < emotes.size(); i++) {
+			current_queue_view.addReaction(emotes.get(i).getSymbol()).queue(null, ErrorClass.getErrorHandler());
 		}
 	}
 	
@@ -47,5 +52,12 @@ public class ViewDTO {
 			if(current_progress_bar_thread == null) MessageManager.editMessage(current_queue_view, new_message);
 			else current_progress_bar.editMessage();
 		}
+	}
+	
+	public static void init(List<ServerCommand> commands) {
+		for (ServerCommand i : commands) {
+			if(i.getSymbol() != null) emotes.add(new Symbol(i.getSymbol(), i.getPosition()));
+		}
+		Collections.sort(emotes);
 	}
 }

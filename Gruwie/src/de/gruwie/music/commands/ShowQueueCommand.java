@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShowQueueCommand extends ServerCommand {
 
 	public ShowQueueCommand() {
-		super(true, true, ShowQueueCommand.class, null, "Show complete queue", "Display the compelte queue.\nDepending on the size of the queue, multiple messages will be send.\nThese queues are not interactive, meaning you won't see live changes while adding a track.");
+		super(true, true, ShowQueueCommand.class, "Show complete queue", "Display the compelte queue.\nDepending on the size of the queue, multiple messages will be send.\nThese queues are not interactive, meaning you won't see live changes while adding a track.");
 	}
 	
 	@Override

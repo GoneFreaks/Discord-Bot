@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class VolumeUpCommand extends ServerCommand {
 
 	public VolumeUpCommand() {
-		super(false, true, VolumeUpCommand.class, "🔊", "Increase player-volume", "Increase player-volume by 25 per step (max. 100)");
+		super(false, true, VolumeUpCommand.class, "🔊", 8, "Increase player-volume", "Increase player-volume by 25 per step (max. 100)");
 	}
 	
 	@Override

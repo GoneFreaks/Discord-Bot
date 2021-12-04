@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class InteractionListener extends ListenerAdapter {
-
+	
 	private EmoteManager eMan;
 	
 	@Override
@@ -33,15 +33,14 @@ public class InteractionListener extends ListenerAdapter {
 	
 	public void onMessageReactionUpdate(GenericMessageReactionEvent event) {
 		
-		if(eMan == null) eMan = new EmoteManager();
+		if(eMan == null) eMan = Gruwie_Startup.INSTANCE.getCmdMan().getEmoteManager();
 		
 		if(event.getMember() == null || event.getMember().getUser().isBot()) return;
 		
 		String emote_name = event.getReactionEmote().getName();
 		
 		try {
-			if(eMan.performEmoteCommand(event)) {
-			}
+			eMan.performEmoteCommand(event);
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, emote_name, event.getMember().getEffectiveName(), event.getGuild().getId()));
 		}

@@ -1,90 +1,59 @@
 package de.gruwie;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.games.TicTacToeLobby;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 
 public class EmoteManager {
 
-	private ConcurrentHashMap<String, EmoteType> emote_type;
-	private ConcurrentHashMap<String, String> emote_to_cmd;
+	private ConcurrentHashMap<String, ServerCommand> cmd_storage;
+	private List<String> ttt_storage;
 	
-	public EmoteManager() {
-		this.emote_type = new ConcurrentHashMap<>();
-		this.emote_to_cmd = new ConcurrentHashMap<>();
+	public EmoteManager(List<ServerCommand> commands) {
+		this.cmd_storage = new ConcurrentHashMap<>();
+		this.ttt_storage = new ArrayList<>();
 		
-		this.emote_type.put("1️⃣", EmoteType.TICTACTOE);
-		this.emote_type.put("2️⃣", EmoteType.TICTACTOE);
-		this.emote_type.put("3️⃣", EmoteType.TICTACTOE);
-		this.emote_type.put("4️⃣", EmoteType.TICTACTOE);
-		this.emote_type.put("5️⃣", EmoteType.TICTACTOE);
-		this.emote_type.put("6️⃣", EmoteType.TICTACTOE);
-		this.emote_type.put("7️⃣", EmoteType.TICTACTOE);
-		this.emote_type.put("8️⃣", EmoteType.TICTACTOE);
-		this.emote_type.put("9️⃣", EmoteType.TICTACTOE);
+		this.ttt_storage.add("1️⃣");
+		this.ttt_storage.add("2️⃣");
+		this.ttt_storage.add("3️⃣");
+		this.ttt_storage.add("4️⃣");
+		this.ttt_storage.add("5️⃣");
+		this.ttt_storage.add("6️⃣");
+		this.ttt_storage.add("7️⃣");
+		this.ttt_storage.add("8️⃣");
+		this.ttt_storage.add("9️⃣");
 		
-		
-		this.emote_type.put("⏹️", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("⏹️", "stop");
-		
-		this.emote_type.put("🔁", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("🔁", "repeat");
-		
-		this.emote_type.put("⏭️", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("⏭️", "next");
-		
-		this.emote_type.put("🆕", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("🆕", "clearqueue");
-		
-		this.emote_type.put("⏯️", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("⏯️", "resumepause");
-		
-		this.emote_type.put("⏩", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("⏩", "fastforward");
-		
-		this.emote_type.put("🔀", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("🔀", "shuffle");
-		
-		this.emote_type.put("🔉", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("🔉", "volumedown");
-		
-		this.emote_type.put("🔊", EmoteType.CMD_ALT);
-		this.emote_to_cmd.put("🔊", "volumeup");
-		
+		for (ServerCommand i : commands) {
+			if(i.getSymbol() != null) this.cmd_storage.put(i.getSymbol(), i);
+		}
 	}
 	
-	public boolean performEmoteCommand (GenericMessageReactionEvent event) throws Exception {
+	public void performEmoteCommand (GenericMessageReactionEvent event) throws Exception {
 		
 		String emoteName = event.getReactionEmote().getName();
 		
-		if(this.emote_type.containsKey(emoteName)) {
+		if(this.cmd_storage.containsKey(emoteName)) {
 			
-			switch (this.emote_type.get(emoteName)) {
+			ServerCommand scmd = cmd_storage.get(emoteName);
 			
-				case TICTACTOE: {
-					
-					long guildId = event.getGuild().getIdLong();
-					
-					if(TicTacToeLobby.lobbyExists(guildId)) {
-						TicTacToeLobby.getLobbyByGuildId(guildId).doTurn(event.getMessageIdLong(), event.getUserId(), emoteName);
-					}
-					break;
-				}
-			
-				case CMD_ALT: {
-					
-					if(emote_to_cmd.containsKey(emoteName)) {
-						
-						CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
-						cmdMan.perform(emote_to_cmd.get(emoteName), event.getMember(), event.getTextChannel(), null);
-					}
-					break;
+			if(scmd != null) scmd.performServerCommand(event.getMember(), event.getTextChannel(), null);
+			else {
+				long guildId = event.getGuild().getIdLong();
+				if(TicTacToeLobby.lobbyExists(guildId)) {
+					TicTacToeLobby.getLobbyByGuildId(guildId).doTurn(event.getMessageIdLong(), event.getUserId(), emoteName);
 				}
 			}
-			return false;
 		}
-		return true;
+		if(this.ttt_storage.contains(emoteName)) {
+			long guildId = event.getGuild().getIdLong();
+			if(TicTacToeLobby.lobbyExists(guildId)) {
+				TicTacToeLobby.getLobbyByGuildId(guildId).doTurn(event.getMessageIdLong(), event.getUserId(), emoteName);
+			}
+		}
 	}
 	
 }

@@ -10,27 +10,33 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ServerCommand implements Comparable<ServerCommand>{
 
-	private String command;
-	private String shortcut;
-	private String symbol;
-	private String short_description;
-	private String description;
-	private boolean wip;
-	private String package_name;
+	private final String command;
+	private final String shortcut;
+	private final String symbol;
+	private final int position;
+	private final String short_description;
+	private final String description;
+	private final boolean wip;
+	private final String package_name;
 	
-	public ServerCommand(boolean wip, boolean tryShortcut, Class<?> callingClass, String symbol, String short_description, String description) {
+	public ServerCommand(boolean wip, boolean tryShortcut, Class<?> callingClass, String symbol, int position, String short_description, String description) {
 		CommandDTO dto = Formatter.createNames(callingClass.getSimpleName(), tryShortcut);
 		this.wip = wip;
 		this.command = dto.getCommand();
 		this.shortcut = dto.getShortcut();
 		this.symbol = symbol;
+		this.position = position;
 		this.short_description = short_description;
 		this.description = description;
 		this.package_name = callingClass.getPackage().getName();
 	}
 	
+	public ServerCommand(boolean wip, boolean tryShortcut, Class<?> callingClass, String short_description, String description) {
+		this(wip, tryShortcut, callingClass, null, -1, short_description, description);
+	}
+	
 	public ServerCommand(Class<?> callingClass) {
-		this(true, false, callingClass, null, null, null);
+		this(true, false, callingClass, null, -1, null, null);
 	}
 
 	public String getCommand() {
@@ -43,6 +49,10 @@ public class ServerCommand implements Comparable<ServerCommand>{
 
 	public String getSymbol() {
 		return symbol;
+	}
+	
+	public int getPosition() {
+		return position;
 	}
 	
 	public String getDescription() {

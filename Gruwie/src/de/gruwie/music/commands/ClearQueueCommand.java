@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ClearQueueCommand extends ServerCommand {
 
 	public ClearQueueCommand() {
-		super(false, true, ClearQueueCommand.class, ":new:", "Clear current queue", "Clear the music-queue");
+		super(false, true, ClearQueueCommand.class, "🆕", 7, "Clear current queue", "Clear the music-queue");
 	}
 	
 	@Override

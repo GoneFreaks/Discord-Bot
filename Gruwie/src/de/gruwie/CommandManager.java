@@ -12,6 +12,7 @@ import java.util.jar.JarFile;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.dto.ViewDTO;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -20,13 +21,15 @@ public class CommandManager {
 	
 	private List<ServerCommand> commands;
 	private ConcurrentHashMap<String, ServerCommand> storage;
+	private EmoteManager emoteMan;
 	
 	public CommandManager () {
-		
 		this.commands = new ArrayList<>();
 		createServerCommands();
 		Collections.sort(commands);
 		this.storage = initializeMap();
+		this.emoteMan = new EmoteManager(commands);
+		ViewDTO.init(commands);
 	}
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
@@ -122,6 +125,18 @@ public class CommandManager {
 			if(!ConfigManager.getBoolean("wip") && scmd.isWip()) continue; 
 			commands.add(scmd);
 		}
+	}
+	
+	public List<ServerCommand> getCommandsWithSymbol() {
+		List<ServerCommand> result = new ArrayList<>();
+		for (ServerCommand i : commands) {
+			if(i.getSymbol() != null) result.add(i);
+		}
+		return result;
+	}
+	
+	public EmoteManager getEmoteManager() {
+		return emoteMan;
 	}
 	
 }

@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class VolumeDownCommand extends ServerCommand {
 
 	public VolumeDownCommand() {
-		super(false, true, VolumeDownCommand.class, "🔉", "Decrease player-volume", "Decrease player-volume by 25 per step (min. 25)");
+		super(false, true, VolumeDownCommand.class, "🔉", 9, "Decrease player-volume", "Decrease player-volume by 25 per step (min. 25)");
 	}
 
 	@Override
