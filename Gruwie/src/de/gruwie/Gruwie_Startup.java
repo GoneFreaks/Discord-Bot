@@ -27,7 +27,7 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class Gruwie_Startup {
 	
-	public static final String VERSION = "2-12-2021_11:50";
+	public static final String VERSION = "4-12-2021_18:07";
 	
 	public static Gruwie_Startup INSTANCE;
 	public static long start_time;
