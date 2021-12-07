@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShowQueueCommand extends ServerCommand {
 
 	public ShowQueueCommand() {
-		super(true, true, ShowQueueCommand.class, "Show complete queue", "Display the compelte queue.\nDepending on the size of the queue, multiple messages will be send.\nThese queues are not interactive, meaning you won't see live changes while adding a track.");
+		super(false, true, ShowQueueCommand.class, "Show complete queue", "Display the compelte queue.\nDepending on the size of the queue, multiple messages will be send.\nThese queues are not interactive, meaning you won't see live changes while adding a track.");
 	}
 	
 	@Override
@@ -21,7 +21,7 @@ public class ShowQueueCommand extends ServerCommand {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 		Queue queue = controller.getQueue();
 		String info = queue.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs";
-		MessageManager.sendEmbedMessage(false, info + "\n\n" + queue.toStringHelper(0, queue.size(), -1), channel, null);
+		MessageManager.sendEmbedMessage(false, info + "\n\n" + queue.toStringHelper(0, queue.size(), -1), channel, 6, null);
 	}
 
 }

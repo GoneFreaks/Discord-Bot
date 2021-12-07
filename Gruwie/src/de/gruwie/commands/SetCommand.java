@@ -20,9 +20,9 @@ public class SetCommand extends ServerCommand {
 		
 		if(member.hasPermission(Permission.MANAGE_CHANNEL)) {
 			ChannelManager.putChannel(member.getGuild().getIdLong(), channel.getIdLong());
-			MessageManager.sendEmbedMessage(true, "**OUTPUT-CHANNEL HAS BEEN SET**" + (ConfigManager.getBoolean("database")? "" : " **TEMPORARILY**"), channel, null);
+			MessageManager.sendEmbedMessage(true, "**OUTPUT-CHANNEL HAS BEEN SET**" + (ConfigManager.getDatabase()? "" : " **TEMPORARILY**"), channel, 1, null);
 		}
-		else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND**", channel, null);
+		else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND**", channel, 1, null);
 	}
 	
 }

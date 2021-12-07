@@ -6,6 +6,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.util.ErrorClass;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.ErrorDTO;
 
 public class AudioLoadResult implements AudioLoadResultHandler {
@@ -26,6 +27,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			Queue queue = controller.getQueue();
 			try {
 				queue.addTrackToQueue(userId, track);
+				MessageManager.sendEmbedMessage(true, "<@!" + userId + "> has added " + track.getInfo().title, controller.getGuild().getIdLong(), 1, null);
 			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
 			}
@@ -40,11 +42,20 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 
 			if (uri.startsWith("ytsearch:")) {
 				try {
-					queue.addTrackToQueue(userId, playlist.getTracks().get(0));
+					AudioTrack track = playlist.getTracks().get(0);
+					queue.addTrackToQueue(userId, track);
+					MessageManager.sendEmbedMessage(true, "User <@!" + userId + "> has added " + track.getInfo().title, controller.getGuild().getIdLong(), 1, null);
 				} catch (Exception e) {
 					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
 				}
 			}	
+			else {
+				try {
+					queue.addPlaylistToQueue(playlist.getTracks());
+				} catch (Exception e) {
+					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
+				}
+			}
 		}
 	}
 

@@ -10,7 +10,6 @@ import de.gruwie.music.Queue;
 import de.gruwie.music.helper.CheckVoiceState;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.dto.ErrorDTO;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
@@ -44,54 +43,6 @@ public class InteractionListener extends ListenerAdapter {
 		} catch (Exception e) {
 			ErrorClass.reportError(new ErrorDTO(e, emote_name, event.getMember().getEffectiveName(), event.getGuild().getId()));
 		}
-	}
-	
-	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		
-		event.deferEdit().queue();
-		String type = event.getComponentId().substring(0, 4);
-		String data = event.getComponentId().substring(4);
-		
-		switch (type) {
-			case "gpus": {
-				try {
-					PlaylistManager.playCertainPlaylist(event.getTextChannel(), event.getMember(), data, true);
-					break;
-				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
-					break;
-				}
-			}
-			case "gpgu": {
-				try {
-					PlaylistManager.playCertainPlaylist(event.getTextChannel(), event.getMember(), data, false);
-					break;
-				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
-					break;
-				}
-			}
-			case "rand": {
-				try {
-					PlaylistManager.randPlaylist(event.getMember(), event.getTextChannel());
-					break;
-				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
-					break;
-				}
-			}
-			case "gtef": {
-				try {
-					MusicController controller = CheckVoiceState.checkVoiceState(event.getMember(), event.getTextChannel());
-					controller.getFilterManager().applyFilter(data);
-				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
-					break;
-				}
-			}
-		}
-		event.getMessage().delete().queue(null, ErrorClass.getErrorHandler());
 	}
 	
 	@Override

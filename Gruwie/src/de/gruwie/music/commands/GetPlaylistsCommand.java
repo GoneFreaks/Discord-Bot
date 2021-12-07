@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 public class GetPlaylistsCommand extends ServerCommand {
 
 	public GetPlaylistsCommand() {
-		super(true, true, GetPlaylistsCommand.class, "Load saved playlists", "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are three type of buttons:\n***Guild-Playlists:*** which can only be played if you're on the right server\n***User-Playlists:*** which are private and bound to your account (these playlists can be used globally)\n***Random-Playlist:*** which can be used by everyone, Gruwie will try to retrieve up to n-Tracks depending on youre config");
+		super(false, true, GetPlaylistsCommand.class, "Load saved playlists", "By using this command Gruwie will prompt a dialog with some buttons below it.\nThere are three type of buttons:\n***Guild-Playlists:*** which can only be played if you're on the right server\n***User-Playlists:*** which are private and bound to your account (these playlists can be used globally)\n***Random-Playlist:*** which can be used by everyone, Gruwie will try to retrieve up to n-Tracks depending on youre config");
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public class GetPlaylistsCommand extends ServerCommand {
 			PlaylistsDTO playlists = PlaylistManager.getPlaylists(channel.getGuild().getIdLong(), member.getIdLong());
 			showPlaylists(playlists, channel);
 		}
-		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
+		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, 1, null);
 	}
 	
 	private static void showPlaylists(PlaylistsDTO playlists, TextChannel channel) {

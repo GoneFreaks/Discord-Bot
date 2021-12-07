@@ -65,7 +65,7 @@ public class TrackScheduler extends AudioEventAdapter {
 				builder.setImage("attachment://thumbnail.png");
 				
 				Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
-				Message queue_view = MessageManager.sendEmbedMessage(false, queue.toString(), guild_id, null);
+				Message queue_view = MessageManager.sendEmbedMessage(false, queue.toString(), guild_id, -1, null);
 				
 				if(ConfigManager.getBoolean("progressbar") && track.getDuration() > 30 * 1000) {
 					view = new ViewDTO(track_view, queue_view, new ProgressBar(queue_view, track));

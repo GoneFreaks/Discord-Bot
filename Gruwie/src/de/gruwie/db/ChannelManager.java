@@ -15,11 +15,11 @@ public class ChannelManager {
 	private static Set<Long> modified = new HashSet<>();
 	
 	public static void shutdown() {
-		if(ConfigManager.getBoolean("database") && modified.size() > 0) ChannelOutputDA.writeOutputChannels(modified, storage);
+		if(ConfigManager.getDatabase() && modified.size() > 0) ChannelOutputDA.writeOutputChannels(modified, storage);
 	}
 	
 	public static void startup() {
-		if(ConfigManager.getBoolean("database")) {
+		if(ConfigManager.getDatabase()) {
 			storage = ChannelOutputDA.readOutputChannels();
 		}
 	}

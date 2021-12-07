@@ -36,8 +36,8 @@ public class CommandListener extends ListenerAdapter {
 					if(cmdMan.perform(args[0], event.getMember(), channel, message)) {
 						if(ConfigManager.getBoolean("guess_command")) {
 							String meant_cmd = GuessMeantCommand.probableCommand(cmdMan.getCommandArray(), args[0], symbol);
-							if(meant_cmd == null) MessageManager.sendEmbedMessage(true, "**I DON'T KNOW THIS COMMAND (╯°□°）╯︵ ┻━┻**", channel, null);
-							else MessageManager.sendEmbedMessage(true, "**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel, null);
+							if(meant_cmd == null) MessageManager.sendEmbedMessage(true, "**I DON'T KNOW THIS COMMAND (╯°□°）╯︵ ┻━┻**", channel, 1, null);
+							else MessageManager.sendEmbedMessage(true, "**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel, 1, null);
 						}
 					}
 				} catch (Exception e) {

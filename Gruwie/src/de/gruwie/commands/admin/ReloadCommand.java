@@ -11,7 +11,7 @@ public class ReloadCommand implements AdminCommand {
 	@Override
 	public void performAdminCommand(Message message, PrivateChannel privateChannel) throws Exception {
 		new Thread(() -> {
-			if(ConfigManager.startup()) MessageManager.sendEmbedPrivateMessage(privateChannel, "RELOAD HAS BEEN SUCCESSFULL");
+			if(ConfigManager.reload()) MessageManager.sendEmbedPrivateMessage(privateChannel, "RELOAD HAS BEEN SUCCESSFULL");
 			else MessageManager.sendEmbedPrivateMessage(privateChannel, "RELOAD HAS FAILED");
 		}).start();
 	}

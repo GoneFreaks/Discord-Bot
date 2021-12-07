@@ -10,6 +10,14 @@ public class ConfigManager {
 	private static Properties config;
 	
 	public static boolean startup() {
+		boolean result = reload();
+		if(result) {
+			databaseActive = getBoolean("database");
+		}
+		return result;
+	}
+	
+	public static boolean reload() {
 		config = new Properties();
 		try {
 			File temp = new File("config.properties");
@@ -59,6 +67,11 @@ public class ConfigManager {
 		} catch (Exception e) {
 			return 0.5;
 		}
+	}
+	
+	private static boolean databaseActive;
+	public static boolean getDatabase() {
+		return databaseActive;
 	}
 	
 }

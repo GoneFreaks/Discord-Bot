@@ -22,6 +22,7 @@ public class EarRapeCommand extends ServerCommand {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller == null) return;
 		AudioPlayer player = controller.getPlayer();
+		if(player.getVolume() == 100) return;
 		new Thread(() -> {
 			try {
 				int volume = player.getVolume();

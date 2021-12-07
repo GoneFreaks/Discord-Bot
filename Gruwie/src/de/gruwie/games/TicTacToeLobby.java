@@ -27,7 +27,7 @@ public class TicTacToeLobby {
 		storage.put(guildId, this);
 		this.game = new TicTacToeGame(player1, player2);
 		
-		this.game_view = MessageManager.sendEmbedMessage(true, game.toString(), guildId, null);
+		this.game_view = MessageManager.sendEmbedMessage(false, game.toString(), guildId, -1, null);
 		addReactions();
 	}
 	
@@ -58,8 +58,11 @@ public class TicTacToeLobby {
 		
 		if(game.getContent(index) == '-') {
 			turn++;
-			if(turn % 2 == 0) game.setPlayer1(index);
-			else game.setPlayer2(index);
+			if(turn % 2 == 0 && playerId.equals(player1)) game.setPlayer1(index);
+			else {
+				if(turn % 2 == 1 && playerId.equals(player2)) game.setPlayer2(index);
+				else return false;
+			}
 			MessageManager.editMessage(game_view, game.toString());
 			return isGameEnd();
 		}
