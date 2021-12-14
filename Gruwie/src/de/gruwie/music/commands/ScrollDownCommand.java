@@ -8,17 +8,17 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class UpQueueCommand extends ServerCommand {
+public class ScrollDownCommand extends ServerCommand {
 
-	public UpQueueCommand() {
-		super(true, true, UpQueueCommand.class, "⬆️", 11, "SHORT-DESCRIPTION", "LONG-DESCRIPTION");
+	public ScrollDownCommand() {
+		super(true, true, ScrollDownCommand.class, "⬇️", 10, "Scroll through the queue", "Scroll through the queue\\nHas no effect if the queue is empty or completly displayed");
 	}
-	
+
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 		Queue queue = controller.getQueue();
-		queue.moveQueueUp();
+		queue.moveQueueDown();
 	}
 	
 }

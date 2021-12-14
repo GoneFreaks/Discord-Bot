@@ -34,6 +34,7 @@ public class ConnectionManager {
 			}
 			else return false;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -44,8 +45,8 @@ public class ConnectionManager {
 	
 	private static final String[] DEFAULT_TABLES = {"CREATE TABLE output_channel (guildId int(64) primary key, channelId int(64) unique not null)",
 													"CREATE TABLE track (iD integer primary key, url varchar unique not null, genre1 int, genre2 int, genre3 int)",
-													"CREATE TABLE playlist (iD int(64) not null, isUser boolean not null, playlist_name varchar not null, track int not null)",
-													"CREATE TABLE played (userId int(64) not null, trackId int not null, count int DEFAULT 0, PRIMARY KEY (userId, trackId))"};
+													"CREATE TABLE playlist (iD int(64) not null, isUser boolean not null, playlist_name varchar not null, trackid int not null)",
+													"CREATE TABLE played (userId int(64) not null, trackid int, count int DEFAULT 0, PRIMARY KEY (userId, trackId))"};
 	public static void initializeDatabase() throws Exception {
 		for (int i = 0; i < DEFAULT_TABLES.length; i++) {
 			Statement stmt = connection.createStatement();

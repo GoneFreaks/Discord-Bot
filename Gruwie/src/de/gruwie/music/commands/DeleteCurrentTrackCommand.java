@@ -20,6 +20,7 @@ public class DeleteCurrentTrackCommand extends ServerCommand {
 		super(true, true, DeleteCurrentTrackCommand.class, "Delete the current track", "Remove the track currently playing from the database.\nThis includes all records were the corresponding id is used.");
 	}
 
+	/*
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		if(ConfigManager.getDatabase()) {
@@ -36,6 +37,6 @@ public class DeleteCurrentTrackCommand extends ServerCommand {
 			else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, 1, null);
 		}
 		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, 1, null);
-	}
+	}*/
 	
 }

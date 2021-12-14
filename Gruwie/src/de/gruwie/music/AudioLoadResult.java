@@ -55,8 +55,8 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 					queue.addTrackToQueue(track);
 					MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), 1, null);
 					if(ConfigManager.getDatabase() && member.hasPermission(Permission.MESSAGE_ADD_REACTION)) {
-						TrackDA.writeTrack(uri);
-						PlayedDA.incrementCount(member.getIdLong(), uri);
+						TrackDA.writeTrack(track.getInfo().uri);
+						PlayedDA.incrementCount(member.getIdLong(), track.getInfo().uri);
 					}
 				} catch (Exception e) {
 					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
