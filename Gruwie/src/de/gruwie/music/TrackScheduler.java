@@ -15,8 +15,8 @@ import de.gruwie.music.helper.ProgressBar;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
+import de.gruwie.util.View;
 import de.gruwie.util.dto.ErrorDTO;
-import de.gruwie.util.dto.ViewDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -26,7 +26,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 
 public class TrackScheduler extends AudioEventAdapter {
 
-	private ViewDTO view;
+	private View view;
 	
 	@Override
 	public void onPlayerPause(AudioPlayer player) {
@@ -68,9 +68,9 @@ public class TrackScheduler extends AudioEventAdapter {
 				Message queue_view = MessageManager.sendEmbedMessage(false, queue.toString(), guild_id, -1, null);
 				
 				if(ConfigManager.getBoolean("progressbar") && track.getDuration() > 30 * 1000) {
-					view = new ViewDTO(track_view, queue_view, new ProgressBar(queue_view, track));
+					view = new View(track_view, queue_view, new ProgressBar(queue_view, track));
 				}
-				else view = new ViewDTO(track_view, queue_view, null);
+				else view = new View(track_view, queue_view, null);
 				
 				queue.setView(view);
 				

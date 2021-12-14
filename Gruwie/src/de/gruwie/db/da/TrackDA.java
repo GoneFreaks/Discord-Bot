@@ -31,4 +31,8 @@ public class TrackDA {
 		} 
 	}
 	
+	public static boolean deleteCertainTrack(String url) {
+		return true;
+	}
+	
 }

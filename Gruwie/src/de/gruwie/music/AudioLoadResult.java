@@ -5,20 +5,25 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import de.gruwie.db.da.PlayedDA;
+import de.gruwie.db.da.TrackDA;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.ErrorDTO;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 
 public class AudioLoadResult implements AudioLoadResultHandler {
 
 	private final MusicController controller;
 	private final String uri;
-	private final long userId;
+	private final Member member;
 
-	public AudioLoadResult(MusicController controller, String uri, long userId) {
+	public AudioLoadResult(MusicController controller, String uri, Member member) {
 		this.controller = controller;
 		this.uri = uri;
-		this.userId = userId;
+		this.member = member;
 	}
 
 	@Override
@@ -26,8 +31,12 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 		if(controller != null && track != null) {
 			Queue queue = controller.getQueue();
 			try {
-				queue.addTrackToQueue(userId, track);
-				MessageManager.sendEmbedMessage(true, "<@!" + userId + "> has added " + track.getInfo().title, controller.getGuild().getIdLong(), 1, null);
+				queue.addTrackToQueue(track);
+				MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), 1, null);
+				if(ConfigManager.getDatabase() && member.hasPermission(Permission.MESSAGE_ADD_REACTION)) {
+					TrackDA.writeTrack(uri);
+					PlayedDA.incrementCount(member.getIdLong(), uri);
+				}
 			} catch (Exception e) {
 				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
 			}
@@ -43,8 +52,12 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			if (uri.startsWith("ytsearch:")) {
 				try {
 					AudioTrack track = playlist.getTracks().get(0);
-					queue.addTrackToQueue(userId, track);
-					MessageManager.sendEmbedMessage(true, "User <@!" + userId + "> has added " + track.getInfo().title, controller.getGuild().getIdLong(), 1, null);
+					queue.addTrackToQueue(track);
+					MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), 1, null);
+					if(ConfigManager.getDatabase() && member.hasPermission(Permission.MESSAGE_ADD_REACTION)) {
+						TrackDA.writeTrack(uri);
+						PlayedDA.incrementCount(member.getIdLong(), uri);
+					}
 				} catch (Exception e) {
 					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
 				}

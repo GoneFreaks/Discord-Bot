@@ -12,7 +12,7 @@ import java.util.jar.JarFile;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.dto.ViewDTO;
+import de.gruwie.util.View;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -29,7 +29,7 @@ public class CommandManager {
 		Collections.sort(commands);
 		this.storage = initializeMap();
 		this.emoteMan = new EmoteManager(commands);
-		ViewDTO.init(commands);
+		View.init(commands);
 	}
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {

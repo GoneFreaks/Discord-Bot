@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class DeleteTTTLobbyCommand extends ServerCommand {
 	
 	public DeleteTTTLobbyCommand() {
-		super(false, true, DeleteTTTLobbyCommand.class, "Delete TTT-Lobby", "Delete the TicTacToe-Lobby for this server.\nPermission *Administrator* needed");
+		super(true, true, DeleteTTTLobbyCommand.class, "Delete TTT-Lobby", "Delete the TicTacToe-Lobby for this server.\nPermission *Administrator* needed");
 	}
 	
 	@Override

@@ -27,7 +27,7 @@ public class ProgressBar implements Runnable {
 	public void run() {
 		try {
 			while(!Thread.currentThread().isInterrupted()) {
-				Thread.sleep(ConfigManager.getInteger("refresh") * 1000);
+				Thread.sleep(ConfigManager.getRefreshTimer() * 1000);
 				if(last_position != track.getPosition()) editMessage();
 				last_position = track.getPosition();
 			}

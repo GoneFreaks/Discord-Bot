@@ -13,6 +13,7 @@ public class ConfigManager {
 		boolean result = reload();
 		if(result) {
 			databaseActive = getBoolean("database");
+			refreshTimer = getInteger("refresh");
 		}
 		return result;
 	}
@@ -72,6 +73,11 @@ public class ConfigManager {
 	private static boolean databaseActive;
 	public static boolean getDatabase() {
 		return databaseActive;
+	}
+	
+	private static int refreshTimer;
+	public static int getRefreshTimer() {
+		return refreshTimer;
 	}
 	
 }

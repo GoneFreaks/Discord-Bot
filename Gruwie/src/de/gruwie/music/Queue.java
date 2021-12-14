@@ -6,30 +6,29 @@ import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
-import de.gruwie.db.da.PlayedDA;
-import de.gruwie.db.da.TrackDA;
 import de.gruwie.music.helper.FilterManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
-import de.gruwie.util.dto.ViewDTO;
+import de.gruwie.util.View;
 
 public class Queue {
 	
-	private ViewDTO view;
+	private View view;
 	
 	private AudioPlayer audioPlayer;
 	private List<AudioTrack> queuelist;
 	private boolean repeat;
 	private AudioTrack current_track;
 	private FilterManager filter;
+	private int offset;
 
 	public Queue(MusicController controller) {
 		this.audioPlayer = controller.getPlayer();
 		this.queuelist = new LinkedList<>();
 		this.repeat = ConfigManager.getBoolean("repeat");
 		this.filter = controller.getFilterManager();
+		this.offset = 0;
 	}
 	
 	public void shuffle() {
@@ -59,11 +58,11 @@ public class Queue {
 		return false;
 	}
 	
-	public void setView(ViewDTO view) {
+	public void setView(View view) {
 		this.view = view;
 	}
 
-	public void addTrackToQueue(long userId, AudioTrack track) {
+	public void addTrackToQueue(AudioTrack track) {
 
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
@@ -71,10 +70,6 @@ public class Queue {
 			if(i.getInfo().title.equals(track.getInfo().title)) return;
 		}
 		
-		if(ConfigManager.getBoolean("database")) {
-			TrackDA.writeTrack(track.getInfo().uri);
-			PlayedDA.incrementCount(userId, track.getInfo().uri);
-		}
 		this.queuelist.add(track);
 		
 		if(view != null) editQueueMessage();
@@ -133,19 +128,22 @@ public class Queue {
 		b.append("__**Queue: **__\n");
 		b.append("Current Filter: *" + filter.getCurrentFilter() + "*\n");
 		b.append("Volume: *" + audioPlayer.getVolume() + "*\n");
-		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n\n");
+		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n");
+		String temp = queueTime();
+		if(temp != null) b.append("Duration: *" + temp +"*");
+		b.append("\n\n");
 		
 		int current_track_index = queuelist.indexOf(current_track);
 		if(current_track_index < 0) current_track_index = 0;
 		
-		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size(), current_track_index));
+		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size()));
 		else {
-			int end = (int) Math.min(queuelist.size(), current_track_index + size);
-			int start = current_track_index < 0? 0 : current_track_index;
-			if(end - current_track_index < size) start -= size - (end - current_track_index);
 			
+			int start = offset < 0? 0 : offset;
+			int end = ((int) Math.min(queuelist.size(), start + size));
+			if(end - start < size) start -= size - (end - start);
 			if(start != 0) b.append("**:arrow_up: " + start + " Track" + (start > 1? "s" : "") + "**\n\n");
-			b.append(toStringHelper(start, end, current_track_index));
+			b.append(toStringHelper(start, end));
 			if(end != queuelist.size()) b.append("\n**:arrow_down: " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**");
 		}
 		if(queuelist.size() == 0) b.append("**THE QUEUE IS EMPTY**\n");
@@ -154,17 +152,18 @@ public class Queue {
 		return b.toString();
 	}
 	
-	public String toStringHelper(int start, int end, int current_track_index) {
+	public String toStringHelper(int start, int end) {
+		
 		StringBuilder b = new StringBuilder("");
 		int title_size = ConfigManager.getInteger("queue_character_count");
 		for (int i = start; i < end; i++) {
-			if(i == current_track_index && repeat) b.append("***:arrow_right:*** ");
+			AudioTrack j = queuelist.get(i);
+			if(j.equals(current_track) && repeat) b.append("***:arrow_right:*** ");
 			else b.append(":black_small_square: ");
-			AudioTrackInfo info = queuelist.get(i).getInfo();
-			String title = info.title;
+			String title = j.getInfo().title.replaceAll("\\*", " ");
 			if(title.length() > title_size) b.append(title.substring(0, title_size) + "...");
-			else b.append(title + "");
-			b.append(" **" + Formatter.formatTime(info.length) + "**");
+			else b.append(title);
+			b.append(" **" + Formatter.formatTime(j.getInfo().length) + "**");
 			b.append("\n");
 		}
 		return b.toString();
@@ -189,5 +188,30 @@ public class Queue {
 	
 	public int size () {
 		return queuelist.size();
+	}
+	
+	private String queueTime() {
+		long sum = 0;
+		for (AudioTrack i : queuelist) {
+			sum += i.getDuration();
+		}
+		if(sum < 0) return null;
+		else return Formatter.formatTime(sum);
+	}
+	
+	public void moveQueueUp() {
+		test(-1);
+		editQueueMessage();
+	}
+	
+	public void moveQueueDown() {
+		test(1);
+		editQueueMessage();
+	}
+	
+	private void test(int sign) {
+		int temp = offset;
+		temp += sign * ConfigManager.getInteger("queue_show");
+		if(temp < queuelist.size() && temp >= 0) offset = temp;
 	}
 }

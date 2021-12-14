@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class CreateTTTLobbyCommand extends ServerCommand {
 	
 	public CreateTTTLobbyCommand() {
-		super(false, true, CreateTTTLobbyCommand.class, "Create a new TTT-Lobby", "Create a new TicTacToeLobby in order to use this command you have to add another player.\nJust use *@<another_player>* to choose your opponent");
+		super(true, true, CreateTTTLobbyCommand.class, "Create a new TTT-Lobby", "Create a new TicTacToeLobby in order to use this command you have to add another player.\nJust use *@<another_player>* to choose your opponent");
 	}
 	
 	@Override

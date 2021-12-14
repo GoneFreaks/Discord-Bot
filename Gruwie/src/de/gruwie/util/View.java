@@ -1,4 +1,4 @@
-package de.gruwie.util.dto;
+package de.gruwie.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,11 +6,10 @@ import java.util.List;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.helper.ProgressBar;
-import de.gruwie.util.ErrorClass;
-import de.gruwie.util.MessageManager;
+import de.gruwie.util.dto.Symbol;
 import net.dv8tion.jda.api.entities.Message;
 
-public class ViewDTO {
+public class View {
 
 	private static List<Symbol> emotes = new ArrayList<>();
 	
@@ -19,7 +18,7 @@ public class ViewDTO {
 	private ProgressBar current_progress_bar;
 	private Thread current_progress_bar_thread;
 	
-	public ViewDTO(Message track_view, Message queue_view, ProgressBar current_progress_bar) {
+	public View(Message track_view, Message queue_view, ProgressBar current_progress_bar) {
 		
 		this.current_track_view = track_view;
 		this.current_queue_view = queue_view;
