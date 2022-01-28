@@ -8,9 +8,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.gruwie.db.da.PlayedDA;
 import de.gruwie.db.da.TrackDA;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
-import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 
@@ -32,13 +30,13 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			Queue queue = controller.getQueue();
 			try {
 				queue.addTrackToQueue(track);
-				MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), 1, null);
+				MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
 				if(ConfigManager.getDatabase() && member.hasPermission(Permission.MESSAGE_ADD_REACTION)) {
 					TrackDA.writeTrack(uri);
 					PlayedDA.incrementCount(member.getIdLong(), uri);
 				}
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
+				e.printStackTrace();
 			}
 		}
 	}
@@ -53,20 +51,20 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 				try {
 					AudioTrack track = playlist.getTracks().get(0);
 					queue.addTrackToQueue(track);
-					MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), 1, null);
+					MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
 					if(ConfigManager.getDatabase() && member.hasPermission(Permission.MESSAGE_ADD_REACTION)) {
 						TrackDA.writeTrack(track.getInfo().uri);
 						PlayedDA.incrementCount(member.getIdLong(), track.getInfo().uri);
 					}
 				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
+					e.printStackTrace();
 				}
 			}	
 			else {
 				try {
 					queue.addPlaylistToQueue(playlist.getTracks());
 				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-AUDIO-LOAD-RESULT", "SYSTEM", controller.getGuild().getId()));
+					e.printStackTrace();
 				}
 			}
 		}

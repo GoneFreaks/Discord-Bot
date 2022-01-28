@@ -8,8 +8,7 @@ import de.gruwie.db.PlaylistManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.helper.CheckVoiceState;
-import de.gruwie.util.ErrorClass;
-import de.gruwie.util.dto.ErrorDTO;
+import de.gruwie.util.ConfigManager;
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
@@ -36,12 +35,10 @@ public class InteractionListener extends ListenerAdapter {
 		
 		if(event.getMember() == null || event.getMember().getUser().isBot()) return;
 		
-		String emote_name = event.getReactionEmote().getName();
-		
 		try {
 			eMan.performEmoteCommand(event);
 		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, emote_name, event.getMember().getEffectiveName(), event.getGuild().getId()));
+			e.printStackTrace();
 		}
 	}
 	
@@ -56,7 +53,7 @@ public class InteractionListener extends ListenerAdapter {
 				try {
 					getPlaylistHelper(event.getValues(), event);
 				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
+					e.printStackTrace();
 				}
 				break;
 			}
@@ -72,7 +69,7 @@ public class InteractionListener extends ListenerAdapter {
 					MusicController controller = CheckVoiceState.checkVoiceState(event.getMember(), event.getTextChannel());
 					if(event.getValues().size() == 1) controller.getFilterManager().applyFilter(event.getValues().get(0));
 				} catch (Exception e) {
-					ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-INTERACTION-LISTENER", "SYSTEM-INTERACTION-LISTENER", event.getGuild().getId()));
+					e.printStackTrace();
 				}
 			}
 		}
@@ -94,11 +91,7 @@ public class InteractionListener extends ListenerAdapter {
 					break;
 				}
 				case "rand": {
-					PlaylistManager.randPlaylist(event.getMember(), event.getTextChannel());
-					break;
-				}
-				case "recl": {
-					PlaylistManager.getRecommendedPlaylist(event.getMember(), event.getTextChannel());
+					PlaylistManager.randPlaylist(event.getMember(), event.getTextChannel(), ConfigManager.getInteger("random_count"));
 					break;
 				}
 			}

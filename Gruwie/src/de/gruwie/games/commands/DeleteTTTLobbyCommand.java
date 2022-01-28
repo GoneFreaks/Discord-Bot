@@ -20,12 +20,12 @@ public class DeleteTTTLobbyCommand extends ServerCommand {
 		if(member.hasPermission(Permission.ADMINISTRATOR)) {
 			if(TicTacToeLobby.lobbyExists(channel.getGuild().getIdLong())) {
 				TicTacToeLobby.getLobbyByGuildId(channel.getGuild().getIdLong()).endLobby();
-				MessageManager.sendEmbedMessage(true, "DELETED TTT-LOBBY ON THIS SERVER", channel, 1, null);
+				MessageManager.sendEmbedMessage(true, "DELETED TTT-LOBBY ON THIS SERVER", channel, null);
 			}
-			else MessageManager.sendEmbedMessage(true, "NO LOBBY RUNNING ON THIS SERVER", channel, 1, null);
+			else MessageManager.sendEmbedMessage(true, "NO LOBBY RUNNING ON THIS SERVER", channel, null);
 		}
 		else {
-			MessageManager.sendEmbedMessage(true, "YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND", channel, 1, null);
+			MessageManager.sendEmbedMessage(true, "YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND", channel, null);
 		}
 	}
 	

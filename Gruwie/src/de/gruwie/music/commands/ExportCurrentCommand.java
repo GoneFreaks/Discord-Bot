@@ -23,9 +23,9 @@ public class ExportCurrentCommand extends ServerCommand {
 			MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 			Queue queue = controller.getQueue();
 			String uri = queue.getCurrentTrack().getInfo().uri;
-			MessageManager.sendEmbedMessage(true, TrackDA.writeTrack(uri)? "**TRACK HAS BEEN SAVED**" : "**TRACK WASN'T SAVED\nMOST LIKELY THIS HAS ALREADY HAPPENED**", channel, 1, null);
+			MessageManager.sendEmbedMessage(true, TrackDA.writeTrack(uri)? "**TRACK HAS BEEN SAVED**" : "**TRACK WASN'T SAVED\nMOST LIKELY THIS HAS ALREADY HAPPENED**", channel, null);
 		}
-		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, 1, null);
+		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
 	}
 	
 }

@@ -26,7 +26,9 @@ public class AudioLoadResultLazy implements AudioLoadResultHandler {
 		if(controller != null) {
 			try {
 				tracks.add(track);
-				if(tracks.size() >= size) controller.getQueue().addPlaylistToQueue(tracks);
+				if(tracks.size() >= size) {
+					controller.getQueue().addPlaylistToQueue(tracks);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}	

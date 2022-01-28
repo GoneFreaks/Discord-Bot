@@ -1,9 +1,10 @@
 package de.gruwie.util;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.PrivateChannel;
@@ -11,22 +12,31 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class MessageManager {
 	
-	public static Message sendEmbedMessage(boolean delete, String message, long guildId, int multiplier, String footer) {
-		TextChannel channel = ChannelManager.getChannel(guildId);
+	private static List<Message> storage = new LinkedList<>();
+	
+	public static Message sendEmbedMessage(boolean delete, String message, long guildId, String footer) {
 		try {
-			if(ConfigManager.getBoolean("delete?") && delete) {
-				Message output = channel.sendMessageEmbeds(buildEmbedMessage(message, footer).build()).complete();
-				output.delete().queueAfter(multiplier * ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, ErrorClass.getErrorHandler(), null);
-				return output;
-			}
-			else return channel.sendMessageEmbeds(buildEmbedMessage(message, footer).build()).complete();
+			Message output = sendEmbedMessage(message, guildId, footer);
+			if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
+			else storage.add(output);
+			return output;
 		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM", channel.getGuild().getId()));
+			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	public static Message sendEmbedMessage(boolean delete, String message, TextChannel channel, int multiplier, String footer) {return sendEmbedMessage(delete, message, channel.getGuild().getIdLong(), multiplier, footer);}
+	public static Message sendEmbedMessage(String message, long guildId, String footer) {
+		TextChannel channel = ChannelManager.getChannel(guildId);
+		try {
+			return channel.sendMessageEmbeds(buildEmbedMessage(message, footer).build()).complete();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Message sendEmbedMessage(boolean delete, String message, TextChannel channel, String footer) {return sendEmbedMessage(delete, message, channel.getGuild().getIdLong(), footer);}
 	
 	public static EmbedBuilder buildEmbedMessage (String message, String footer) {
 		
@@ -45,13 +55,19 @@ public class MessageManager {
 	public static void editMessage (Message m, String message) {
 		
 		try {
-			m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, ErrorClass.getErrorHandler());
+			m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
 		} catch (Exception e) {
-			ErrorClass.reportError(new ErrorDTO(e, "MESSAGE-MANAGER", "SYSTEM", m.getGuild().getId()));
+			e.printStackTrace();
 		}
 	}
 	
 	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message) {
-		channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, ErrorClass.getErrorHandler());
+		channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
+	}
+	
+	public static void shutdown() {
+		storage.forEach((m) -> {
+			m.delete().queue(null, Filter.handler);
+		});
 	}
 }

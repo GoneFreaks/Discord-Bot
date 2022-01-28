@@ -26,9 +26,9 @@ public class ClearCommand extends ServerCommand {
 				else deleteBulkMessages(delete, channel, message);
 			}
 			if(args.length == 1) deleteMessages(1, channel, message);
-			if(args.length != 1 && args.length != 2) MessageManager.sendEmbedMessage(true, "**WRONG PATTERN, YOU HAVE TO PROVIDE EITHER ONE ARGUMENT OR NONE**", channel, 1, null);
+			if(args.length != 1 && args.length != 2) MessageManager.sendEmbedMessage(true, "**WRONG PATTERN, YOU HAVE TO PROVIDE EITHER ONE ARGUMENT OR NONE**", channel, null);
 		}
-		else MessageManager.sendEmbedMessage(true, "**YOU DONT HAVE THE PERMISSION TO USE THIS COMMAND**", channel, 1, null);
+		else MessageManager.sendEmbedMessage(true, "**YOU DONT HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
 	}
 	
 	private void deleteBulkMessages(int delete, TextChannel channel, Message message) {

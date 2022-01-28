@@ -44,12 +44,8 @@ public class PlaylistManager {
 		playPlaylist(member, channel, list);
 	}
 	
-	public static void randPlaylist (Member member, TextChannel channel) throws Exception {
-		playPlaylist(member, channel, PlaylistDA.readRandom());
-	}
-	
-	public static void getRecommendedPlaylist (Member member, TextChannel channel) throws Exception {
-		playPlaylist(member, channel, PlaylistDA.getRecommendedTracks(member.getIdLong()));
+	public static void randPlaylist (Member member, TextChannel channel, int count) throws Exception {
+		playPlaylist(member, channel, PlaylistDA.readRandom(count));
 	}
 	
 	private static void playPlaylist(Member member, TextChannel channel, List<String> list) throws Exception {

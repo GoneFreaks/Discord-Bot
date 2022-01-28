@@ -6,7 +6,7 @@ import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
-import de.gruwie.util.ErrorClass;
+import de.gruwie.util.Filter;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.FilterDTO;
 import net.dv8tion.jda.api.entities.Member;
@@ -37,7 +37,7 @@ public class GetFilterCommand extends ServerCommand {
 			TextChannel output_channel = ChannelManager.getChannel(channel);
 			MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A FILTER***", null).build();
 			MessageAction action = output_channel.sendMessageEmbeds(message_embed);
-			action.setActionRow(builder.build()).queue(null, ErrorClass.getErrorHandler());
+			action.setActionRow(builder.build()).queue(null, Filter.handler);
 		}
 	}
 

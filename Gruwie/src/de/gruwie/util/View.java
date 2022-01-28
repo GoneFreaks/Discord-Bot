@@ -32,7 +32,7 @@ public class View {
 		else current_progress_bar_thread = null;
 		
 		for (int i = 0; i < emotes.size(); i++) {
-			current_queue_view.addReaction(emotes.get(i).getSymbol()).queue(null, ErrorClass.getErrorHandler());
+			current_queue_view.addReaction(emotes.get(i).getSymbol()).queue(null, Filter.handler);
 		}
 	}
 	

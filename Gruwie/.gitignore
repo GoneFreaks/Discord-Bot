@@ -4,3 +4,4 @@
 *.db
 *.project
 *.classpath
+/logs/

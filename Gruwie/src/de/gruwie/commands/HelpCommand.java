@@ -22,7 +22,7 @@ public class HelpCommand extends ServerCommand {
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		long guildId = channel.getGuild().getIdLong();
 		
-		if(args.length == 1) MessageManager.sendEmbedMessage(false, cmdMan.toString(), guildId, -1, "Executed by: Java " + System.getProperty("java.version"));
+		if(args.length == 1) MessageManager.sendEmbedMessage(false, cmdMan.toString(), guildId, "Executed by: Java " + System.getProperty("java.version") + "\nGitHub: https://github.com/GoneFreaks/Discord-Bot");
 		else {
 			String command_symbol = ConfigManager.getString("symbol");
 			
@@ -35,9 +35,9 @@ public class HelpCommand extends ServerCommand {
 				b.append(scmd + "\n" + (desc != null? desc : "NA"));
 				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
 				
-				MessageManager.sendEmbedMessage(true, b.toString(), guildId, 3, null);
+				MessageManager.sendEmbedMessage(false, b.toString(), guildId, null);
 			}
-			else MessageManager.sendEmbedMessage(true, "**YOU HAVE PROVIDED AN UNKNOWN COMMAND**", channel, 1, null);
+			else MessageManager.sendEmbedMessage(true, "**YOU HAVE PROVIDED AN UNKNOWN COMMAND**", channel, null);
 		}
 	}
 }

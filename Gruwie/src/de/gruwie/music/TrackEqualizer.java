@@ -26,16 +26,4 @@ public class TrackEqualizer {
 		}
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder b = new StringBuilder("**EQUALIZER:**\n```");
-		for (int i = 0; i < 15; i++) {
-			b.append("BAND " + i + ": " + equalizer.getGain(i) + "\t");
-			if((i+1) % 3 == 0) b.append("\n");
-			else b.append(" ");
-		}
-		b.append("```");
-		return b.toString();
-	}
-	
 }

@@ -3,10 +3,9 @@ package de.gruwie.listener;
 import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.ErrorClass;
+import de.gruwie.util.Filter;
 import de.gruwie.util.GuessMeantCommand;
 import de.gruwie.util.MessageManager;
-import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -36,14 +35,14 @@ public class CommandListener extends ListenerAdapter {
 					if(cmdMan.perform(args[0], event.getMember(), channel, message)) {
 						if(ConfigManager.getBoolean("guess_command")) {
 							String meant_cmd = GuessMeantCommand.probableCommand(cmdMan.getCommandArray(), args[0], symbol);
-							if(meant_cmd == null) MessageManager.sendEmbedMessage(true, "**I DON'T KNOW THIS COMMAND (╯°□°）╯︵ ┻━┻**", channel, 1, null);
-							else MessageManager.sendEmbedMessage(true, "**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel, 1, null);
+							if(meant_cmd == null) MessageManager.sendEmbedMessage(true, "**I DON'T KNOW THIS COMMAND (° ͜ʖ͡°)╭∩╮**", channel, null);
+							else MessageManager.sendEmbedMessage(true, "**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel, null);
 						}
 					}
 				} catch (Exception e) {
-						ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), channel.getGuild().getId()));
+					e.printStackTrace();
 				}
-				message.delete().queue(null, ErrorClass.getErrorHandler());
+				message.delete().queue(null, Filter.handler);
 			}
 		}
 	}
@@ -63,7 +62,7 @@ public class CommandListener extends ListenerAdapter {
 					MessageManager.sendEmbedPrivateMessage(event.getChannel(), "UNKNOWN COMMAND");
 				}
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, message.getContentRaw(), message.getAuthor().getName(), "PRIVATE"));
+				e.printStackTrace();
 			}
 		}
 		else MessageManager.sendEmbedPrivateMessage(event.getChannel(), "WHY ARE YOU SENDING MESSAGES TO A BOT?");

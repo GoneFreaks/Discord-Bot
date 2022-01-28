@@ -19,7 +19,7 @@ public class SymbolHelpCommand extends ServerCommand {
 		for (ServerCommand i : Gruwie_Startup.INSTANCE.getCmdMan().getCommandsWithSymbol()) {
 			b.append(i.getSymbol() + "\t" + i.getCommand() + "\n" + i.getDescription() + "\n\n");
 		}
-		MessageManager.sendEmbedMessage(false, b.toString(), channel, 3, null);
+		MessageManager.sendEmbedMessage(false, b.toString(), channel, null);
 	}
 	
 }

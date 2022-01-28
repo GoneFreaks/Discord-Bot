@@ -3,7 +3,7 @@ package de.gruwie.music.helper;
 import java.util.List;
 
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.ErrorClass;
+import de.gruwie.util.Filter;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.CheckTrackDTO;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -36,7 +36,7 @@ public class RemoveTrackHelper {
 		for (CheckTrackDTO i : track_list) {
 			builder.addOption(i.getTitleOriginal(), i.getTitleOriginal());
 		}
-		action.setActionRow(builder.build()).queue(null, ErrorClass.getErrorHandler());
+		action.setActionRow(builder.build()).queue(null, Filter.handler);
 	}
 	
 }

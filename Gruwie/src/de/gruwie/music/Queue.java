@@ -40,6 +40,7 @@ public class Queue {
 		
 		if(queuelist.size() > 0) {
 			
+			offset = 0;
 			int next_track = queuelist.indexOf(current_track);
 			if(next_track < 0 || next_track+1 >= queuelist.size()) next_track = 0;
 			else next_track++;
@@ -80,11 +81,15 @@ public class Queue {
 	public void addPlaylistToQueue(List<AudioTrack> tracks) {
 		
 		for (AudioTrack i : tracks) {
-			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
+			if(queuelist.size() + tracks.size() <= ConfigManager.getInteger("max_queue_size")) {
+				boolean already = false;
 				for (AudioTrack j : queuelist) {
-					if(j.getInfo().title.equals(i.getInfo().title)) break;
+					if(j.getInfo().title.equals(i.getInfo().title)) {
+						already = true;
+						break;
+					}
 				}
-				queuelist.add(i);
+				if(!already) queuelist.add(i);
 			}
 			else break;
 		}
@@ -112,7 +117,7 @@ public class Queue {
 		repeat = !repeat;
 		if(!repeat) queuelist.remove(current_track);
 		else queuelist.add(current_track);
-		editQueueMessage();
+		shuffle();
 	}
 	
 	public void editQueueMessage() {
@@ -200,16 +205,16 @@ public class Queue {
 	}
 	
 	public void moveQueueUp() {
-		test(-1);
+		move(-1);
 		editQueueMessage();
 	}
 	
 	public void moveQueueDown() {
-		test(1);
+		move(1);
 		editQueueMessage();
 	}
 	
-	private void test(int sign) {
+	private void move(int sign) {
 		int temp = offset;
 		temp += sign * ConfigManager.getInteger("queue_show");
 		if(temp < queuelist.size() && temp >= 0) offset = temp;

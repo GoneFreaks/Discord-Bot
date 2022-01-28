@@ -13,10 +13,8 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.music.helper.ProgressBar;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.ErrorClass;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.View;
-import de.gruwie.util.dto.ErrorDTO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -57,29 +55,27 @@ public class TrackScheduler extends AudioEventAdapter {
 		builder.addField(info.author, "[" + info.title + "](" + url + ")", false);
 		builder.addField("Duration", info.isStream ? ":red_circle:" + "Stream": (stunden > 0 ? stunden + "h" : "" ) + minuten + "min:" + sekunden + "s", true);
 		
+		String img_url;
 		if(url.startsWith("https://www.youtube.com/watch?v=")) {
 			String videoID = url.replace("https://www.youtube.com/watch?v=", "");
-			
-			try (InputStream file = new URL("https://img.youtube.com/vi/" + videoID + "/hqdefault.jpg").openStream()){
-				
-				builder.setImage("attachment://thumbnail.png");
-				
-				Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
-				Message queue_view = MessageManager.sendEmbedMessage(false, queue.toString(), guild_id, -1, null);
-				
-				if(ConfigManager.getBoolean("progressbar") && track.getDuration() > 30 * 1000) {
-					view = new View(track_view, queue_view, new ProgressBar(queue_view, track));
-				}
-				else view = new View(track_view, queue_view, null);
-				
-				queue.setView(view);
-				
-			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM", "" + guild_id));
-			}
-			
+			img_url = "https://img.youtube.com/vi/" + videoID + "/hqdefault.jpg";
 		}
+		else img_url = "https://i1.sndcdn.com/artworks-000235798196-7rx4od-t500x500.jpg";
 		
+		try (InputStream file = new URL(img_url).openStream()){
+			
+			builder.setImage("attachment://thumbnail.png");
+			Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
+			Message queue_view = MessageManager.sendEmbedMessage(queue.toString(), guild_id, null);
+			if(ConfigManager.getBoolean("progressbar") && track.getDuration() > 30 * 1000) {
+				view = new View(track_view, queue_view, new ProgressBar(queue_view, track));
+			}
+			else view = new View(track_view, queue_view, null);
+			queue.setView(view);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 	}
 
 	@Override
@@ -102,7 +98,7 @@ public class TrackScheduler extends AudioEventAdapter {
 			try {
 				if(!queue.next()) closeAudio(guild, player, queue);
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "TRACK-SCHEDULER", "SYSTEM", "" + guild_id));
+				e.printStackTrace();
 			}
 		}
 	}

@@ -15,9 +15,9 @@ import de.gruwie.listener.SystemListener;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.ErrorClass;
+import de.gruwie.util.Filter;
 import de.gruwie.util.Formatter;
-import de.gruwie.util.dto.ErrorDTO;
+import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -42,6 +42,7 @@ public class Gruwie_Startup {
 		start_time = System.currentTimeMillis();
 		if(ConfigManager.startup() && args.length == 1) {
 			try {
+				Filter.setErrStream();
 				if(ConfigManager.getBoolean("database")) {
 					if(!ConnectionManager.createConnection()) return;
 					else {
@@ -53,7 +54,7 @@ public class Gruwie_Startup {
 				new Gruwie_Startup().startup(args[0]);
 					
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));
+				e.printStackTrace();
 			}
 		}
 		else System.out.println("PROBLEM BEIM LADEN DER PROPERTIES-DATEI");
@@ -91,7 +92,7 @@ public class Gruwie_Startup {
 				}
 				
 			} catch (Exception e) {
-				ErrorClass.reportError(new ErrorDTO(e, "SYSTEM-STARTUP", "SYSTEM", "SYSTEM"));
+				e.printStackTrace();
 			}
 		});
 		shutdown.setName("Shutdown-Terminal");
@@ -107,6 +108,7 @@ public class Gruwie_Startup {
 				AudioPlayer player = null;
 				if((player = controller.getPlayer()) != null) player.destroy();
 			}
+			MessageManager.shutdown();
 			shardMan.setStatus(OnlineStatus.OFFLINE);
 			shardMan.shutdown();
 		}

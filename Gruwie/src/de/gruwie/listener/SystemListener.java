@@ -5,7 +5,6 @@ import java.util.List;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.db.ConnectionManager;
-import de.gruwie.util.ErrorClass;
 import de.gruwie.util.Formatter;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -23,7 +22,6 @@ public class SystemListener extends ListenerAdapter {
 		ShardManager shardMan = Gruwie_Startup.INSTANCE.getShardMan();
 		shardMan.addEventListener(new CommandListener());
 		shardMan.addEventListener(new InteractionListener());
-		Formatter.printBorderline("=");
 		
 		List<Guild> guilds = event.getJDA().getGuilds();
 		System.out.println("Connected to:");
@@ -47,7 +45,6 @@ public class SystemListener extends ListenerAdapter {
 	public void onShutdown(ShutdownEvent event) {
 		try {
 			ChannelManager.shutdown();
-			ErrorClass.shutdown();
 			ConnectionManager.closeConnection();
 			System.out.println("BOT is offline");
 		} catch (Exception e) {

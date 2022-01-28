@@ -11,7 +11,7 @@ public class FilterManager {
 
 	private String current_filter;
 	
-	private List<FilterDTO> temp;
+	private List<FilterDTO> filters;
 	private ConcurrentHashMap<String, FilterDTO> storage;
 	private MusicController controller;
 	
@@ -19,12 +19,13 @@ public class FilterManager {
 		this.current_filter = "DEFAULT";
 		this.controller = controller;
 		this.storage = new ConcurrentHashMap<>();
-		this.temp = new ArrayList<>();
+		this.filters = new ArrayList<>();
 		
-		temp.add(new FilterDTO("DEFAULT", 0.0));
-		temp.add(new FilterDTO("BASS", 0.15, 0.1, 0.05, 0.0, 0.0, -0.05, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1));
+		filters.add(new FilterDTO("DEFAULT", 0.0));
+		filters.add(new FilterDTO("BASS", 0.15, 0.1, 0.05, 0.0, 0.0, -0.05, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1));
+		filters.add(new FilterDTO("EARRAPE", 10, 10, 10, 10, 10, -10, -10, -10, -10, -10, -10, -010, -10, -10, -10));
 		
-		for (FilterDTO i : temp) {
+		for (FilterDTO i : filters) {
 			storage.put(i.getName(), i);
 		}
 	}
@@ -34,7 +35,7 @@ public class FilterManager {
 	}
 	
 	public List<FilterDTO> getFilter(){
-		return temp;
+		return filters;
 	}
 	
 	public void applyFilter(String name) throws Exception {
