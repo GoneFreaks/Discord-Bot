@@ -6,15 +6,14 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ExportUserPlaylistCommand extends ServerCommand {
+public class DeleteUserPlaylistCommand extends ServerCommand {
 
-	public ExportUserPlaylistCommand() {
-		super(false, true, ExportUserPlaylistCommand.class, "Save queue as User-Playlist", "Save the current music-queue as an account-specific playlist with the provided name (no spaces are allowed)\nEveryone can use this command");
+	public DeleteUserPlaylistCommand() {
+		super(true, true, DeleteUserPlaylistCommand.class, null, null);
 	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		UserAndGuildCommands.exportPlaylist(member, channel, message, true);
+		UserAndGuildCommands.deletePlaylist(true, member.getIdLong(), channel);
 	}
-
 }

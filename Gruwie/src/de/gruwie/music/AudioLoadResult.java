@@ -5,11 +5,9 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import de.gruwie.db.da.PlayedDA;
 import de.gruwie.db.da.TrackDA;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.MessageManager;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 
 public class AudioLoadResult implements AudioLoadResultHandler {
@@ -31,10 +29,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			try {
 				queue.addTrackToQueue(track);
 				MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
-				if(ConfigManager.getDatabase() && member.hasPermission(Permission.MESSAGE_ADD_REACTION)) {
-					TrackDA.writeTrack(uri);
-					PlayedDA.incrementCount(member.getIdLong(), uri);
-				}
+				if(ConfigManager.getDatabase()) TrackDA.writeTrack(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -52,9 +47,8 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 					AudioTrack track = playlist.getTracks().get(0);
 					queue.addTrackToQueue(track);
 					MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
-					if(ConfigManager.getDatabase() && member.hasPermission(Permission.MESSAGE_ADD_REACTION)) {
+					if(ConfigManager.getDatabase()) {
 						TrackDA.writeTrack(track.getInfo().uri);
-						PlayedDA.incrementCount(member.getIdLong(), track.getInfo().uri);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,7 +71,8 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 
 	@Override
 	public void loadFailed(FriendlyException exception) {
-		System.out.println("loadFailed");
+		MessageManager.sendEmbedMessage(true, "**UNABLE TO LOAD THE FOLLOWING TRACK**\n" + uri, controller.getGuild().getIdLong(), null);
+		exception.printStackTrace();
 	}
 
 }

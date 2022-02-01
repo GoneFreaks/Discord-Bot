@@ -1,14 +1,8 @@
 package de.gruwie.listener;
 
-import java.util.List;
-
 import de.gruwie.EmoteManager;
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.db.PlaylistManager;
-import de.gruwie.music.MusicController;
-import de.gruwie.music.Queue;
-import de.gruwie.music.helper.CheckVoiceState;
-import de.gruwie.util.ConfigManager;
+import de.gruwie.util.SelectionMenuManager;
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
@@ -44,57 +38,8 @@ public class InteractionListener extends ListenerAdapter {
 	
 	@Override
 	public void onSelectionMenu(SelectionMenuEvent event) {
-		
 		event.deferEdit().queue();
-		String type = event.getComponentId();
-		
-		switch (type) {
-			case "gpsm": {
-				try {
-					getPlaylistHelper(event.getValues(), event);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			}
-			case "reth": {
-				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(event.getGuild().getIdLong());
-				Queue queue = controller.getQueue();
-				List<String> selected = event.getValues();
-				if(selected.size() == 1) queue.removeTrack(selected.get(0));
-				break;
-			}
-			case "gtef": {
-				try {
-					MusicController controller = CheckVoiceState.checkVoiceState(event.getMember(), event.getTextChannel());
-					if(event.getValues().size() == 1) controller.getFilterManager().applyFilter(event.getValues().get(0));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		SelectionMenuManager.executeAction(event.getSelectedOptions().get(0).getValue());
 		event.getMessage().delete().queue();
-	}
-
-	private void getPlaylistHelper(List<String> values, SelectionMenuEvent event) throws Exception {
-		if(values.size() == 1) {
-			String type = values.get(0).substring(0, 4);
-			String data = values.get(0).substring(4);
-			
-			switch (type) {
-				case "gpus": {
-					PlaylistManager.playCertainPlaylist(event.getTextChannel(), event.getMember(), data, true);
-					break;
-				}
-				case "gpgu": {
-					PlaylistManager.playCertainPlaylist(event.getTextChannel(), event.getMember(), data, false);
-					break;
-				}
-				case "rand": {
-					PlaylistManager.randPlaylist(event.getMember(), event.getTextChannel(), ConfigManager.getInteger("random_count"));
-					break;
-				}
-			}
-		}
 	}
 }

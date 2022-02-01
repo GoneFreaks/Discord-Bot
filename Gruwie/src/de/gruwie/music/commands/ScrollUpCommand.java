@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ScrollUpCommand extends ServerCommand {
 
 	public ScrollUpCommand() {
-		super(true, true, ScrollUpCommand.class, "⬆️", 11, "Scroll through the queue", "Scroll through the queue\nHas no effect if the queue is empty or completly displayed");
+		super(true, true, ScrollUpCommand.class, "⬆️", 8, "Scroll through the queue", "Scroll through the queue\nHas no effect if the queue is empty or completly displayed");
 	}
 	
 	@Override

@@ -17,7 +17,7 @@ import de.gruwie.music.PlayerManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Filter;
 import de.gruwie.util.Formatter;
-import de.gruwie.util.MessageManager;
+import de.gruwie.util.MessageHolder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -108,7 +108,7 @@ public class Gruwie_Startup {
 				AudioPlayer player = null;
 				if((player = controller.getPlayer()) != null) player.destroy();
 			}
-			MessageManager.shutdown();
+			MessageHolder.shutdown();
 			shardMan.setStatus(OnlineStatus.OFFLINE);
 			shardMan.shutdown();
 		}

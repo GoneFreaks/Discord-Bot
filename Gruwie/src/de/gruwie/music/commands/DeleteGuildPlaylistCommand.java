@@ -8,15 +8,17 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ExportGuildPlaylistCommand extends ServerCommand {
+public class DeleteGuildPlaylistCommand extends ServerCommand {
 
-	public ExportGuildPlaylistCommand() {
-		super(false, true, ExportGuildPlaylistCommand.class, "Save queue as Guild-Playlist", "Save the current music-queue as a server-specific playlist with the provided name (no spaces are allowed)\nOnly Admins of the server can use this command");
+	public DeleteGuildPlaylistCommand() {
+		super(true, true, DeleteGuildPlaylistCommand.class, null, null);
 	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		if(member.hasPermission(Permission.ADMINISTRATOR)) UserAndGuildCommands.exportPlaylist(member, channel, message, false);
+		if(member.hasPermission(Permission.ADMINISTRATOR)) {
+			UserAndGuildCommands.deletePlaylist(false, channel.getGuild().getIdLong(), channel);
+		}
 		else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
 	}
 	

@@ -60,14 +60,14 @@ public class TrackScheduler extends AudioEventAdapter {
 			String videoID = url.replace("https://www.youtube.com/watch?v=", "");
 			img_url = "https://img.youtube.com/vi/" + videoID + "/hqdefault.jpg";
 		}
-		else img_url = "https://i1.sndcdn.com/artworks-000235798196-7rx4od-t500x500.jpg";
+		else img_url = "https://i.ibb.co/CW8h3zc/NA.png";
 		
 		try (InputStream file = new URL(img_url).openStream()){
 			
 			builder.setImage("attachment://thumbnail.png");
 			Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
 			Message queue_view = MessageManager.sendEmbedMessage(queue.toString(), guild_id, null);
-			if(ConfigManager.getBoolean("progressbar") && track.getDuration() > 30 * 1000) {
+			if(track.getDuration() > 30 * 1000) {
 				view = new View(track_view, queue_view, new ProgressBar(queue_view, track));
 			}
 			else view = new View(track_view, queue_view, null);
@@ -93,6 +93,8 @@ public class TrackScheduler extends AudioEventAdapter {
 		if(ConfigManager.getBoolean("afk") && vc.getMembers().size() == 1) {
 			closeAudio(guild, player, queue);
 		}
+		
+		if(endReason.equals(AudioTrackEndReason.STOPPED)) return;
 		
 		if(endReason.mayStartNext) {
 			try {

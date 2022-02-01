@@ -13,15 +13,14 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class RemoveTrackCommand extends ServerCommand {
-	
-	public RemoveTrackCommand() {
-		super(true, true, RemoveTrackCommand.class, "Remove track from queue", "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query");
+public class SetNextTrackCommand extends ServerCommand {
+
+	public SetNextTrackCommand() {
+		super(true, true, SetNextTrackCommand.class, "Set the next track to play", "Set the next track which will be played\nIf there's already one this won't work");
 	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		
 		String[] args = message.getContentRaw().split(" ");
 		
 		if(args.length > 1) {
@@ -34,9 +33,10 @@ public class RemoveTrackCommand extends ServerCommand {
 			Queue queue = controller.getQueue();
 			List<CheckTrackDTO> track_list = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());
 			if(track_list != null) {
-				if(track_list.size() == 1) queue.removeTrack(track_list.get(0).getTrack());
-				else MultipleEntriesFound.promptDialog("\n\n**Which track should be deleted?**", track_list, channel, member, false);
+				if(track_list.size() == 1) queue.setNextTrack(track_list.get(0).getTrack().getInfo().title);
+				else MultipleEntriesFound.promptDialog("\n\n**Which track should be played next?**", track_list, channel, member, true);
 			}
 		}
 	}
+	
 }

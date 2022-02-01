@@ -1,7 +1,5 @@
 package de.gruwie.util;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.gruwie.db.ChannelManager;
@@ -12,13 +10,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class MessageManager {
 	
-	private static List<Message> storage = new LinkedList<>();
-	
 	public static Message sendEmbedMessage(boolean delete, String message, long guildId, String footer) {
 		try {
 			Message output = sendEmbedMessage(message, guildId, footer);
 			if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
-			else storage.add(output);
+			else MessageHolder.add(output);
 			return output;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,11 +59,5 @@ public class MessageManager {
 	
 	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message) {
 		channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
-	}
-	
-	public static void shutdown() {
-		storage.forEach((m) -> {
-			m.delete().queue(null, Filter.handler);
-		});
 	}
 }

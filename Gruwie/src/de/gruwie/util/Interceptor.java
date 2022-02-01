@@ -8,11 +8,9 @@ import java.text.SimpleDateFormat;
 public class Interceptor extends PrintStream {
 
 	private final SimpleDateFormat pattern;
-	private final File file;
 	
 	public Interceptor(File file) throws Exception {
 		super(file);
-		this.file = file;
 		pattern = new SimpleDateFormat("HH:mm:ss");
 	}
 	
@@ -20,7 +18,7 @@ public class Interceptor extends PrintStream {
 	public void println(Object o) {
 		if(o instanceof Exception) {
 			super.println("--------------------------------\n" + getCurrentTime());
-			System.out.println("An Exception occured the log-file at " + file.getAbsolutePath() + " will provide more information");
+			System.out.println("[" + ((Exception) o).getMessage() + "]");
 		}
 		super.println("\t\t" + o);
 	}

@@ -20,7 +20,6 @@ public class DeleteCurrentTrackCommand extends ServerCommand {
 		super(true, true, DeleteCurrentTrackCommand.class, "Delete the current track", "Remove the track currently playing from the database.\nThis includes all records were the corresponding id is used.");
 	}
 
-	/*
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		if(ConfigManager.getDatabase()) {
@@ -30,13 +29,13 @@ public class DeleteCurrentTrackCommand extends ServerCommand {
 			if(member.hasPermission(Permission.ADMINISTRATOR)) {
 				if(track != null && track.getInfo().uri != null) {
 					boolean result = TrackDA.deleteCertainTrack(track.getInfo().uri);
-					MessageManager.sendEmbedMessage(true, result? "REMOVED TRACK ***" + track.getInfo().title + "*** FROM THE DATABASE" : "**TRACK WASN'T DELETED, MAYBE IT IS NOT STORED INSIDE THE DATABASE**", channel, 1, null);
+					MessageManager.sendEmbedMessage(true, result? "**REMOVED TRACK\n*" + track.getInfo().title + "*\nFROM THE DATABASE**" : "**TRACK WASN'T DELETED, MAYBE IT IS NOT STORED INSIDE THE DATABASE**", channel, null);
 				}
-				else MessageManager.sendEmbedMessage(true, "**SOMETHING WENT WRONG WHILE REMOVING THE TRACK\nMOST LIKELY THERE IS NO ENTY FOR THIS TRACK**", channel, 1, null);
+				else MessageManager.sendEmbedMessage(true, "**SOMETHING WENT WRONG WHILE REMOVING THE TRACK\nMOST LIKELY THERE IS NO ENTY FOR THIS TRACK**", channel, null);
 			}
-			else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, 1, null);
+			else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
 		}
-		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, 1, null);
-	}*/
+		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
+	}
 	
 }

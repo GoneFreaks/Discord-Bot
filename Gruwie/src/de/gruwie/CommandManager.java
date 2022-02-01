@@ -105,7 +105,6 @@ public class CommandManager {
 				String path2 = this.getClass().getPackage().getName().replace(".", "\\");
 				diffrentPackages(path1, path2, ".music.commands");
 				diffrentPackages(path1, path2, ".commands");
-				diffrentPackages(path1, path2, ".games.commands");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,7 +113,6 @@ public class CommandManager {
 	
 	private void diffrentPackages(String path1, String path2, String package_name) throws Exception {
 		File file = new File(path1 + path2 + package_name.replace(".", "\\"));
-		if(ConfigManager.getBoolean("log")) System.out.println(file.getAbsolutePath());
 		File[] files = file.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			if(!files[i].isFile()) continue;

@@ -1,13 +1,17 @@
 package de.gruwie.db;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.da.PlaylistDA;
-import de.gruwie.music.AudioLoadResultLazy;
+import de.gruwie.music.AudioLoadResultBulk;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
 import de.gruwie.util.dto.PlaylistsDTO;
@@ -23,7 +27,9 @@ public class PlaylistManager {
 	}
 	
 	public static boolean exportPlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) {
-		return PlaylistDA.writePlaylist(tracks, name, iD, isUser);
+		List<String> urls = new ArrayList<>();
+		tracks.forEach((k) -> {urls.add(k.getInfo().uri);});
+		return PlaylistDA.writePlaylist(urls, name, iD, isUser, false);
 	}
 	
 	private static MusicController checkAndJoin(Member member, TextChannel channel) throws Exception {
@@ -39,24 +45,26 @@ public class PlaylistManager {
 		else return null;
 	}
 	
-	public static void playCertainPlaylist(TextChannel channel, Member member, String playlist, boolean isUser) throws Exception {
-		List<String> list = PlaylistDA.readPlaylist(playlist, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
-		playPlaylist(member, channel, list);
-	}
-	
-	public static void randPlaylist (Member member, TextChannel channel, int count) throws Exception {
-		playPlaylist(member, channel, PlaylistDA.readRandom(count));
-	}
-	
-	private static void playPlaylist(Member member, TextChannel channel, List<String> list) throws Exception {
+	public static void playPlaylist(Member member, TextChannel channel, List<String> list) throws Exception {
 		if(list != null && list.size() > 0) {
 			MusicController controller = checkAndJoin(member, channel);
 			AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
 			
-			AudioLoadResultLazy lazy = new AudioLoadResultLazy(controller, list.size());
+			ExecutorService exc = Executors.newCachedThreadPool(new ThreadFactory() {
+				@Override
+				public Thread newThread(Runnable r) {
+					Thread temp = new Thread(r);
+					temp.setDaemon(true);
+					return temp;
+				}
+			});
+			
 			for (String i : list) {
-				apm.loadItem(i, lazy);
-			}	
+				exc.execute(() -> {
+					apm.loadItem(i, new AudioLoadResultBulk(controller, i));
+				});
+			}
+			exc.shutdown();
 		}
 	}
 }
