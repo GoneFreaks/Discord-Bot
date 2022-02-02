@@ -3,6 +3,7 @@ package de.gruwie.db.da;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import de.gruwie.db.ConnectionManager;
 
@@ -74,5 +75,18 @@ public class TrackDA {
 			pstmt.setString(1, url);
 			pstmt.executeUpdate();
 		} 
+	}
+	
+	public static int getTrackCount() {
+		try(Connection cn = ConnectionManager.getConnection(true)) {
+			try(Statement stmt = cn.createStatement()) {
+				try(ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM track")) {
+					if(rs.next()) return rs.getInt(1);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }

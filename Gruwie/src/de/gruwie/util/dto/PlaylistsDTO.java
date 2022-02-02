@@ -19,4 +19,8 @@ public class PlaylistsDTO {
 	public List<String> getUser_playlists() {
 		return user_playlists;
 	}
+	
+	public int size() {
+		return guild_playlists.size() + user_playlists.size();
+	}
 }

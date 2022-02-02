@@ -138,5 +138,9 @@ public class CommandManager {
 	public EmoteManager getEmoteManager() {
 		return emoteMan;
 	}
+
+	public int size() {
+		return commands.size();
+	}
 	
 }

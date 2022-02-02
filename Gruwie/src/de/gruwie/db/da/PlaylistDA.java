@@ -3,11 +3,13 @@ package de.gruwie.db.da;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.gruwie.db.ConnectionManager;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.exceptions.TooManyPlaylistsException;
 
 public class PlaylistDA {
 	
@@ -50,7 +52,9 @@ public class PlaylistDA {
 		return false;
 	}
 	
-	public static boolean writePlaylist(List<String> tracks, String name, long iD, boolean isUser, boolean update) {
+	public static boolean writePlaylist(List<String> tracks, String name, long iD, boolean isUser, boolean update) throws TooManyPlaylistsException {
+		
+		countSmallerMax(iD);
 		
 		if(!update && playlistExists(iD, isUser, name)) return false;
 		
@@ -81,6 +85,24 @@ public class PlaylistDA {
 		return false;
 	}
 	
+	private static boolean countSmallerMax(long iD) throws TooManyPlaylistsException {
+		try(Connection cn = ConnectionManager.getConnection(true)) {
+			try(PreparedStatement pstmt = cn.prepareStatement("SELECT COUNT(*) AS C FROM (SELECT DISTINCT playlist_name FROM playlist WHERE iD = ?)")) {
+				pstmt.setLong(1, iD);
+				try(ResultSet rs = pstmt.executeQuery()) {
+					if(rs.next()) {
+						long result = rs.getLong(1);
+						if(result < (25-1)) return true;
+						else throw new TooManyPlaylistsException("Current Count: " + (result + 1));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return false;
+	}
+
 	public static List<String> readPlaylist(String name, long id, boolean isUser) {
 		List<String> urls = new ArrayList<>();
 		
@@ -188,7 +210,26 @@ public class PlaylistDA {
 			if(!already.contains(i)) already.add(i);
 		}
 		if(already.size() > ConfigManager.getInteger("max_queue_size")) return false;
-		return writePlaylist(already, name, id, isUser, true);
+		try {
+			return writePlaylist(already, name, id, isUser, true);
+		} catch (TooManyPlaylistsException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static int getPlaylistCount (boolean isUser) {
+		try(Connection cn = ConnectionManager.getConnection(true)) {
+			try(PreparedStatement pstmt = cn.prepareStatement("SELECT COUNT(*) AS C FROM (SELECT DISTINCT playlist_name FROM playlist WHERE isUser = ?)")) {
+				pstmt.setBoolean(1, isUser);
+				try(ResultSet rs = pstmt.executeQuery()) {
+					if(rs.next()) return rs.getInt(1);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 }

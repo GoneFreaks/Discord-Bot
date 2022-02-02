@@ -25,41 +25,47 @@ public class ShowPlaylists {
 		
 		PlaylistsDTO playlists = PlaylistManager.getPlaylists(channel.getGuild().getIdLong(), member.getIdLong());
 		
-		Builder builder = SelectionMenu.create(SelectionMenuManager.getUUID().toString());
-		
-		if(isGet) {
-			UUID value = SelectionMenuManager.getUUID();
-			GetRandomPlaylist select = new GetRandomPlaylist(value, member, channel);
-			SelectionMenuManager.putAction(value, select);
-			builder.addOptions(select);
-		}
-		
-		if(isGet || member.hasPermission(Permission.ADMINISTRATOR)) {
-			List<String> guild = playlists.getGuild_playlists();
-			if(guild != null) {
-				for (String i : guild) {
-					UUID value_guild = SelectionMenuManager.getUUID();
-					GetOrUpdatePlaylist select_guild = new GetOrUpdatePlaylist(i, value_guild, member, channel, false, isGet);
-					SelectionMenuManager.putAction(value_guild, select_guild);
-					builder.addOptions(select_guild);
+		if(playlists.size() < 2) {
+			Builder builder = SelectionMenu.create(SelectionMenuManager.getUUID().toString());
+			
+			if(isGet) {
+				UUID value = SelectionMenuManager.getUUID();
+				GetRandomPlaylist select = new GetRandomPlaylist(value, member, channel);
+				SelectionMenuManager.putAction(value, select);
+				builder.addOptions(select);
+			}
+			
+			if(isGet || member.hasPermission(Permission.ADMINISTRATOR)) {
+				List<String> guild = playlists.getGuild_playlists();
+				if(guild != null) {
+					for (String i : guild) {
+						UUID value_guild = SelectionMenuManager.getUUID();
+						GetOrUpdatePlaylist select_guild = new GetOrUpdatePlaylist(i, value_guild, member, channel, false, isGet);
+						SelectionMenuManager.putAction(value_guild, select_guild);
+						builder.addOptions(select_guild);
+					}
 				}
 			}
-		}
-		
-		List<String> user = playlists.getUser_playlists();
-		if(user != null) {
-			for (String i : user) {
-				UUID value_user = SelectionMenuManager.getUUID();
-				GetOrUpdatePlaylist select_user = new GetOrUpdatePlaylist(i, value_user, member, channel, true, isGet);
-				SelectionMenuManager.putAction(value_user, select_user);
-				builder.addOptions(select_user);
+			
+			List<String> user = playlists.getUser_playlists();
+			if(user != null) {
+				for (String i : user) {
+					UUID value_user = SelectionMenuManager.getUUID();
+					GetOrUpdatePlaylist select_user = new GetOrUpdatePlaylist(i, value_user, member, channel, true, isGet);
+					SelectionMenuManager.putAction(value_user, select_user);
+					builder.addOptions(select_user);
+				}
 			}
+			
+			TextChannel output_channel = ChannelManager.getChannel(channel);
+			MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A PLAYLIST***\n\n*USER-Playlist*: Only visible to you, can be used globally\n*GUILD-Playlist*: Visible only on the server they were created on", null).build();
+			MessageAction action = output_channel.sendMessageEmbeds(message_embed);
+			action.setActionRow(builder.build()).queue(null, Filter.handler);
+		}
+		else {
+			MessageManager.sendEmbedMessage(true, "**DUE TO API-LIMITATIONS ONLY 25 ELEMENTS CAN BE DISPLAYED INSIDE A DROPDOWN-MENU\nA SOLUTION FOR THIS LIMITATION WILL BE IMPLEMENTED IN LATER VERSIONS**", channel, null);
 		}
 		
-		TextChannel output_channel = ChannelManager.getChannel(channel);
-		MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A PLAYLIST***\n\n*USER-Playlist*: Only visible to you, can be used globally\n*GUILD-Playlist*: Visible only on the server they were created on", null).build();
-		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
-		action.setActionRow(builder.build()).queue(null, Filter.handler);
 	}
 	
 }

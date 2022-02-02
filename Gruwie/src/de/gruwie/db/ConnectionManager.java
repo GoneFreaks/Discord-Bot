@@ -2,6 +2,7 @@ package de.gruwie.db;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.sqlite.SQLiteDataSource;
@@ -12,7 +13,7 @@ public class ConnectionManager {
 	
 	private static SQLiteDataSource source;
 	
-	public static Connection getConnection (boolean autoCommit) throws Exception {
+	public static Connection getConnection (boolean autoCommit) throws SQLException {
 		if(source == null) createConnection();
 		Connection cn = source.getConnection();
 		cn.setAutoCommit(autoCommit);

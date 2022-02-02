@@ -14,6 +14,7 @@ import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Filter;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.SelectionMenuManager;
+import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import de.gruwie.util.selectOptions.DeletePlaylist;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -25,7 +26,7 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class UserAndGuildCommands {
 
-	public static void exportPlaylist(Member member, TextChannel channel, Message message, boolean isUser) throws Exception {
+	public static void exportPlaylist(Member member, TextChannel channel, Message message, boolean isUser) {
 		
 		if(ConfigManager.getBoolean("database")) {
 			String[] args = message.getContentRaw().split(" ");
@@ -35,10 +36,14 @@ public class UserAndGuildCommands {
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();
 				if(!args[1].contains("__")) {
 					if(tracks.size() > 0) {
-						if(PlaylistManager.exportPlaylist(tracks, args[1], isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser)) {
-							MessageManager.sendEmbedMessage(true, "**A PLAYLIST NAMED " + args[1] + " HAS BEEN CREATED**", channel, null);
+						try {
+							if(PlaylistManager.exportPlaylist(tracks, args[1], isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser)) {
+								MessageManager.sendEmbedMessage(true, "**A PLAYLIST NAMED " + args[1] + " HAS BEEN CREATED**", channel, null);
+							}
+							else MessageManager.sendEmbedMessage(true, "**SOMETHING WENT WRONG WHILE SAVING THE PLAYLIST\n--> TRY A DIFFRENT NAME**", channel, null);
+						} catch (TooManyPlaylistsException e) {
+							MessageManager.sendEmbedMessage(true, "**DUE TO API-LIMITATIONS ONLY 25 ELEMENTS CAN BE DISPLAYED (" + e.getMessage() + ") INSIDE A DROPDOWN-MENU\nTHE MAXIMUM HAS BEEN REACHED, THEREFORE NO MORE PLAYLISTS OF THE TYPE <" + (isUser? "USER" : "GUILD") + "> CAN BE CREATED**", channel, null);
 						}
-						else MessageManager.sendEmbedMessage(true, "**SOMETHING WENT WRONG WHILE SAVING THE PLAYLIST\n--> TRY A DIFFRENT NAME**", channel, null);
 					}
 					else MessageManager.sendEmbedMessage(true, "**THE QUEUE IS EMPTY, NOTHING TO SAVE**", channel, null);
 				}

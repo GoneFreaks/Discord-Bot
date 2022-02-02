@@ -1,12 +1,12 @@
 package de.gruwie.util;
 
 import java.nio.file.attribute.FileTime;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import de.gruwie.util.dto.CommandDTO;
@@ -28,24 +28,10 @@ public class Formatter {
 		return (hours > 0? h : "") + (minutes > 0? m : (hours > 0? "00:" : "0:")) + s;
 	}
 	
-	public static String getTime() {
-		return format("HH:mm:ss");
-	}
-	
-	public static String getDate() {
-		return format("yyyy-MM-dd");
-	}
-	
 	public static void printBorderline (String element) {
 		for (int i = 0; i < 50; i++) {
 			System.out.print((i < 49? element : "\n"));
 		}
-	}
-	
-	private static String format(String pattern) {
-		SimpleDateFormat f = new SimpleDateFormat(pattern);
-		Date d = new Date();
-		return f.format(d);
 	}
 	
 	private static String[] getInfoFromTitle (String title) throws Exception {
@@ -134,6 +120,16 @@ public class Formatter {
 	public static String formatFileTime(FileTime fileTime) {
 		LocalDateTime localDateTime = fileTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 		return localDateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+	}
+	
+	private static final SimpleDateFormat TIME_PATTERN = new SimpleDateFormat("HH:mm:ss");
+	public static String getTime(long input) {
+		return TIME_PATTERN.format(new Timestamp(input));
+	}
+	
+	private static final SimpleDateFormat DATETIME_PATTERN = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	public static String getDateTime(long input) {
+		return DATETIME_PATTERN.format(new Timestamp(input));
 	}
 	
 }
