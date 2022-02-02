@@ -1,6 +1,10 @@
 package de.gruwie.util;
 
+import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -125,6 +129,11 @@ public class Formatter {
 		else shortcut = null;
 		
 		return new CommandDTO(command.toLowerCase(), shortcut);
+	}
+	
+	public static String formatFileTime(FileTime fileTime) {
+		LocalDateTime localDateTime = fileTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+		return localDateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
 	}
 	
 }

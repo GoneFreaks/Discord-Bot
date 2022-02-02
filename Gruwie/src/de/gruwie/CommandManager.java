@@ -1,6 +1,7 @@
 package de.gruwie;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -12,6 +13,7 @@ import java.util.jar.JarFile;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.Formatter;
 import de.gruwie.util.View;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -101,27 +103,27 @@ public class CommandManager {
 				}
 			}
 			else {
-				String path1 = new File(".").getAbsolutePath().replace(".", "\\src\\");
-				String path2 = this.getClass().getPackage().getName().replace(".", "\\");
-				diffrentPackages(path1, path2, ".music.commands");
-				diffrentPackages(path1, path2, ".commands");
+				String default_path = "de/gruwie/";
+				diffrentPackages(default_path + "music/commands/");
+				diffrentPackages(default_path + "commands/");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println(commands.size() + " Commands have been loaded");
+		Formatter.printBorderline("=");
 	}
 	
-	private void diffrentPackages(String path1, String path2, String package_name) throws Exception {
-		File file = new File(path1 + path2 + package_name.replace(".", "\\"));
-		File[] files = file.listFiles();
-		for (int i = 0; i < files.length; i++) {
-			if(!files[i].isFile()) continue;
-			String class_name = files[i].getName().replace(".java", "");
-			Class<?> cls = Class.forName(this.getClass().getPackage().getName() + package_name + "." + class_name);
-			ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
-			
-			if(!ConfigManager.getBoolean("wip") && scmd.isWip()) continue; 
-			commands.add(scmd);
+	private void diffrentPackages(String input) throws Exception {
+		String path = this.getClass().getClassLoader().getResource(input).toExternalForm();
+		File folder = new File(new URI(path));
+		for (File i : folder.listFiles()) {
+			if(i.isFile() && i.getName().contains("Command")) {
+				String classpath = input.replaceAll("/", ".") + (i.getName().replaceAll(".class", ""));
+				Class<?> cls = Class.forName(classpath);
+				ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
+				commands.add(scmd);
+			}
 		}
 	}
 	
