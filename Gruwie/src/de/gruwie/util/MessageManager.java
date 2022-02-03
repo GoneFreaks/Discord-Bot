@@ -49,15 +49,10 @@ public class MessageManager {
 	}
 	
 	public static void editMessage (Message m, String message) {
-		
-		try {
-			m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
 	}
 	
-	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message) {
-		channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
+	public static Message sendEmbedPrivateMessage(PrivateChannel channel, String message) {
+		return channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).complete();
 	}
 }

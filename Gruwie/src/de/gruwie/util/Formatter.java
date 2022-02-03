@@ -30,7 +30,8 @@ public class Formatter {
 	
 	public static void printBorderline (String element) {
 		for (int i = 0; i < 50; i++) {
-			System.out.print((i < 49? element : "\n"));
+			if(i < 49) System.out.print(element);
+			else System.out.println(element);
 		}
 	}
 	

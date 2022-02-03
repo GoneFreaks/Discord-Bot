@@ -23,8 +23,9 @@ public class Filter {
 			String file_name = FORMAT.format(new Timestamp(System.currentTimeMillis()));
 			File file = new File("logs//" + file_name + ".txt");
 			if(file.exists()) file.delete();
-			System.setErr(new Interceptor(file));
+			System.setErr(new ErrInterceptor(file));
 		}
+		System.setOut(new OutInterceptor(System.out));
 	}
 	
 	private static void deleteExcessiveFiles(File[] files) {

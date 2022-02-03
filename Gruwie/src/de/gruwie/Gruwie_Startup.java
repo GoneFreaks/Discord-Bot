@@ -36,12 +36,18 @@ public class Gruwie_Startup {
 
 	public static void main(String[] args) {
 		
-		System.out.println("Running OS:\t\t" + System.getProperty("os.name") + "\nRunning Java-Version:\t" + System.getProperty("java.version") + "\nAvailable Processors:\t" + Runtime.getRuntime().availableProcessors());
+		try {
+			Filter.setErrStream();
+		} catch (Exception e) {
+			System.out.println("UNABLE TO REDIRECT OUTPUT-STREAMS\nPLEASE CONTACT THE HOSTER OF THIS BOT-INSTANCE");
+		}
+		
+		System.out.println("Running OS:\t\t" + System.getProperty("os.name"));
+		System.out.println("Running Java-Version:\t" + System.getProperty("java.version"));
 		Formatter.printBorderline("=");
 		start_time = System.currentTimeMillis();
 		if(ConfigManager.startup() && args.length == 1) {
 			try {
-				Filter.setErrStream();
 				if(ConfigManager.getBoolean("database")) {
 					if(!ConnectionManager.createConnection()) return;
 					else {

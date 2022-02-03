@@ -27,6 +27,7 @@ public class VersionCommand extends ServerCommand {
 				MessageManager.sendEmbedMessage(false, "**LAST MODIFIED AT: " + time + "**", channel, null);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
