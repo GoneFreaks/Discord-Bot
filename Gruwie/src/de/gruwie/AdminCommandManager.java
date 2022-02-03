@@ -1,6 +1,7 @@
 package de.gruwie;
 
 import java.util.LinkedHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.gruwie.commands.admin.HelpCommand;
 import de.gruwie.commands.admin.MetadataCommand;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.api.entities.PrivateChannel;
 public class AdminCommandManager {
 
 	private LinkedHashMap<String, AdminCommand> storage;
+	private static AtomicInteger counter = new AtomicInteger(0);
 	
 	public AdminCommandManager() {
 		this.storage = new LinkedHashMap<>();
@@ -27,6 +29,7 @@ public class AdminCommandManager {
 	
 	public boolean performCommand(String cmd, Message message, PrivateChannel privateChannel) throws Exception {
 		if(this.storage.containsKey(cmd)) {
+			counter.incrementAndGet();
 			this.storage.get(cmd).performAdminCommand(message, privateChannel);
 			return false;
 		}
@@ -47,6 +50,10 @@ public class AdminCommandManager {
 
 	public int size() {
 		return storage.size();
+	}
+	
+	public int getCommandCount () {
+		return counter.get();
 	}
 	
 }

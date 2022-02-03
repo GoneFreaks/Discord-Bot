@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -23,6 +24,7 @@ public class CommandManager {
 	private List<ServerCommand> commands;
 	private ConcurrentHashMap<String, ServerCommand> storage;
 	private EmoteManager emoteMan;
+	private static AtomicInteger counter = new AtomicInteger(0);
 	
 	public CommandManager () {
 		this.commands = new ArrayList<>();
@@ -36,6 +38,7 @@ public class CommandManager {
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
 		
 		if(this.storage.containsKey(cmd)) {
+			counter.incrementAndGet();
 			this.storage.get(cmd).performServerCommand(member, channel, message);
 			return false;
 		}
@@ -142,6 +145,10 @@ public class CommandManager {
 	
 	public int shortcutCount() {
 		return storage.size() - commands.size();
+	}
+	
+	public int getCommandCount () {
+		return counter.get();
 	}
 	
 }
