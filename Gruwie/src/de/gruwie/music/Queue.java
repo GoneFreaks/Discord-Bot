@@ -74,7 +74,7 @@ public class Queue {
 		this.view = view;
 	}
 
-	public void addTrackToQueue(AudioTrack track) {
+	public synchronized void addTrackToQueue(AudioTrack track) {
 
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		

@@ -38,7 +38,6 @@ public class Gruwie_Startup {
 		
 		System.out.println("Running OS:\t\t" + System.getProperty("os.name") + "\nRunning Java-Version:\t" + System.getProperty("java.version") + "\nAvailable Processors:\t" + Runtime.getRuntime().availableProcessors());
 		Formatter.printBorderline("=");
-		
 		start_time = System.currentTimeMillis();
 		if(ConfigManager.startup() && args.length == 1) {
 			try {

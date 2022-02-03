@@ -105,7 +105,7 @@ public class Formatter {
 	}
 	
 	public static CommandDTO createNames(String input, boolean tryShortcut) {
-		String command = input.replaceAll("Command", "").replaceAll("Lobby", "");
+		String command = input.replaceAll("Command", "");
 		StringBuilder b = new StringBuilder("");
 		for (int i = 0; i < command.length(); i++) {
 			if(command.charAt(i) > 'A' && command.charAt(i) < 'Z') b.append(command.charAt(i));
@@ -130,6 +130,44 @@ public class Formatter {
 	private static final SimpleDateFormat DATETIME_PATTERN = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	public static String getDateTime(long input) {
 		return DATETIME_PATTERN.format(new Timestamp(input));
+	}
+	
+	public static String formatByteSize(long size) {
+		double temp = size;
+		int counter = 0;
+		while(temp / 1024 >= 1) {
+			temp /= 1024.0;
+			counter++;
+		}
+		
+		String result = formatDouble(temp);
+		
+		switch (counter) {
+		case 1:
+			result += "kb";
+			break;
+		case 2:
+			result += "Mb";
+			break;
+		case 3:
+			result += "Gb";
+			break;
+		case 4:
+			result += "Tb";
+			break;
+		}
+		
+		return result;
+	}
+	
+	public static String formatDouble(double input) {
+		String asString = input + "";
+		if(!asString.contains(".")) return asString;
+		else {
+			int index = asString.lastIndexOf(".") + 3;
+			if(index > asString.length()) return asString;
+			else return asString.substring(0, index);
+		}
 	}
 	
 }

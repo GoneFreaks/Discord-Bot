@@ -13,7 +13,6 @@ import java.util.jar.JarFile;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Formatter;
 import de.gruwie.util.View;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -110,8 +109,6 @@ public class CommandManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(commands.size() + " Commands have been loaded");
-		Formatter.printBorderline("=");
 	}
 	
 	private void diffrentPackages(String input) throws Exception {
@@ -141,6 +138,10 @@ public class CommandManager {
 
 	public int size() {
 		return commands.size();
+	}
+	
+	public int shortcutCount() {
+		return storage.size() - commands.size();
 	}
 	
 }

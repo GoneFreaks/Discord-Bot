@@ -1,21 +1,18 @@
 package de.gruwie.util.selectOptions;
 
-import java.util.UUID;
-
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
-public class DeletePlaylist extends SelectOption implements SelectOptionAction {
+public class DeletePlaylist extends SelectOptionAction {
 
 	private final boolean isUser;
 	private final long iD;
 	private final String name;
 	private final TextChannel channel;
 	
-	public DeletePlaylist(String name, UUID value, boolean isUser, long iD, TextChannel channel) {
-		super(name, value.toString());
+	public DeletePlaylist(String name, boolean isUser, long iD, TextChannel channel) {
+		super(name);
 		this.isUser = isUser;
 		this.iD = iD;
 		this.name = name;

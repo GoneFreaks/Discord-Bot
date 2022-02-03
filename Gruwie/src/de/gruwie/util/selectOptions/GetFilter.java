@@ -1,21 +1,18 @@
 package de.gruwie.util.selectOptions;
 
-import java.util.UUID;
-
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
-public class GetFilter extends SelectOption implements SelectOptionAction {
+public class GetFilter extends SelectOptionAction {
 
 	private final String name;
 	private final TextChannel channel;
 	private final Member member;
 	
-	public GetFilter(String name, UUID value, Member member, TextChannel channel) {
-		super(name, value.toString());
+	public GetFilter(String name, Member member, TextChannel channel) {
+		super(name);
 		this.name = name;
 		this.channel = channel;
 		this.member = member;

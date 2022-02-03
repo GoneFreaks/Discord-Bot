@@ -1,28 +1,23 @@
 package de.gruwie.music.helper;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Filter;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import de.gruwie.util.selectOptions.DeletePlaylist;
+import de.gruwie.util.selectOptions.SelectOptionAction;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu.Builder;
-import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class UserAndGuildCommands {
 
@@ -70,18 +65,11 @@ public class UserAndGuildCommands {
 	}
 	
 	private static void promptDialog(List<String> playlists, long id, boolean isUser, TextChannel channel) {
-		Builder builder = SelectionMenu.create(SelectionMenuManager.getUUID().toString());
-		for (String i : playlists) {
-			UUID value = SelectionMenuManager.getUUID();
-			DeletePlaylist select = new DeletePlaylist(i, value, isUser, id, channel);
-			SelectionMenuManager.putAction(value, select);
-			builder.addOptions(select);
-		}
-		
-		TextChannel output_channel = ChannelManager.getChannel(channel);
-		MessageEmbed message_embed = MessageManager.buildEmbedMessage("**CHOOSE THE PLAYLIST WHICH SHOULD BE DELETED**", null).build();
-		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
-		action.setActionRow(builder.build()).queue(null, Filter.handler);
+		List<SelectOptionAction> actions = new ArrayList<>();
+		playlists.forEach((k) -> {
+			actions.add(new DeletePlaylist(k, isUser, id, channel));
+		});
+		SelectionMenuManager.createDropdownMenu(actions, channel, "**CHOOSE THE PLAYLIST WHICH SHOULD BE DELETED**");
 	}
 	
 }

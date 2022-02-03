@@ -1,24 +1,18 @@
 package de.gruwie.music.commands;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.db.ChannelManager;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
-import de.gruwie.util.Filter;
-import de.gruwie.util.MessageManager;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.dto.FilterDTO;
 import de.gruwie.util.selectOptions.GetFilter;
+import de.gruwie.util.selectOptions.SelectOptionAction;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu.Builder;
-import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class GetFilterCommand extends ServerCommand {
 
@@ -30,20 +24,9 @@ public class GetFilterCommand extends ServerCommand {
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller != null) {
-			Builder builder = SelectionMenu.create(SelectionMenuManager.getUUID().toString());
-			List<FilterDTO> filters = controller.getFilterManager().getFilter();
-			
-			for(FilterDTO i: filters) {
-				UUID value = SelectionMenuManager.getUUID();
-				GetFilter select = new GetFilter(i.getName(), value, member, channel);
-				SelectionMenuManager.putAction(value, select);
-				builder.addOptions(select);
-			}
-			
-			TextChannel output_channel = ChannelManager.getChannel(channel);
-			MessageEmbed message_embed = MessageManager.buildEmbedMessage("***CHOOSE A FILTER***", null).build();
-			MessageAction action = output_channel.sendMessageEmbeds(message_embed);
-			action.setActionRow(builder.build()).queue(null, Filter.handler);
+			List<SelectOptionAction> actions = new ArrayList<>();
+			for(FilterDTO i: controller.getFilterManager().getFilter()) actions.add(new GetFilter(i.getName(), member, channel));
+			SelectionMenuManager.createDropdownMenu(actions, channel, "***CHOOSE A FILTER***");
 		}
 	}
 

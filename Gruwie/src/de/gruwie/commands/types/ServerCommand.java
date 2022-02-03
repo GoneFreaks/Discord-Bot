@@ -80,7 +80,7 @@ public class ServerCommand implements Comparable<ServerCommand>{
 
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		MessageManager.sendEmbedMessage(true, "**NOT YET IMPLEMENTED**", channel, null);
-		System.out.println(command);
+		System.err.println(command);
 	}
 
 	public int compareTo(ServerCommand other) {

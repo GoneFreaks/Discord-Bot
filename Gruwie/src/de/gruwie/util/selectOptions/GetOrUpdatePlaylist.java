@@ -2,7 +2,6 @@ package de.gruwie.util.selectOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.PlaylistManager;
@@ -11,9 +10,8 @@ import de.gruwie.music.Queue;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
-public class GetOrUpdatePlaylist extends SelectOption implements SelectOptionAction {
+public class GetOrUpdatePlaylist extends SelectOptionAction {
 
 	private final String name;
 	private final TextChannel channel;
@@ -21,8 +19,8 @@ public class GetOrUpdatePlaylist extends SelectOption implements SelectOptionAct
 	private final boolean isUser;
 	private final boolean isGet;
 	
-	public GetOrUpdatePlaylist(String name, UUID value, Member member, TextChannel channel, boolean isUser, boolean isGet) {
-		super((isUser? "USER: " : "GUILD: ") + name, value.toString());
+	public GetOrUpdatePlaylist(String name, Member member, TextChannel channel, boolean isUser, boolean isGet) {
+		super((isUser? "USER: " : "GUILD: ") + name);
 		this.name = name;
 		this.channel = channel;
 		this.member = member;

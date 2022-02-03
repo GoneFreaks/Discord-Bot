@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.gruwie.commands.types.ServerCommand;
+import de.gruwie.util.Filter;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -60,7 +61,7 @@ public class ClearCommand extends ServerCommand {
 			history.retrievePast(delete).queue((messages) ->{
 				for (Message i : messages) {
 					try {
-						i.delete().queue();
+						i.delete().queue(null, Filter.handler);
 						Thread.sleep(100);
 					} catch (Exception e) {
 						e.printStackTrace();
