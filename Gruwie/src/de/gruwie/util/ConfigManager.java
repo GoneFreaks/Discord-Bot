@@ -1,8 +1,5 @@
 package de.gruwie.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigManager {
@@ -19,16 +16,9 @@ public class ConfigManager {
 	}
 	
 	public static boolean reload() {
-		config = new Properties();
-		try {
-			File temp = new File("config.properties");
-			InputStream in = new FileInputStream(temp);
-			config.load(in);
-			in.close();
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		config = GruwieIO.loadProperties("config.properties");
+		if(config == null) return false;
+		else return true;
 	}
 	
 	public static String configToString() {

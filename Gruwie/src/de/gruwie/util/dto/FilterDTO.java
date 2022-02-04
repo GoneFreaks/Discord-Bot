@@ -26,4 +26,9 @@ public class FilterDTO {
 		return filter;
 	}
 	
+	@Override
+	public boolean equals(Object other) {
+		return other.toString().equalsIgnoreCase(this.getName());
+	}
+	
 }

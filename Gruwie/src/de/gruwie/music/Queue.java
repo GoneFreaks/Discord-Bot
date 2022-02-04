@@ -168,13 +168,14 @@ public class Queue {
 			b.append(toStringHelper(start, end));
 			if(end != queuelist.size()) b.append("\n**:arrow_down: " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**");
 		}
-		if(queuelist.size() == 0) b.append("**THE QUEUE IS EMPTY**\n");
 		
 		b.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
 		return b.toString();
 	}
 	
 	public String toStringHelper(int start, int end) {
+		
+		if(end == 0) return "**THE QUEUE IS EMPTY**\n";
 		
 		StringBuilder b = new StringBuilder("");
 		int title_size = ConfigManager.getInteger("queue_character_count");
@@ -242,9 +243,15 @@ public class Queue {
 	
 	public void setNextTrack(String track) {
 		if(next_audio_track == null) {
-			queuelist.forEach((k) -> {
-				if(k.getInfo().title.equals(track)) next_audio_track = k;
-			});
+			for (AudioTrack i : queuelist) {
+				if(i.getInfo().title.equals(track)) {
+					this.next_audio_track = i;
+					queuelist.remove(i);
+					if(repeat) queuelist.add(queuelist.indexOf(current_track) + 1, i);
+					else queuelist.add(0, i);
+					break;
+				}
+			}
 		}
 		else MessageManager.sendEmbedMessage(true, "**THERE'S ALREADY A NEXT TRACK**", guild_id, null);
 	}

@@ -35,11 +35,11 @@ public class Gruwie_Startup {
 	private PlayerManager playerManager;
 
 	public static void main(String[] args) {
-		
 		try {
 			Filter.setErrStream();
 		} catch (Exception e) {
-			System.out.println("UNABLE TO REDIRECT OUTPUT-STREAMS\nPLEASE CONTACT THE HOSTER OF THIS BOT-INSTANCE");
+			System.err.println("UNABLE TO REDIRECT OUTPUT-STREAMS\nPLEASE CONTACT THE HOSTER OF THIS BOT-INSTANCE");
+			return;
 		}
 		
 		System.out.println("Running OS:\t\t" + System.getProperty("os.name"));

@@ -1,8 +1,11 @@
 package de.gruwie.util;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class GruwieIO {
@@ -37,5 +40,18 @@ public class GruwieIO {
 		}
 		String edit = b.toString().replace(';', '\n');
 		return edit;
+	}
+	
+	public static Properties loadProperties(String file) {
+		try {
+			Properties result = new Properties();
+			File temp = new File(file);
+			InputStream in = new FileInputStream(temp);
+			result.load(in);
+			in.close();
+			return result;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

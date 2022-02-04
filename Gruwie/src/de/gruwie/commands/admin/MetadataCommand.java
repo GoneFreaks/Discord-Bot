@@ -6,6 +6,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.AdminCommand;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.db.da.TrackDA;
+import de.gruwie.music.helper.FilterManager;
 import de.gruwie.util.ErrInterceptor;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.MessageManager;
@@ -32,6 +33,7 @@ public class MetadataCommand implements AdminCommand {
 					}
 				}
 			});
+			thread.setName("Metadata");
 			thread.start();
 		}
 		
@@ -60,14 +62,21 @@ public class MetadataCommand implements AdminCommand {
 		
 		b.append("\n\nGeneral:\n\tOnline since: " + Formatter.getDateTime(Gruwie_Startup.start_time));
 		b.append("\n\tOnline_Time: " + Formatter.formatTime(System.currentTimeMillis() - Gruwie_Startup.start_time));
+		int filter_count = FilterManager.filterCount();
+		b.append("\n\tLoaded_Filters: " + (filter_count == -1? "Not yet loaded" : filter_count));
+		int custom_filter_count = FilterManager.customFilterCount();
+		b.append("\n\tCustom_Filters: " + (custom_filter_count == -1? "Not yet loaded" : custom_filter_count));
 		
 		b.append("\n\nMemory: ");
 		b.append("\n\tMaximum: " + Formatter.formatByteSize(Runtime.getRuntime().maxMemory()));
 		b.append("\n\tTotal: " + Formatter.formatByteSize(Runtime.getRuntime().totalMemory()));
 		b.append("\n\tFree: " + Formatter.formatByteSize(Runtime.getRuntime().freeMemory()));
 		b.append("\n\tUsed: " + Formatter.formatByteSize(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-		double freePercentage = (Runtime.getRuntime().freeMemory() + 0.0) / Runtime.getRuntime().totalMemory();
-		b.append("\n\tFree(%): " + Formatter.formatDouble(freePercentage * 100) + "%");
+		double freePercentage = ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + 0.0) / Runtime.getRuntime().totalMemory();
+		b.append("\n\tUsed(%): " + Formatter.formatDouble(freePercentage * 100) + "%");
+		
+		b.append("\n\nThreads: ");
+		b.append("\n\tCount: " + Thread.activeCount());
 		
 		b.append("\n\nCMD-Output: ");
 		b.append("\n\n" + OutInterceptor.getCmdOutput());

@@ -14,7 +14,7 @@ public class MessageManager {
 		try {
 			Message output = sendEmbedMessage(message, guildId, footer);
 			if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
-			else MessageHolder.add(output);
+			else MessageHolder.add(output, true);
 			return output;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,6 +53,8 @@ public class MessageManager {
 	}
 	
 	public static Message sendEmbedPrivateMessage(PrivateChannel channel, String message) {
-		return channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).complete();
+		Message m = channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).complete();
+		MessageHolder.add(m, false);
+		return m;
 	}
 }
