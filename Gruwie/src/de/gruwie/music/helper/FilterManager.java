@@ -39,6 +39,7 @@ public class FilterManager {
 	
 	private void loadCustomFilters() {
 		Properties props = GruwieIO.loadProperties("filter.properties");
+		if(props == null) return;
 		props.forEach((k,v) -> {
 			for (FilterDTO i : filters) {
 				if(i.equals(k)) {
