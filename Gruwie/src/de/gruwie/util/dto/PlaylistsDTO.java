@@ -1,5 +1,6 @@
 package de.gruwie.util.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistsDTO {
@@ -18,6 +19,14 @@ public class PlaylistsDTO {
 
 	public List<String> getUser_playlists() {
 		return user_playlists;
+	}
+	
+	public void resetGuild_playlists() {
+		this.guild_playlists = new ArrayList<>();
+	}
+	
+	public void resetUser_playlists() {
+		this.user_playlists = new ArrayList<>();
 	}
 	
 	public int size() {

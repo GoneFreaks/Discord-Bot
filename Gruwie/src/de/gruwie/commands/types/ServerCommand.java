@@ -39,36 +39,36 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		this(true, false, callingClass, null, -1, null, null);
 	}
 
-	public String getCommand() {
+	public final String getCommand() {
 		return command;
 	}
 
-	public String getShortcut() {
+	public final String getShortcut() {
 		return shortcut;
 	}
 
-	public String getSymbol() {
+	public final String getSymbol() {
 		return symbol;
 	}
 	
-	public int getPosition() {
+	public final int getPosition() {
 		return position;
 	}
 	
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 	
-	public boolean isWip() {
+	public final boolean isWip() {
 		return wip;
 	}
 	
-	public String getPackageName() {
+	public final String getPackageName() {
 		return package_name;
 	}
 	
 	@Override
-	public String toString() {
+	public final String toString() {
 		String cmd_symbol = ConfigManager.getString("symbol");
 		StringBuilder b = new StringBuilder(wip? "**WIP**------------------------------\n" : "");
 		b.append("Command: *" + cmd_symbol + command + "*\n");
@@ -83,7 +83,7 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		System.err.println(command);
 	}
 
-	public int compareTo(ServerCommand other) {
+	public final int compareTo(ServerCommand other) {
 		if(this.package_name.equals(other.getPackageName())) return this.getCommand().compareTo(other.getCommand());
 		else return this.getPackageName().compareTo(other.getPackageName());
 	}

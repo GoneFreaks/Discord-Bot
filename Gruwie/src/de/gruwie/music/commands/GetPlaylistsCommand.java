@@ -5,7 +5,9 @@ import de.gruwie.db.PlaylistManager;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.music.helper.ShowPlaylists;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.EntityType;
 import de.gruwie.util.MessageManager;
+import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -17,24 +19,30 @@ public class GetPlaylistsCommand extends ServerCommand {
 	}
 	
 	@Override
-	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+	public void performServerCommand(Member member, TextChannel channel, Message message) {
 		
 		String[] args = message.getContentRaw().split(" ");
 		
-		if(ConfigManager.getBoolean("database") && (args.length == 1 || args.length == 2)) {
-			if(args.length == 1) {
-				ShowPlaylists.showPlaylists(channel, member, true);
-			}
-			if(args.length == 2) {
-				try {
-					int count = Integer.parseInt(args[1]);
-					if(count <= ConfigManager.getInteger("max_queue_size")) PlaylistManager.playPlaylist(member, channel, PlaylistDA.readRandom(count));
-					else MessageManager.sendEmbedMessage(true, "**THE GIVEN NUMBER (" + count + ") IS TOO BIG, PROVIDE A SMALLER NUMBER (<" + ConfigManager.getInteger("max_queue_size") + ")**", channel, null);
-				} catch (Exception e) {
-					MessageManager.sendEmbedMessage(true, "**YOU HAVE TO PROVIDE A VALID NUMBER**", channel, null);
+		if(ConfigManager.getDatabase()) {
+			try {
+				if(args.length == 1 || args.length == 2) {
+					if(args.length == 1) {
+						ShowPlaylists.showPlaylists(channel, member, true, EntityType.ALL);
+					}
+					if(args.length == 2) {
+						if(args[1].trim().equals("g")) ShowPlaylists.showPlaylists(channel, member, true, EntityType.GUILD);
+						if(args[1].trim().equals("u")) ShowPlaylists.showPlaylists(channel, member, true, EntityType.USER);
+						try {
+							int count = Integer.parseInt(args[1]);
+							if(count <= ConfigManager.getInteger("max_queue_size")) PlaylistManager.playPlaylist(member, channel, PlaylistDA.readRandom(count));
+							else MessageManager.sendEmbedMessage(true, "**THE GIVEN NUMBER (" + count + ") IS TOO BIG, PROVIDE A SMALLER NUMBER (<" + ConfigManager.getInteger("max_queue_size") + ")**", channel, null);
+						} catch (Exception e) {
+						}
+					}	
 				}
+			} catch (TooManyPlaylistsException e) {
+				MessageManager.sendEmbedMessage(true, "**DUE TO API-LIMITATIONS ONLY 25 ELEMENTS CAN BE DISPLAYED INSIDE A DROPDOWN-MENU\nIF YOU WANT TO USE THIS COMMAND YOU HAVE TO ADD EITHER A *G* OR *U* IN ORDER TO GET PLAYLISTS\nIF YOU ALREADY USED THIS ARGUMENTS PLEASE CONTACT THE BOT-HOSTER**", channel, null);
 			}
-			
 		}
 		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
 	}

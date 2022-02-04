@@ -2,6 +2,10 @@ package de.gruwie.music.commands;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.helper.ShowPlaylists;
+import de.gruwie.util.ConfigManager;
+import de.gruwie.util.EntityType;
+import de.gruwie.util.MessageManager;
+import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -13,8 +17,22 @@ public class UpdatePlaylistCommand extends ServerCommand {
 	}
 	
 	@Override
-	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		ShowPlaylists.showPlaylists(channel, member, false);
+	public void performServerCommand(Member member, TextChannel channel, Message message) {
+		
+		if(ConfigManager.getDatabase()) {
+			try {
+				String[] args = message.getContentRaw().split(" ");
+				if(args.length > 2) return;
+				if(args.length == 1) ShowPlaylists.showPlaylists(channel, member, false, EntityType.ALL);
+				else {
+					if(args[1].trim().equals("g")) ShowPlaylists.showPlaylists(channel, member, false, EntityType.GUILD);
+					if(args[1].trim().equals("u")) ShowPlaylists.showPlaylists(channel, member, false, EntityType.USER);
+				}
+			} catch (TooManyPlaylistsException e) {
+				MessageManager.sendEmbedMessage(true, "**DUE TO API-LIMITATIONS ONLY 25 ELEMENTS CAN BE DISPLAYED INSIDE A DROPDOWN-MENU\nIF YOU WANT TO USE THIS COMMAND YOU HAVE TO ADD EITHER A *G* OR *U* IN ORDER TO GET PLAYLISTS\nIF YOU ALREADY USED THIS ARGUMENTS PLEASE CONTACT THE BOT-HOSTER**", channel, null);
+			}
+		}
+		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
 	}
 	
 }

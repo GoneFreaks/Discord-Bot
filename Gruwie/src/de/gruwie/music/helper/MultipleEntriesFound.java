@@ -3,6 +3,7 @@ package de.gruwie.music.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.dto.CheckTrackDTO;
 import de.gruwie.util.selectOptions.SelectOptionAction;
@@ -15,7 +16,7 @@ public class MultipleEntriesFound {
 	public static void promptDialog (String message, List<CheckTrackDTO> track_list, TextChannel channel, Member member, boolean isSetter) {
 		
 		if(track_list.size() > 5) {
-			return;
+			MessageManager.sendEmbedMessage(true, "**THE PROVIDED INPUT IS TOO AMBIGUOUS**", channel, null);
 		}
 		
 		StringBuilder c = new StringBuilder("**Multiple entries have been found:**\n\n*");
