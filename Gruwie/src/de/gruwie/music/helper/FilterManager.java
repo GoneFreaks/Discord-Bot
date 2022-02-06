@@ -39,29 +39,31 @@ public class FilterManager {
 	
 	private void loadCustomFilters() {
 		Properties props = GruwieIO.loadProperties("filter.properties");
-		if(props == null) return;
-		props.forEach((k,v) -> {
-			for (FilterDTO i : filters) {
-				if(i.equals(k)) {
-					System.err.println("The Filter: " + k + " cannot be loaded\n\t--> The name has already been used");
-					return;
-				}
-			}
-			String[] args = v.toString().trim().split(" ");
-			if(args.length == 15) {
-				try {
-					double[] result = new double[15];
-					for (int i = 0; i < args.length; i++) {
-						double value = Double.parseDouble(args[i]);
-						result[i] = value;
+		if(props != null) {
+			props.forEach((k,v) -> {
+				for (FilterDTO i : filters) {
+					if(i.equals(k)) {
+						System.err.println("The Filter: " + k + " cannot be loaded\n\t--> The name has already been used");
+						return;
 					}
-					filters.add(new FilterDTO(k.toString(), result));
-				} catch (Exception e) {
-					System.err.println("The Filter: [" + k + "] cannot be loaded\n\t--> Check Number-Format");
 				}
-			}
-			else System.err.println("The Filter: " + k + " cannot be loaded\n\t--> You have to provide exactly 15 Numbers");
-		});
+				String[] args = v.toString().trim().split(" ");
+				if(args.length == 15) {
+					try {
+						double[] result = new double[15];
+						for (int i = 0; i < args.length; i++) {
+							double value = Double.parseDouble(args[i]);
+							result[i] = value;
+						}
+						filters.add(new FilterDTO(k.toString(), result));
+					} catch (Exception e) {
+						System.err.println("The Filter: [" + k + "] cannot be loaded\n\t--> Check Number-Format");
+					}
+				}
+				else System.err.println("The Filter: " + k + " cannot be loaded\n\t--> You have to provide exactly 15 Numbers");
+			});
+		}
+		else System.out.println("Unable to load Custom-Filter");
 	}
 	
 	public String getCurrentFilter() {

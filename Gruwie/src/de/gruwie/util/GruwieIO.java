@@ -14,6 +14,8 @@ public class GruwieIO {
 		try {
 			URL url = new URL(link);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
 			con.setRequestMethod("GET");
 			int responseCode = con.getResponseCode();
 			if(responseCode == 200) {
@@ -29,7 +31,7 @@ public class GruwieIO {
 		
 		StringBuilder b = new StringBuilder("");
 		InputStream website = getInputStream(input);
-		if(website == null) return null;
+		if(website == null) return "";
 		try (Scanner in = new Scanner(website)){
 			while (in.hasNext()) {
 				String line = in.nextLine();

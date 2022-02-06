@@ -3,6 +3,7 @@ package de.gruwie;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -76,7 +77,7 @@ public class Gruwie_Startup {
 		this.playerManager = new PlayerManager();
 		this.cmdMan = new CommandManager();
 		this.acmdMan = new AdminCommandManager();
-		
+
 		this.audioPlayerManager = new DefaultAudioPlayerManager();
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
@@ -92,6 +93,27 @@ public class Gruwie_Startup {
 				while ((line = reader.readLine()) != null) {
 					if (line.equalsIgnoreCase("exit")) {
 						shutdown();
+						
+						Thread t = new Thread(() -> {
+							while(true) {
+								try {
+									TimeUnit.SECONDS.sleep(30);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								Thread[] threads = new Thread[Thread.activeCount()];
+								Thread.enumerate(threads);
+								System.out.println("\n\nDaemon-Check");
+								System.err.println("\n\n");
+								for (Thread i : threads) {
+									if(!i.isDaemon()) System.err.println(i.getName());
+								}
+								System.err.println("\n");
+							}
+						}, "Thread-Checker");
+						t.setDaemon(true);
+						t.start();
+						
 						break;
 					} else System.out.println("Use 'exit' to shutdown");
 				}

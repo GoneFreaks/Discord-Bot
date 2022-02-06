@@ -2,9 +2,6 @@ package de.gruwie.db;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -14,6 +11,7 @@ import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.music.AudioLoadResultBulk;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.helper.CheckVoiceState;
+import de.gruwie.util.Threadpool;
 import de.gruwie.util.dto.PlaylistsDTO;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import net.dv8tion.jda.api.entities.Member;
@@ -51,21 +49,11 @@ public class PlaylistManager {
 			MusicController controller = checkAndJoin(member, channel);
 			AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
 			
-			ExecutorService exc = Executors.newCachedThreadPool(new ThreadFactory() {
-				@Override
-				public Thread newThread(Runnable r) {
-					Thread temp = new Thread(r);
-					temp.setDaemon(true);
-					return temp;
-				}
-			});
-			
 			for (String i : list) {
-				exc.execute(() -> {
+				Threadpool.execute(() -> {
 					apm.loadItem(i, new AudioLoadResultBulk(controller, i));
 				});
 			}
-			exc.shutdown();
 		}
 	}
 }

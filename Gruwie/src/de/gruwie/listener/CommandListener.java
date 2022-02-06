@@ -66,5 +66,8 @@ public class CommandListener extends ListenerAdapter {
 			}
 		}
 		else MessageManager.sendEmbedPrivateMessage(event.getChannel(), "WHY ARE YOU SENDING MESSAGES TO A BOT?");
+	
+		event.getMessage().delete().queue(null, Filter.handler);
+	
 	}
 }

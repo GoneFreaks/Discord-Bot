@@ -6,6 +6,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.admin.MetadataCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.Formatter;
+import de.gruwie.util.Threadpool;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -46,6 +47,7 @@ public class SystemListener extends ListenerAdapter {
 		try {
 			ChannelManager.shutdown();
 			MetadataCommand.interrupt();
+			Threadpool.shutdown();
 			System.out.println("BOT is offline");
 		} catch (Exception e) {
 			e.printStackTrace();
