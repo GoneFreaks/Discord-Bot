@@ -66,7 +66,6 @@ public class CommandManager {
 		
 		b.append("\n**You can use *" + cmd_symbol + "help <command>* in order to get help for a specific command**\n");
 		b.append("\n\nBOT-Creator:\n<@!690659763998031902>\n<@!690255106272526399>\nHosted by: <@!" + ConfigManager.getString("owner_id") + ">");
-		System.out.println(b.length());
 		return b.toString();
 	}
 	
