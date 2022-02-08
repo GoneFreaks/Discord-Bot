@@ -152,7 +152,7 @@ public class Queue {
 		
 		b.append("__**Queue: **__\n");
 		b.append("Current Filter: *" + filter.getCurrentFilter() + "*\n");
-		b.append("Volume: *" + audioPlayer.getVolume() + "*\n");
+		b.append("Looping: " + (repeat? "Active" : "Not active") + "\n");
 		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n");
 		String temp = queueTime();
 		if(temp != null) b.append("Duration: *" + temp +"*");
@@ -172,7 +172,6 @@ public class Queue {
 			if(end != queuelist.size()) b.append("\n**:arrow_down: " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**");
 		}
 		
-		b.append("\n\nLooping is **" + (repeat? "active" : "not active") + "**");
 		return b.toString();
 	}
 	

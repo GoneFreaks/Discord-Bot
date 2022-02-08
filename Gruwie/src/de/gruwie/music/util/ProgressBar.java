@@ -44,6 +44,7 @@ public class ProgressBar implements Runnable {
 	private int counter = 0;
 	private String listToString(long current_position, long duration) {
 		StringBuilder b = new StringBuilder("\n");
+		b.append("\n`" + checkProcess(current_position, duration) + "`\n");
 		if(shown) b.append(":arrow_forward:"); 
 		else b.append(":black_medium_square:");
 		counter++;
@@ -52,7 +53,6 @@ public class ProgressBar implements Runnable {
 			counter = 0;
 		}
 		b.append(" " + Formatter.formatTime(current_position) + "/" + Formatter.formatTime(duration));
-		b.append(" `" + checkProcess(current_position, duration) + "`");
 		return b.toString();
 	}
 	

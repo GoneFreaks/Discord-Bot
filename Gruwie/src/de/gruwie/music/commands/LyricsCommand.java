@@ -41,12 +41,12 @@ public class LyricsCommand extends ServerCommand {
 		}
 		
 		if(query != null) {
-			String[] uri = Formatter.getURL(query);
-			if(uri != null) {
+			String[] url = Formatter.getURL(query);
+			if(url != null) {
 				List<Future<String>> futures = new ArrayList<>();
-				for (int i = 0; i < uri.length; i++) futures.add(Threadpool.submit(new DoWebBrowsing(uri[i])));
-				Future<String> future = Threadpool.submit(new Loop(futures));
-				new Thread(() -> {
+				for (int i = 0; i < url.length; i++) futures.add(Threadpool.submit(new DoWebBrowsing(url[i])));
+				Future<String> future = Threadpool.submit(new WaitForBrowsing(futures));
+				Threadpool.execute(() -> {
 					try {
 						String result = future.get();
 						if(result.length() > 0) MessageManager.sendEmbedMessage(false, result, channel, "Powered by: www.azlyrics.com");
@@ -54,7 +54,7 @@ public class LyricsCommand extends ServerCommand {
 					} catch (Exception e) {
 						e.printStackTrace();
 					} 
-				}).start();
+				});
 			}
 			
 		}
@@ -62,12 +62,12 @@ public class LyricsCommand extends ServerCommand {
 	
 }
 
-class Loop implements Callable<String> {
+class WaitForBrowsing implements Callable<String> {
 	
 	private final List<Future<String>> futures;
 	private List<Integer> done;
 	
-	public Loop (List<Future<String>> futures) {
+	public WaitForBrowsing (List<Future<String>> futures) {
 		this.futures = futures;
 		this.done = new ArrayList<>();
 	}
@@ -89,17 +89,16 @@ class Loop implements Callable<String> {
 
 class DoWebBrowsing implements Callable<String> {
 
-	private final String uri;
+	private final String url;
 	
-	public DoWebBrowsing (String uri) {
-		this.uri = uri;
+	public DoWebBrowsing (String url) {
+		this.url = url;
 	}
 
 	@Override
 	public String call() throws Exception {
-		String result = GruwieIO.doWebBrowsing(uri);
+		String result = GruwieIO.doWebBrowsing(url);
 		if(result == null) return "";
 		else return Formatter.formatWebsite(result);
 	}
-	
 }
