@@ -7,7 +7,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.db.da.TrackDA;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.MessageManager;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 
 public class AudioLoadResult implements AudioLoadResultHandler {

@@ -2,8 +2,8 @@ package de.gruwie.util.dto;
 
 public class FilterDTO {
 
-	private String name;
-	private float[] filter;
+	private final String name;
+	private final float[] filter;
 	
 	public FilterDTO (String name, double ... input) {
 		this.name = name;

@@ -1,4 +1,4 @@
-package de.gruwie.util;
+package de.gruwie.util.streams;
 
 import java.io.PrintStream;
 import java.util.LinkedList;

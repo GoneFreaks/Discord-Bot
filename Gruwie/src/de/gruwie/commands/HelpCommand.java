@@ -4,7 +4,7 @@ import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.MessageManager;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class HelpCommand extends ServerCommand {
 	
 	public HelpCommand() {
-		super(false, true, HelpCommand.class, "Help/Manual-Pages", "A collection of all commands available\nAlso the command to get help for other commands");
+		super(false, true, HelpCommand.class, null, "A command or its shortcut", "Help/Manual-Pages", "A collection of all commands available\nAlso the command to get help for other commands");
 	}
 	
 	@Override
@@ -27,13 +27,20 @@ public class HelpCommand extends ServerCommand {
 			String command_symbol = ConfigManager.getString("symbol");
 			
 			String cmd = args[1].trim().replaceAll(command_symbol, "");
-			ServerCommand scmd = cmdMan.getServerCommand(cmd);
+			ServerCommand scmd = cmdMan.getServerCommand(cmd.toLowerCase());
 			if(scmd != null) {
 				
 				StringBuilder b = new StringBuilder("");
+				
+				b.append(scmd);
+				String parameters = scmd.getParamters();
+				if(parameters != null) b.append("Mandatory Parameters: *" + parameters + "*\n");
+				String optional_parameters = scmd.getOptionalParamters();
+				if(optional_parameters != null) b.append("Optional Paramters: *" + optional_parameters + "*\n\n");
 				String desc = scmd.getDescription();
-				b.append(scmd + "\n" + (desc != null? desc : "NA"));
+				b.append(desc != null? desc : "NA");
 				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
+				
 				
 				MessageManager.sendEmbedMessage(false, b.toString(), guildId, null);
 			}

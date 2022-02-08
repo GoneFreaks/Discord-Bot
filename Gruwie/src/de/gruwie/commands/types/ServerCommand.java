@@ -2,8 +2,8 @@ package de.gruwie.commands.types;
 
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
-import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.CommandDTO;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -16,12 +16,14 @@ public class ServerCommand implements Comparable<ServerCommand>{
 	private final int position;
 	private final String short_description;
 	private final String description;
-	private final boolean wip;
+	private final boolean in_testing;
 	private final String package_name;
+	private final String paramters;
+	private final String optional_paramters;
 	
-	public ServerCommand(boolean wip, boolean tryShortcut, Class<?> callingClass, String symbol, int position, String short_description, String description) {
+	public ServerCommand(boolean in_testing, boolean tryShortcut, Class<?> callingClass, String symbol, int position, String paramters, String optional_paramters, String short_description, String description) {
 		CommandDTO dto = Formatter.createNames(callingClass.getSimpleName(), tryShortcut);
-		this.wip = wip;
+		this.in_testing = in_testing;
 		this.command = dto.getCommand();
 		this.shortcut = dto.getShortcut();
 		this.symbol = symbol;
@@ -29,14 +31,24 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		this.short_description = short_description;
 		this.description = description;
 		this.package_name = callingClass.getPackage().getName();
+		this.paramters = paramters;
+		this.optional_paramters = optional_paramters;
 	}
 	
-	public ServerCommand(boolean wip, boolean tryShortcut, Class<?> callingClass, String short_description, String description) {
-		this(wip, tryShortcut, callingClass, null, -1, short_description, description);
+	public ServerCommand(boolean in_testing, boolean tryShortcut, Class<?> callingClass, String paramters, String optional_paramters, String short_description, String description) {
+		this(in_testing, tryShortcut, callingClass, null, -1, paramters, optional_paramters, short_description, description);
+	}
+	
+	public ServerCommand(boolean in_testing, boolean tryShortcut, Class<?> callingClass, String short_description, String description) {
+		this(in_testing, tryShortcut, callingClass, null, -1, null, null, short_description, description);
+	}
+	
+	public ServerCommand(boolean in_testing, boolean tryShortcut, Class<?> callingClass, String symbol, int position, String short_description, String description) {
+		this(in_testing, tryShortcut, callingClass, symbol, position, null, null, short_description, description);
 	}
 	
 	public ServerCommand(Class<?> callingClass) {
-		this(true, false, callingClass, null, -1, null, null);
+		this(true, false, callingClass, null, -1, null, null, null, null);
 	}
 
 	public final String getCommand() {
@@ -59,23 +71,32 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		return description;
 	}
 	
-	public final boolean isWip() {
-		return wip;
+	public final boolean isInTesting() {
+		return in_testing;
 	}
 	
 	public final String getPackageName() {
 		return package_name;
 	}
 	
+	public final String getParamters() {
+		return paramters;
+	}
+	
+	public final String getOptionalParamters() {
+		return optional_paramters;
+	}
+	
 	@Override
 	public final String toString() {
 		String cmd_symbol = ConfigManager.getString("symbol");
-		StringBuilder b = new StringBuilder(wip? "**WIP**------------------------------\n" : "");
+		StringBuilder b = new StringBuilder(in_testing? "**IN TESTING**-------------------------------------\n" : "");
 		b.append("Command: *" + cmd_symbol + command + "*\n");
 		if(shortcut != null) b.append("Shortcut: *" + cmd_symbol + shortcut + "*\n");
+		
 		if(symbol != null) b.append("Symbol: *" + symbol + "*\n");
 		if(short_description != null) b.append("Description: *" + short_description + "*\n");
-		return b.toString() + (wip? "-----------------------------------\n" : "");
+		return b.toString() + (in_testing? "---------------------------------------------------\n" : "");
 	}
 
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {

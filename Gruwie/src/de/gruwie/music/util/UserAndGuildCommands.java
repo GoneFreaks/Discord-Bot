@@ -1,4 +1,4 @@
-package de.gruwie.music.helper;
+package de.gruwie.music.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,11 @@ import de.gruwie.db.PlaylistManager;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.MessageManager;
-import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
-import de.gruwie.util.selectOptions.DeletePlaylist;
-import de.gruwie.util.selectOptions.SelectOptionAction;
+import de.gruwie.util.jda.MessageManager;
+import de.gruwie.util.jda.SelectionMenuManager;
+import de.gruwie.util.jda.selectOptions.DeletePlaylist;
+import de.gruwie.util.jda.selectOptions.SelectOptionAction;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;

@@ -1,7 +1,7 @@
-package de.gruwie.util.selectOptions;
+package de.gruwie.util.jda.selectOptions;
 
 import de.gruwie.music.MusicController;
-import de.gruwie.music.helper.CheckVoiceState;
+import de.gruwie.music.util.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 

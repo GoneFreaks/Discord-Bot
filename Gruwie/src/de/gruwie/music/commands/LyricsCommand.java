@@ -12,8 +12,8 @@ import de.gruwie.music.Queue;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.GruwieIO;
-import de.gruwie.util.MessageManager;
 import de.gruwie.util.Threadpool;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -21,7 +21,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class LyricsCommand extends ServerCommand {
 	
 	public LyricsCommand() {
-		super(true, true, LyricsCommand.class, "Get Lyrics for tracks", "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track");
+		super(true, true, LyricsCommand.class, null, "The song-name and the interpret seperated by **-**", "Get Lyrics for tracks", "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track");
 	}
 	
 	@Override

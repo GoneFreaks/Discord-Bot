@@ -5,9 +5,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 public class CheckTrackDTO implements Comparable<CheckTrackDTO> {
 
 	private int treffer;
-	private String title;
-	
-	private AudioTrack track;
+	private final String title;
+	private final AudioTrack track;
 	
 	public CheckTrackDTO(AudioTrack track) {
 		this.track = track;

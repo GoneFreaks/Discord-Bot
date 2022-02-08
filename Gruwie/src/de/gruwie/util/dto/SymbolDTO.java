@@ -1,11 +1,11 @@
 package de.gruwie.util.dto;
 
-public class Symbol implements Comparable<Symbol> {
+public class SymbolDTO implements Comparable<SymbolDTO> {
 
 	private final String symbol;
 	private final int position;
 	
-	public Symbol (String symbol, int position) {
+	public SymbolDTO (String symbol, int position) {
 		this.symbol = symbol;
 		this.position = position;
 	}
@@ -15,7 +15,7 @@ public class Symbol implements Comparable<Symbol> {
 	}
 
 	@Override
-	public int compareTo(Symbol o) {
+	public int compareTo(SymbolDTO o) {
 		return position - o.position;
 	}
 	

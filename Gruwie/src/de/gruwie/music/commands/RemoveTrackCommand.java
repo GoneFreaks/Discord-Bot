@@ -6,8 +6,8 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
-import de.gruwie.music.helper.MultipleEntriesFound;
-import de.gruwie.util.CheckTrack;
+import de.gruwie.music.util.CheckTrack;
+import de.gruwie.util.Dropdown;
 import de.gruwie.util.dto.CheckTrackDTO;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class RemoveTrackCommand extends ServerCommand {
 	
 	public RemoveTrackCommand() {
-		super(true, true, RemoveTrackCommand.class, "Remove track from queue", "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query");
+		super(true, true, RemoveTrackCommand.class, "Search-Query, in order to identify a track in the queue", null, "Remove track from queue", "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query");
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class RemoveTrackCommand extends ServerCommand {
 			List<CheckTrackDTO> track_list = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());
 			if(track_list != null) {
 				if(track_list.size() == 1) queue.removeTrack(track_list.get(0).getTrack());
-				else MultipleEntriesFound.promptDialog("\n\n**Which track should be deleted?**", track_list, channel, member, false);
+				else Dropdown.multipleEntriesFound("\n\n**Which track should be deleted?**", track_list, channel, member, false);
 			}
 		}
 	}

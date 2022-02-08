@@ -66,6 +66,7 @@ public class CommandManager {
 		
 		b.append("\n**You can use *" + cmd_symbol + "help <command>* in order to get help for a specific command**\n");
 		b.append("\n\nBOT-Creator:\n<@!690659763998031902>\n<@!690255106272526399>\nHosted by: <@!" + ConfigManager.getString("owner_id") + ">");
+		System.out.println(b.length());
 		return b.toString();
 	}
 	
@@ -97,7 +98,7 @@ public class CommandManager {
 							if(name.contains("Command") && name.contains("commands") && !name.contains("types") && !name.contains("admin")) {
 								Class<?> cls = Class.forName(name.replace(".class", "").replaceAll("/", "."));
 								ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
-								if(!ConfigManager.getBoolean("wip") && scmd.isWip()) continue; 
+								if(!ConfigManager.getBoolean("wip") && scmd.isInTesting()) continue; 
 								commands.add(scmd);
 							}
 						}

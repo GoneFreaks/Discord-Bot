@@ -3,8 +3,8 @@ package de.gruwie.music.commands;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
-import de.gruwie.music.helper.CheckVoiceState;
-import de.gruwie.util.MessageManager;
+import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShowQueueCommand extends ServerCommand {
 
 	public ShowQueueCommand() {
-		super(false, true, ShowQueueCommand.class, null, -1, "Show complete queue", "Show complete queue, all messages of this type will be deleted during shutdown");
+		super(false, true, ShowQueueCommand.class, "Show complete queue", "Show complete queue, all messages of this type will be deleted during shutdown");
 	}
 	
 	@Override

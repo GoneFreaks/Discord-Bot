@@ -10,7 +10,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.music.AudioLoadResultBulk;
 import de.gruwie.music.MusicController;
-import de.gruwie.music.helper.CheckVoiceState;
+import de.gruwie.music.util.CheckVoiceState;
 import de.gruwie.util.Threadpool;
 import de.gruwie.util.dto.PlaylistsDTO;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;

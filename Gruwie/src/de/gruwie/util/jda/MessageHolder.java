@@ -1,10 +1,12 @@
-package de.gruwie.util;
+package de.gruwie.util.jda;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import de.gruwie.util.ConfigManager;
+import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.Message;
 
 public class MessageHolder {

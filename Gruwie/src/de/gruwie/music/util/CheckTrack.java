@@ -1,4 +1,4 @@
-package de.gruwie.util;
+package de.gruwie.music.util;
 
 import java.util.ArrayList;
 import java.util.Collections;

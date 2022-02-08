@@ -1,9 +1,9 @@
 package de.gruwie.music.commands;
 
 import de.gruwie.commands.types.ServerCommand;
-import de.gruwie.music.helper.UserAndGuildCommands;
+import de.gruwie.music.util.UserAndGuildCommands;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.MessageManager;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ExportUserPlaylistCommand extends ServerCommand {
 
 	public ExportUserPlaylistCommand() {
-		super(false, true, ExportUserPlaylistCommand.class, "Save queue as User-Playlist", "Save the current music-queue as an account-specific playlist with the provided name (no spaces are allowed)\nEveryone can use this command");
+		super(false, true, ExportUserPlaylistCommand.class, "The playlist name, one word with 30 characters at max", "", "Save queue as User-Playlist", "Save the current music-queue as an account-specific playlist with the provided name (no spaces are allowed)\nEveryone can use this command");
 	}
 	
 	@Override

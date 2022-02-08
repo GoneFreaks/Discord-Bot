@@ -1,9 +1,11 @@
-package de.gruwie.util;
+package de.gruwie.util.streams;
 
 import java.io.File;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
+
+import de.gruwie.util.Formatter;
 
 public class ErrInterceptor extends PrintStream {
 

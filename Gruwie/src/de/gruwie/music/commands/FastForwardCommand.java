@@ -5,7 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
-import de.gruwie.music.helper.CheckVoiceState;
+import de.gruwie.music.util.CheckVoiceState;
 import de.gruwie.util.ConfigManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class FastForwardCommand extends ServerCommand {
 	
 	public FastForwardCommand() {
-		super(true, true, FastForwardCommand.class, "⏩", 3, "Skip some time in a track", "You can customize the Fast-Forward-Time by providing an argument\nYou can jump forward and backwards by using diffrent signs (*+ -*)");
+		super(true, true, FastForwardCommand.class, "⏩", 3, null, "Number n --> skip n-seconds (positive = forward <--> negative = backward)", "Skip some time in a track", "You can customize the Fast-Forward-Time by providing an argument\nYou can jump forward and backwards by using diffrent signs (*+ -*)");
 	}
 	
 	@Override

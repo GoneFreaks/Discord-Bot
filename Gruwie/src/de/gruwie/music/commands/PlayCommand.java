@@ -6,8 +6,8 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.AudioLoadResult;
 import de.gruwie.music.MusicController;
-import de.gruwie.music.helper.CheckVoiceState;
-import de.gruwie.util.MessageManager;
+import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 public class PlayCommand extends ServerCommand {
 
 	public PlayCommand() {
-		super(false, true, PlayCommand.class, "Play a track", "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*");
+		super(false, true, PlayCommand.class, "Search-Query or a URL", null, "Play a track", "By providing either a *youtube-track-url* or a *youtube-playlist-url* or a *search-query* you can load a track into the music-queue.\nAn example for this command with a search-query would be: *-play darude sandstorm*");
 	}
 	
 	@Override

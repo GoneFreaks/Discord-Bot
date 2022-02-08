@@ -1,4 +1,4 @@
-package de.gruwie.util.selectOptions;
+package de.gruwie.util.jda.selectOptions;
 
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.db.da.PlaylistDA;

@@ -6,9 +6,9 @@ import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.da.TrackDA;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
-import de.gruwie.music.helper.CheckVoiceState;
+import de.gruwie.music.util.CheckVoiceState;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.MessageManager;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class DeleteCurrentTrackCommand extends ServerCommand {
 
 	public DeleteCurrentTrackCommand() {
-		super(true, true, DeleteCurrentTrackCommand.class, "Delete the current track", "Remove the track currently playing from the database.\nThis includes all records were the corresponding id is used.");
+		super(true, true, DeleteCurrentTrackCommand.class, "Delete the current track", "Remove the track currently playing from the database.\nIn addition every entry of this track in playlists will also be removed");
 	}
 
 	@Override

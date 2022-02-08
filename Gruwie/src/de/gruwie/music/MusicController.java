@@ -3,7 +3,8 @@ package de.gruwie.music;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.music.helper.FilterManager;
+import de.gruwie.music.util.ProgressBar;
+import de.gruwie.util.Threadpool;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
@@ -15,6 +16,7 @@ public class MusicController {
 	private VoiceChannel vc;
 	private TrackEqualizer equalizer;
 	private FilterManager filter;
+	private ProgressBar bar;
 	
 	public MusicController(Guild guild) {
 		this.guild = guild;
@@ -22,6 +24,8 @@ public class MusicController {
 		this.equalizer = new TrackEqualizer(player);
 		this.filter = new FilterManager(this);
 		this.queue = new Queue(this);
+		this.bar = new ProgressBar(queue);
+		Threadpool.execute(bar);
 		
 		this.guild.getAudioManager().setSendingHandler(new AudioPlayerSendHandler(player));
 		this.player.addListener(new TrackScheduler());
@@ -54,6 +58,10 @@ public class MusicController {
 	
 	public VoiceChannel getVoiceChannel() {
 		return vc;
+	}
+	
+	public ProgressBar getProgressBar() {
+		return bar;
 	}
 	
 }

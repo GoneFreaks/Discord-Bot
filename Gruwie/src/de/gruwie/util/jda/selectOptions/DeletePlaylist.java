@@ -1,7 +1,7 @@
-package de.gruwie.util.selectOptions;
+package de.gruwie.util.jda.selectOptions;
 
 import de.gruwie.db.da.PlaylistDA;
-import de.gruwie.util.MessageManager;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class DeletePlaylist extends SelectOptionAction {

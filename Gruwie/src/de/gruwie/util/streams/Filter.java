@@ -1,8 +1,10 @@
-package de.gruwie.util;
+package de.gruwie.util.streams;
 
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+
+import de.gruwie.util.ConfigManager;
 
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
