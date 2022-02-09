@@ -15,7 +15,7 @@ public class SelectOptionAction extends SelectOption {
 		System.err.println("SelectOptionAction-Dummy-Method");
 	}
 	
-	public UUID getUUID() {
+	public final UUID getUUID() {
 		return UUID.fromString(super.getValue());
 	}
 

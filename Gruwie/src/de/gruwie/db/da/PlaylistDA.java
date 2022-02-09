@@ -204,18 +204,19 @@ public class PlaylistDA {
 	}
 	
 	public static boolean updatePlaylist(long id, boolean isUser, String name, List<String> urls) {
-		List<String> already = readPlaylist(name, id, isUser);
-		if(already.size() < 1) return false;
-		for (String i : urls) {
-			if(!already.contains(i)) already.add(i);
+		
+		if(deletePlaylist(id, isUser, name)) {
+			System.out.println(urls.size());
+			if(urls.size() == 0) return true;
+			if(urls.size() > ConfigManager.getInteger("max_queue_size")) return false;
+			try {
+				return writePlaylist(urls, name, id, isUser, true);
+			} catch (TooManyPlaylistsException e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
-		if(already.size() > ConfigManager.getInteger("max_queue_size")) return false;
-		try {
-			return writePlaylist(already, name, id, isUser, true);
-		} catch (TooManyPlaylistsException e) {
-			e.printStackTrace();
-			return false;
-		}
+		return false;
 	}
 	
 	public static int getPlaylistCount (boolean isUser) {

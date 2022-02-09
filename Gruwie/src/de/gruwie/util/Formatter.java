@@ -171,4 +171,13 @@ public class Formatter {
 		}
 	}
 	
+	public static String getBorder(int number, String symbol) {
+		StringBuilder b = new StringBuilder("**");
+		for (int i = 0; i < number; i++) {
+			b.append(symbol);
+		}
+		b.append("**\n");
+		return b.toString();
+	}
+ 	
 }

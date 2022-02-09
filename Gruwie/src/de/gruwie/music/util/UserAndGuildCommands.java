@@ -17,6 +17,7 @@ import de.gruwie.util.jda.selectOptions.DeletePlaylist;
 import de.gruwie.util.jda.selectOptions.SelectOptionAction;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class UserAndGuildCommands {
@@ -49,7 +50,7 @@ public class UserAndGuildCommands {
 		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
 	}
 	
-	public static void deletePlaylist(boolean isUser, long id, TextChannel channel) {
+	public static void deletePlaylist(boolean isUser, long id, TextChannel channel, Member member) {
 		if(ConfigManager.getBoolean("database")) {
 			List<String> playlists = PlaylistDA.readAllPlaylists(id, isUser);
 			if(playlists.size() > 0) {
@@ -57,19 +58,19 @@ public class UserAndGuildCommands {
 					boolean result = PlaylistDA.deletePlaylist(id, isUser, playlists.get(0));
 					MessageManager.sendEmbedMessage(true, "**" + (result? "THE PLAYLIST " + playlists.get(0) + " HAS BEEN DELETED" : "UNABLE TO DELETE THE PLAYLIST --> PLEASE CONTACT THE ADMIN") + "**", channel, null);
 				}
-				else promptDialog(playlists, id, isUser, channel);
+				else promptDialog(playlists, id, isUser, member.getUser().openPrivateChannel().complete());
 			}
 			else MessageManager.sendEmbedMessage(true, "**NO PLAYLISTS FOUND FOR THE GIVEN TYPE: " + (isUser? "USER" : "GUILD") + "**", channel, null);
 		}
 		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
 	}
 	
-	private static void promptDialog(List<String> playlists, long id, boolean isUser, TextChannel channel) {
+	private static void promptDialog(List<String> playlists, long id, boolean isUser, PrivateChannel privateChannel) {
 		List<SelectOptionAction> actions = new ArrayList<>();
 		playlists.forEach((k) -> {
-			actions.add(new DeletePlaylist(k, isUser, id, channel));
+			actions.add(new DeletePlaylist(k, isUser, id, privateChannel));
 		});
-		SelectionMenuManager.createDropdownMenu(actions, channel, "**CHOOSE THE PLAYLIST WHICH SHOULD BE DELETED**");
+		SelectionMenuManager.createDropdownMenu(actions, privateChannel, "**CHOOSE THE PLAYLIST WHICH SHOULD BE DELETED**");
 	}
 	
 }

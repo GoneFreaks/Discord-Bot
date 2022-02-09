@@ -19,7 +19,7 @@ public class DeleteGuildPlaylistCommand extends ServerCommand {
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		if(ConfigManager.getDatabase()) {
 			if(member.hasPermission(Permission.ADMINISTRATOR)) {
-				UserAndGuildCommands.deletePlaylist(false, channel.getGuild().getIdLong(), channel);
+				UserAndGuildCommands.deletePlaylist(false, channel.getGuild().getIdLong(), channel, member);
 			}
 			else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
 		}

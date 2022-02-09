@@ -161,17 +161,18 @@ public class Queue {
 		int current_track_index = queuelist.indexOf(current_track);
 		if(current_track_index < 0) current_track_index = 0;
 		
+		if(queuelist.size() > 0) b.append(Formatter.getBorder(63, "⎯"));
 		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size()));
 		else {
 			
 			int start = offset < 0? 0 : offset;
 			int end = ((int) Math.min(queuelist.size(), start + size));
 			if(end - start < size) start -= size - (end - start);
-			if(start != 0) b.append("**:arrow_up: " + start + " Track" + (start > 1? "s" : "") + "**\n\n");
+			if(start != 0) b.append("**🠉 " + start + " Track" + (start > 1? "s" : "") + "**\n");
 			b.append(toStringHelper(start, end));
-			if(end != queuelist.size()) b.append("\n**:arrow_down: " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**");
+			if(end != queuelist.size()) b.append("**🠋 " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**\n");
 		}
-		
+		if(queuelist.size() > 0) b.append(Formatter.getBorder(63, "⎯"));
 		return b.toString();
 	}
 	

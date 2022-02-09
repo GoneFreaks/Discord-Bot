@@ -18,7 +18,7 @@ public class DeleteUserPlaylistCommand extends ServerCommand {
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
 		if(ConfigManager.getDatabase()) {
-			UserAndGuildCommands.deletePlaylist(true, member.getIdLong(), channel);
+			UserAndGuildCommands.deletePlaylist(true, member.getIdLong(), channel, member);
 		}
 		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
 	}

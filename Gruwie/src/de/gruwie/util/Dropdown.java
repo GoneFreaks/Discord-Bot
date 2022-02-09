@@ -9,10 +9,11 @@ import de.gruwie.util.dto.PlaylistsDTO;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.jda.SelectionMenuManager;
-import de.gruwie.util.jda.selectOptions.GetOrUpdatePlaylist;
+import de.gruwie.util.jda.selectOptions.GetPlaylist;
 import de.gruwie.util.jda.selectOptions.GetRandomPlaylist;
 import de.gruwie.util.jda.selectOptions.SelectOptionAction;
 import de.gruwie.util.jda.selectOptions.SetOrRemoveTrack;
+import de.gruwie.util.jda.selectOptions.UpdatePlaylist;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -23,7 +24,7 @@ public class Dropdown {
 		
 		PlaylistsDTO playlists = PlaylistManager.getPlaylists(channel.getGuild().getIdLong(), member.getIdLong());
 		
-		if(type.equals(EntityType.ALL) && playlists.size() > 0) throw new TooManyPlaylistsException("Current size: " + playlists.size());
+		if(type.equals(EntityType.ALL) && playlists.size() > 24) throw new TooManyPlaylistsException("Current size: " + playlists.size());
 		if(type.equals(EntityType.GUILD)) {
 			playlists.resetUser_playlists();
 			if(playlists.size() > 24) throw new TooManyPlaylistsException("Current size: " + playlists.size());
@@ -38,13 +39,19 @@ public class Dropdown {
 		
 		if(isGet || member.hasPermission(Permission.ADMINISTRATOR)) {
 			List<String> guild = playlists.getGuild_playlists();
-			if(guild != null) for (String i : guild) actions.add(new GetOrUpdatePlaylist(i, member, channel, false, isGet));
+			if(guild != null) for (String i : guild) {
+				SelectOptionAction action = isGet? new GetPlaylist(i, member, channel, false) : new UpdatePlaylist(i, member, false);
+				actions.add(action);
+			}
 		}
 			
 		List<String> user = playlists.getUser_playlists();
-		if(user != null) for (String i : user) actions.add(new GetOrUpdatePlaylist(i, member, channel, true, isGet));
+		if(user != null) for (String i : user) {
+			SelectOptionAction action = isGet? new GetPlaylist(i, member, channel, true) : new UpdatePlaylist(i, member, true);
+			actions.add(action);
+		}
 		
-		SelectionMenuManager.createDropdownMenu(actions, channel, "***CHOOSE A PLAYLIST***\n\n*USER-Playlist*: Only visible to you, can be used globally\n*GUILD-Playlist*: Visible only on the server they were created on");
+		SelectionMenuManager.createDropdownMenu(actions, isGet? channel : member.getUser().openPrivateChannel().complete(), "***CHOOSE A PLAYLIST***\n\n*USER-Playlist*: Only visible to you, can be used globally\n*GUILD-Playlist*: Visible only on the server they were created on");
 		
 	}
 	

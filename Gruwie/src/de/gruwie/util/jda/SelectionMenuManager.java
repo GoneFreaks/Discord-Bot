@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.jda.selectOptions.SelectOptionAction;
 import de.gruwie.util.streams.Filter;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
@@ -38,17 +39,18 @@ public class SelectionMenuManager {
 	public static void executeAction (String uuid) {
 		SelectOptionAction action = storage.remove(UUID.fromString(uuid));
 		if(action != null) action.perform();
-		else System.err.println("UNKNOW ACCESS");
 	}
 	
-	public static void createDropdownMenu (List<SelectOptionAction> actions, TextChannel channel, String message) {
+	public static void createDropdownMenu (List<SelectOptionAction> actions, MessageChannel channel, String message) {
 		Builder builder = SelectionMenu.create(getUUID().toString());
 		actions.forEach((k) -> {
 			builder.addOptions(k);
 			putAction(k.getUUID(), k);
 		});
 		
-		TextChannel output_channel = ChannelManager.getChannel(channel);
+		MessageChannel output_channel;
+		if(channel instanceof TextChannel) output_channel = ChannelManager.getChannel(((TextChannel) channel));
+		else output_channel = channel;
 		MessageEmbed message_embed = MessageManager.buildEmbedMessage(message, null).build();
 		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
 		action.setActionRow(builder.build()).queue(null, Filter.handler);
