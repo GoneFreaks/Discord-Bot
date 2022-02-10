@@ -27,7 +27,7 @@ public class Threadpool {
 	}
 	
 	public static void shutdown() {
-		exc.shutdown();
+		exc.shutdownNow();
 	}
 	
 }

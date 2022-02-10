@@ -24,7 +24,6 @@ public class ProgressBar implements Runnable {
 				Thread.sleep(ConfigManager.getRefreshTimer() * 1000);
 				editMessage(queue.getCurrentTrack());
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}

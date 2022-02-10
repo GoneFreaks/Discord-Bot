@@ -3,7 +3,6 @@ package de.gruwie.listener;
 import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.commands.admin.MetadataCommand;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.Threadpool;
@@ -46,7 +45,6 @@ public class SystemListener extends ListenerAdapter {
 	public void onShutdown(ShutdownEvent event) {
 		try {
 			ChannelManager.shutdown();
-			MetadataCommand.interrupt();
 			Threadpool.shutdown();
 			System.out.println("BOT is offline");
 		} catch (Exception e) {
