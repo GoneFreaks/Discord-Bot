@@ -161,33 +161,34 @@ public class Queue {
 		int current_track_index = queuelist.indexOf(current_track);
 		if(current_track_index < 0) current_track_index = 0;
 		
-		if(queuelist.size() > 0) b.append(Formatter.getBorder(63, "⎯"));
-		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size()));
+		b.append("**" + Formatter.getBorder(63, "⎯") + "**");
+		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size(), -1));
 		else {
 			
 			int start = offset < 0? 0 : offset;
 			int end = ((int) Math.min(queuelist.size(), start + size));
 			if(end - start < size) start -= size - (end - start);
-			if(start != 0) b.append("**🠉 " + start + " Track" + (start > 1? "s" : "") + "**\n");
-			b.append(toStringHelper(start, end));
-			if(end != queuelist.size()) b.append("**🠋 " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "**\n");
+			if(start != 0) b.append("🠉 " + start + " Track" + (start > 1? "s" : "") + "\n");
+			b.append(toStringHelper(start, end, -1));
+			if(end != queuelist.size()) b.append("🠋 " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "\n");
 		}
-		if(queuelist.size() > 0) b.append(Formatter.getBorder(63, "⎯"));
+		b.append("**" + Formatter.getBorder(63, "⎯") + "**");
 		return b.toString();
 	}
 	
-	public String toStringHelper(int start, int end) {
-		
-		if(end == 0) return "**THE QUEUE IS EMPTY**\n";
+	public StringBuilder toStringHelper(int start, int end, int custom_character_count) {
 		
 		StringBuilder b = new StringBuilder("");
-		int title_size = ConfigManager.getInteger("queue_character_count");
+		
+		if(end == 0) return b.append("THE QUEUE IS EMPTY\n");
+		
+		int title_size = custom_character_count > 0? custom_character_count : ConfigManager.getInteger("queue_character_count");
 		for (int i = start; i < end; i++) {
 			AudioTrack j = queuelist.get(i);
 			
-			if(j.equals(current_track) && repeat) b.append(":arrow_right: ");
-			else if(j.equals(next_audio_track)) b.append(":arrow_right_hook: ");
-			else b.append(":black_small_square: ");
+			if(j.equals(current_track) && repeat) b.append("➡️ ");
+			else if(j.equals(next_audio_track)) b.append("↪️ ");
+			else b.append("▪️ ");
 			
 			String title = j.getInfo().title.replaceAll("\\*", " ");
 			if(title.length() > title_size) b.append(title.substring(0, title_size) + "...");
@@ -195,7 +196,7 @@ public class Queue {
 			b.append(" **" + Formatter.formatTime(j.getInfo().length) + "**");
 			b.append("\n");
 		}
-		return b.toString();
+		return b;
 	}
 	
 	public boolean removeTrack (AudioTrack track) {
@@ -258,5 +259,9 @@ public class Queue {
 		}
 		else MessageManager.sendEmbedMessage(true, "**THERE'S ALREADY A NEXT TRACK**", guild_id, null);
 		editMessage();
+	}
+	
+	public boolean isStream() {
+		return current_track_clone.getInfo().isStream;
 	}
 }

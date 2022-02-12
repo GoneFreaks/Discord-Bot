@@ -19,9 +19,8 @@ public class CommandListener extends ListenerAdapter {
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		
 		Threadpool.execute(() -> {
-			if(event.getAuthor().isBot()) {
-				return;
-			}
+			
+			if(event.getMessage().getContentRaw().length() > 100 || event.getAuthor().isBot()) return;
 			
 			String message_content = event.getMessage().getContentDisplay().toLowerCase();
 			TextChannel channel = event.getChannel();
@@ -63,13 +62,13 @@ public class CommandListener extends ListenerAdapter {
 				String cmd = event.getMessage().getContentRaw().split(" ")[0].toLowerCase();
 				try {
 					if(Gruwie_Startup.INSTANCE.getACmdMan().performCommand(cmd, message, event.getChannel())) {
-						MessageManager.sendEmbedPrivateMessage(event.getChannel(), "UNKNOWN COMMAND");
+						MessageManager.sendEmbedPrivateMessage(event.getChannel(), "UNKNOWN COMMAND", true);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			else MessageManager.sendEmbedPrivateMessage(event.getChannel(), "WHY ARE YOU SENDING MESSAGES TO A BOT?");
+			else MessageManager.sendEmbedPrivateMessage(event.getChannel(), "WHY ARE YOU SENDING MESSAGES TO A BOT?", true);
 		});
 	}
 }

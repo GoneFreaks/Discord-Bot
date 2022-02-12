@@ -25,6 +25,7 @@ public class Formatter {
 		String h = hours + ":";
 		String m = ((minutes < 10 && hours > 0)? "0" + minutes : minutes) + ":";
 		String s = ((seconds < 10)? "0" + seconds : seconds) + "";
+		if(hours > 99) return "> 99h";
 		return (hours > 0? h : "") + (minutes > 0? m : (hours > 0? "00:" : "0:")) + s;
 	}
 	
@@ -172,11 +173,11 @@ public class Formatter {
 	}
 	
 	public static String getBorder(int number, String symbol) {
-		StringBuilder b = new StringBuilder("**");
+		StringBuilder b = new StringBuilder("");
 		for (int i = 0; i < number; i++) {
 			b.append(symbol);
 		}
-		b.append("**\n");
+		b.append("\n");
 		return b.toString();
 	}
  	

@@ -15,11 +15,15 @@ import de.gruwie.util.ConfigManager;
 import de.gruwie.util.View;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.interactions.components.Button;
 import net.dv8tion.jda.api.managers.AudioManager;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class TrackScheduler extends AudioEventAdapter {
 
@@ -44,15 +48,9 @@ public class TrackScheduler extends AudioEventAdapter {
 		AudioTrackInfo info = track.getInfo();
 		builder.setDescription("Playing: " + info.title);
 		
-		long sekunden = info.length/1000;
-		long minuten = sekunden/60;
-		long stunden = minuten/60;
-		minuten %= 60;
-		sekunden %= 60;
-		
 		String url = info.uri;
 		builder.addField(info.author, "[" + info.title + "](" + url + ")", false);
-		builder.addField("Duration", info.isStream ? ":red_circle:" + "Stream": (stunden > 0 ? stunden + "h" : "" ) + minuten + "min:" + sekunden + "s", true);
+		if(info.isStream) builder.addField(":red_circle: Stream", "", true);
 		
 		String img_url;
 		if(url.startsWith("https://www.youtube.com/watch?v=")) {
@@ -65,8 +63,10 @@ public class TrackScheduler extends AudioEventAdapter {
 			
 			builder.setImage("attachment://thumbnail.png");
 			Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
-			Message queue_view = MessageManager.sendEmbedMessage(queue.toString(), guild_id, null);
-			view = new View(track_view, queue_view);
+			MessageEmbed embed = MessageManager.buildEmbedMessage(queue.toString(), null).build();
+			MessageAction action = channel.sendMessageEmbeds(embed);
+			action.setActionRow(Button.secondary("ID", "Test").withEmoji(Emoji.fromMarkdown("⏯️")));
+			view = new View(track_view, embed);
 			queue.setView(view);
 			
 		} catch (Exception e) {

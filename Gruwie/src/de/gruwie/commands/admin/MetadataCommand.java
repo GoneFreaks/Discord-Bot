@@ -29,14 +29,14 @@ public class MetadataCommand implements AdminCommand {
 				while(true) {
 					try {
 						if(view != null) MessageManager.editMessage(view, getMetadataMessage());
-						else view = MessageManager.sendEmbedPrivateMessage(privateChannel, getMetadataMessage());
-						TimeUnit.SECONDS.sleep(30);
+						else view = MessageManager.sendEmbedPrivateMessage(privateChannel, getMetadataMessage(), false);
+						TimeUnit.SECONDS.sleep(20);
 					}catch (Exception e) {
 					}
 				}
 			});
 		}
-		else MessageManager.sendEmbedPrivateMessage(privateChannel, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**");
+		else MessageManager.sendEmbedPrivateMessage(privateChannel, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", true);
 	}
 	
 	public String getMetadataMessage() {

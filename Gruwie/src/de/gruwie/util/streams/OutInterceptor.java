@@ -4,6 +4,8 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.gruwie.util.Formatter;
+
 public class OutInterceptor extends PrintStream {
 
 	private static List<String> storage = new LinkedList<>();
@@ -15,7 +17,7 @@ public class OutInterceptor extends PrintStream {
 	@Override
 	public void println(String s) {
 		super.println(s);
-		if(s.equals("=")) storage.add(multiply(s) + "\n");
+		if(s.equals("=")) storage.add(Formatter.getBorder(35, "="));
 		else storage.add(s + "\n");
 	}
 	
@@ -26,13 +28,4 @@ public class OutInterceptor extends PrintStream {
 		});
 		return b.toString();
 	}
-	
-	public static String multiply(String symbol) {
-		StringBuilder b = new StringBuilder("");
-		for (int i = 0; i < 35; i++) {
-			b.append("=");
-		}
-		return b.toString();
-	}
-	
 }

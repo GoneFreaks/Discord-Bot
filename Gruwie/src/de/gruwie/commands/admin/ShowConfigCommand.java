@@ -10,7 +10,7 @@ public class ShowConfigCommand implements AdminCommand {
 
 	@Override
 	public void performAdminCommand(Message message, PrivateChannel privateChannel) throws Exception {
-		MessageManager.sendEmbedPrivateMessage(privateChannel, ConfigManager.configToString());
+		MessageManager.sendEmbedPrivateMessage(privateChannel, ConfigManager.configToString(), true);
 	}
 
 }

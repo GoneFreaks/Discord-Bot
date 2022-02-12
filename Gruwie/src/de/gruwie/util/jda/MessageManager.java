@@ -54,9 +54,9 @@ public class MessageManager {
 		m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
 	}
 	
-	public static Message sendEmbedPrivateMessage(PrivateChannel channel, String message) {
+	public static Message sendEmbedPrivateMessage(PrivateChannel channel, String message, boolean delete) {
 		Message m = channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).complete();
-		MessageHolder.add(m, false);
+		MessageHolder.add(m, delete);
 		return m;
 	}
 }

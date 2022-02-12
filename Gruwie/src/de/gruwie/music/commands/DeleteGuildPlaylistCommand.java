@@ -2,7 +2,6 @@ package de.gruwie.music.commands;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.util.UserAndGuildCommands;
-import de.gruwie.util.ConfigManager;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,13 +16,10 @@ public class DeleteGuildPlaylistCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		if(ConfigManager.getDatabase()) {
-			if(member.hasPermission(Permission.ADMINISTRATOR)) {
-				UserAndGuildCommands.deletePlaylist(false, channel.getGuild().getIdLong(), channel, member);
-			}
-			else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
+		if(member.hasPermission(Permission.ADMINISTRATOR)) {
+			UserAndGuildCommands.deletePlaylist(false, channel.getGuild().getIdLong(), channel, member);
 		}
-		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
+		else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
 	}
 	
 }

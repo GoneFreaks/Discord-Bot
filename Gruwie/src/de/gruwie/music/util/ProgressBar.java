@@ -33,7 +33,10 @@ public class ProgressBar implements Runnable {
 			long current_position = current.getPosition();
 			if(last_position != current_position) {
 				Message m = queue.getQueueView();
-				if(m != null) MessageManager.editMessage(queue.getQueueView(), queue.toString() + listToString(current_position, current.getDuration()));
+				if(m != null) {
+					String progressbar = queue.isStream()? ":red_circle: Stream" : listToString(current_position, current.getDuration());
+					MessageManager.editMessage(queue.getQueueView(), queue.toString() + progressbar);
+				}
 			}
 			last_position = current_position;
 		}
@@ -51,10 +54,10 @@ public class ProgressBar implements Runnable {
 		StringBuilder b = new StringBuilder("");
 		
 		double percentage = ((current_position + 0.0) / duration);
-		int progress = (int) Math.ceil((percentage * 60));
+		int progress = (int) Math.ceil((percentage * 53));
 		
 		for (int i = 0; i < progress; i++) b.append("█");
-		for (int i = 0; i < 60 - progress; i++) b.append(" ‎");
+		for (int i = 0; i < 53 - progress; i++) b.append(" ‎");
 		
 		return b.toString();
 	}

@@ -9,7 +9,7 @@ import de.gruwie.music.util.CheckVoiceState;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.dto.FilterDTO;
 import de.gruwie.util.jda.SelectionMenuManager;
-import de.gruwie.util.jda.selectOptions.GetFilter;
+import de.gruwie.util.jda.selectOptions.GetFilterSOA;
 import de.gruwie.util.jda.selectOptions.SelectOptionAction;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -26,7 +26,7 @@ public class GetFilterCommand extends ServerCommand {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller != null) {
 			List<SelectOptionAction> actions = new ArrayList<>();
-			for(FilterDTO i: controller.getFilterManager().getFilter()) actions.add(new GetFilter(i.getName(), member, channel));
+			for(FilterDTO i: controller.getFilterManager().getFilter()) actions.add(new GetFilterSOA(i.getName(), member, channel));
 			SelectionMenuManager.createDropdownMenu(actions, channel, "***CHOOSE A FILTER***");
 		}
 	}

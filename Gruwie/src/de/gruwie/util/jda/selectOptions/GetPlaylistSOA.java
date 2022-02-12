@@ -7,14 +7,14 @@ import de.gruwie.db.da.PlaylistDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class GetPlaylist extends SelectOptionAction {
+public class GetPlaylistSOA extends SelectOptionAction {
 
 	private final String name;
 	private final TextChannel channel;
 	private final Member member;
 	private final boolean isUser;
 	
-	public GetPlaylist(String name, Member member, TextChannel channel, boolean isUser) {
+	public GetPlaylistSOA(String name, Member member, TextChannel channel, boolean isUser) {
 		super((isUser? "USER: " : "GUILD: ") + name);
 		this.name = name;
 		this.channel = channel;

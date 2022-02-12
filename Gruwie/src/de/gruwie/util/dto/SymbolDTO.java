@@ -4,10 +4,16 @@ public class SymbolDTO implements Comparable<SymbolDTO> {
 
 	private final String symbol;
 	private final int position;
+	private final String cmd;
 	
-	public SymbolDTO (String symbol, int position) {
+	public SymbolDTO (String symbol, int position, String cmd) {
 		this.symbol = symbol;
 		this.position = position;
+		this.cmd = cmd;
+	}
+	
+	public String getCmd() {
+		return cmd;
 	}
 	
 	public String getSymbol() {

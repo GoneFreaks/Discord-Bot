@@ -23,7 +23,6 @@ public class CommandManager {
 	
 	private List<ServerCommand> commands;
 	private ConcurrentHashMap<String, ServerCommand> storage;
-	private EmoteManager emoteMan;
 	private static AtomicInteger counter = new AtomicInteger(0);
 	
 	public CommandManager () {
@@ -31,7 +30,6 @@ public class CommandManager {
 		createServerCommands();
 		Collections.sort(commands);
 		this.storage = initializeMap();
-		this.emoteMan = new EmoteManager(commands);
 		View.init(commands);
 	}
 	
@@ -132,10 +130,6 @@ public class CommandManager {
 			if(i.getSymbol() != null) result.add(i);
 		}
 		return result;
-	}
-	
-	public EmoteManager getEmoteManager() {
-		return emoteMan;
 	}
 
 	public int size() {

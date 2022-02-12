@@ -4,6 +4,7 @@ import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -20,8 +21,14 @@ public class ShowQueueCommand extends ServerCommand {
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller != null) {
 			Queue queue = controller.getQueue();
-			String queuelist = queue.toStringHelper(0, queue.size());
-			MessageManager.sendEmbedMessage(false, queuelist, channel, null);
+			StringBuilder queuelist;
+			int custom_character_count = ConfigManager.getInteger("queue_character_count");
+			while(true) {
+				queuelist = queue.toStringHelper(0, queue.size(), custom_character_count);
+				if(queuelist.length() < 4096) break;
+				else custom_character_count -= 2;
+			}
+			MessageManager.sendEmbedMessage(false, queuelist.toString(), channel, null);
 		}
 	}
 

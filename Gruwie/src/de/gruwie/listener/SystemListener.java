@@ -6,6 +6,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.Threadpool;
+import de.gruwie.util.jda.MessageHolder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -35,6 +36,7 @@ public class SystemListener extends ListenerAdapter {
 		
 		shardMan.setStatus(OnlineStatus.ONLINE);
 		shardMan.setActivity(Activity.listening("help"));
+		MessageHolder.start();
 		
 		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
 		System.out.println("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));

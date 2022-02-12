@@ -9,11 +9,11 @@ import de.gruwie.util.dto.PlaylistsDTO;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.jda.SelectionMenuManager;
-import de.gruwie.util.jda.selectOptions.GetPlaylist;
-import de.gruwie.util.jda.selectOptions.GetRandomPlaylist;
+import de.gruwie.util.jda.selectOptions.GetPlaylistSOA;
+import de.gruwie.util.jda.selectOptions.GetRandomPlaylistSOA;
 import de.gruwie.util.jda.selectOptions.SelectOptionAction;
-import de.gruwie.util.jda.selectOptions.SetOrRemoveTrack;
-import de.gruwie.util.jda.selectOptions.UpdatePlaylist;
+import de.gruwie.util.jda.selectOptions.SetOrRemoveTrackSOA;
+import de.gruwie.util.jda.selectOptions.UpdatePlaylistSOA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -35,19 +35,19 @@ public class Dropdown {
 		}
 			
 		List<SelectOptionAction> actions = new ArrayList<>();
-		if(isGet) actions.add(new GetRandomPlaylist(member, channel));
+		if(isGet) actions.add(new GetRandomPlaylistSOA(member, channel));
 		
 		if(isGet || member.hasPermission(Permission.ADMINISTRATOR)) {
 			List<String> guild = playlists.getGuild_playlists();
 			if(guild != null) for (String i : guild) {
-				SelectOptionAction action = isGet? new GetPlaylist(i, member, channel, false) : new UpdatePlaylist(i, member, false);
+				SelectOptionAction action = isGet? new GetPlaylistSOA(i, member, channel, false) : new UpdatePlaylistSOA(i, member, false);
 				actions.add(action);
 			}
 		}
 			
 		List<String> user = playlists.getUser_playlists();
 		if(user != null) for (String i : user) {
-			SelectOptionAction action = isGet? new GetPlaylist(i, member, channel, true) : new UpdatePlaylist(i, member, true);
+			SelectOptionAction action = isGet? new GetPlaylistSOA(i, member, channel, true) : new UpdatePlaylistSOA(i, member, true);
 			actions.add(action);
 		}
 		
@@ -71,7 +71,7 @@ public class Dropdown {
 		
 		List<SelectOptionAction> actions = new ArrayList<>();
 		track_list.forEach((k) -> {
-			actions.add(new SetOrRemoveTrack(k.getTitleOriginal(), member, channel, isSetter));
+			actions.add(new SetOrRemoveTrackSOA(k.getTitleOriginal(), member, channel, isSetter));
 		});
 		SelectionMenuManager.createDropdownMenu(actions, channel, c.toString());
 	}

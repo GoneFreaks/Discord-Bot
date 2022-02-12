@@ -1,6 +1,7 @@
 package de.gruwie;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +39,7 @@ public class Gruwie_Startup {
 	public static void main(String[] args) {
 		try {
 			Filter.setErrStream();
-		} catch (Exception e) {
+		} catch (FileNotFoundException e) {
 			System.err.println("UNABLE TO REDIRECT OUTPUT-STREAMS\nPLEASE CONTACT THE HOSTER OF THIS BOT-INSTANCE");
 			return;
 		}

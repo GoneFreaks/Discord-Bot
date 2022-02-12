@@ -13,7 +13,7 @@ public class ReloadCommand implements AdminCommand {
 	public void performAdminCommand(Message message, PrivateChannel privateChannel) throws Exception {
 		ConfigManager.reload();
 		FilterManager.loadCustomFilters();
-		MessageManager.sendEmbedPrivateMessage(privateChannel, "Reload finished");
+		MessageManager.sendEmbedPrivateMessage(privateChannel, "Reload finished", true);
 	}
 	
 }

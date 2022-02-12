@@ -5,13 +5,13 @@ import de.gruwie.music.util.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class GetFilter extends SelectOptionAction {
+public class GetFilterSOA extends SelectOptionAction {
 
 	private final String name;
 	private final TextChannel channel;
 	private final Member member;
 	
-	public GetFilter(String name, Member member, TextChannel channel) {
+	public GetFilterSOA(String name, Member member, TextChannel channel) {
 		super(name);
 		this.name = name;
 		this.channel = channel;

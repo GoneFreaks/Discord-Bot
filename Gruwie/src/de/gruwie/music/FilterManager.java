@@ -53,7 +53,7 @@ public class FilterManager {
 							result[i] = value;
 						}
 						FilterDTO filter = new FilterDTO(k.toString(), result);
-						custom_filter.put(filter.getName(), filter);
+						if(custom_filter.size() < 25) custom_filter.put(filter.getName(), filter);
 					} catch (Exception e) {
 						System.err.println("The Filter: [" + k + "] cannot be loaded\n\t--> Check Number-Format");
 					}

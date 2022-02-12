@@ -13,7 +13,7 @@ import de.gruwie.util.ConfigManager;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.jda.SelectionMenuManager;
-import de.gruwie.util.jda.selectOptions.DeletePlaylist;
+import de.gruwie.util.jda.selectOptions.DeletePlaylistSOA;
 import de.gruwie.util.jda.selectOptions.SelectOptionAction;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -31,17 +31,20 @@ public class UserAndGuildCommands {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();
 				if(!args[1].contains("__")) {
-					if(tracks.size() > 0) {
-						try {
-							if(PlaylistManager.exportPlaylist(tracks, args[1], isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser)) {
-								MessageManager.sendEmbedMessage(true, "**A PLAYLIST NAMED " + args[1] + " HAS BEEN CREATED**", channel, null);
+					if(args[1].length() <= 30) {
+						if(tracks.size() > 0) {
+							try {
+								if(PlaylistManager.exportPlaylist(tracks, args[1], isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser)) {
+									MessageManager.sendEmbedMessage(true, "**A PLAYLIST NAMED " + args[1] + " HAS BEEN CREATED**", channel, null);
+								}
+								else MessageManager.sendEmbedMessage(true, "**SOMETHING WENT WRONG WHILE SAVING THE PLAYLIST\n--> TRY A DIFFRENT NAME**", channel, null);
+							} catch (TooManyPlaylistsException e) {
+								MessageManager.sendEmbedMessage(true, "**DUE TO API-LIMITATIONS ONLY 25 ELEMENTS CAN BE DISPLAYED (" + e.getMessage() + ") INSIDE A DROPDOWN-MENU\nTHE MAXIMUM HAS BEEN REACHED, THEREFORE NO MORE PLAYLISTS OF THE TYPE <" + (isUser? "USER" : "GUILD") + "> CAN BE CREATED**", channel, null);
 							}
-							else MessageManager.sendEmbedMessage(true, "**SOMETHING WENT WRONG WHILE SAVING THE PLAYLIST\n--> TRY A DIFFRENT NAME**", channel, null);
-						} catch (TooManyPlaylistsException e) {
-							MessageManager.sendEmbedMessage(true, "**DUE TO API-LIMITATIONS ONLY 25 ELEMENTS CAN BE DISPLAYED (" + e.getMessage() + ") INSIDE A DROPDOWN-MENU\nTHE MAXIMUM HAS BEEN REACHED, THEREFORE NO MORE PLAYLISTS OF THE TYPE <" + (isUser? "USER" : "GUILD") + "> CAN BE CREATED**", channel, null);
 						}
+						else MessageManager.sendEmbedMessage(true, "**THE QUEUE IS EMPTY, NOTHING TO SAVE**", channel, null);
 					}
-					else MessageManager.sendEmbedMessage(true, "**THE QUEUE IS EMPTY, NOTHING TO SAVE**", channel, null);
+					else MessageManager.sendEmbedMessage(true, "**YOU CAN ONLY USE UP TO 30-CHARACTERS PER PLAYLIST**", channel, null);
 				}
 				else MessageManager.sendEmbedMessage(true, "**YOU CAN'T USE __ IN A PLAYLIST-NAME**", channel, null);
 			}
@@ -54,11 +57,7 @@ public class UserAndGuildCommands {
 		if(ConfigManager.getBoolean("database")) {
 			List<String> playlists = PlaylistDA.readAllPlaylists(id, isUser);
 			if(playlists.size() > 0) {
-				if(playlists.size() == 1) {
-					boolean result = PlaylistDA.deletePlaylist(id, isUser, playlists.get(0));
-					MessageManager.sendEmbedMessage(true, "**" + (result? "THE PLAYLIST " + playlists.get(0) + " HAS BEEN DELETED" : "UNABLE TO DELETE THE PLAYLIST --> PLEASE CONTACT THE ADMIN") + "**", channel, null);
-				}
-				else promptDialog(playlists, id, isUser, member.getUser().openPrivateChannel().complete());
+				promptDialog(playlists, id, isUser, member.getUser().openPrivateChannel().complete());
 			}
 			else MessageManager.sendEmbedMessage(true, "**NO PLAYLISTS FOUND FOR THE GIVEN TYPE: " + (isUser? "USER" : "GUILD") + "**", channel, null);
 		}
@@ -68,7 +67,7 @@ public class UserAndGuildCommands {
 	private static void promptDialog(List<String> playlists, long id, boolean isUser, PrivateChannel privateChannel) {
 		List<SelectOptionAction> actions = new ArrayList<>();
 		playlists.forEach((k) -> {
-			actions.add(new DeletePlaylist(k, isUser, id, privateChannel));
+			actions.add(new DeletePlaylistSOA(k, isUser, id, privateChannel));
 		});
 		SelectionMenuManager.createDropdownMenu(actions, privateChannel, "**CHOOSE THE PLAYLIST WHICH SHOULD BE DELETED**");
 	}

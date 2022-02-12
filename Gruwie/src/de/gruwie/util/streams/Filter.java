@@ -1,10 +1,9 @@
 package de.gruwie.util.streams;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-
-import de.gruwie.util.ConfigManager;
 
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -13,11 +12,15 @@ public class Filter {
 
 	public static ErrorHandler handler = new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, (error) -> {});
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-	private static int KEEP_LOG_COUNT;
+	private static int KEEP_LOG_COUNT = 5;
 	
-	public static void setErrStream() throws Exception {
-		
-		KEEP_LOG_COUNT = ConfigManager.getInteger("log_count");
+	/**
+	 * Redirects the <code> System.err </code> stream to a log-file.</br>
+	 * A new log-file will be created during each startup.</br>
+	 * If there are more than 5 files --> excessive files will be deleted, starting with the oldest.</br>
+	 * @throws FileNotFoundException if the log file wasn't found
+	 */
+	public static void setErrStream() throws FileNotFoundException {
 		
 		File directory = new File(".//logs");
 		if(directory.exists() || directory.mkdir()) {

@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class NextCommand extends ServerCommand {
 
 	public NextCommand() {
-		super(false, true, NextCommand.class, "⏭️", 4, "Next Track in queue", "Play the next track in the music-queue");
+		super(false, true, NextCommand.class, "⏭️", 3, "Next Track in queue", "Play the next track in the music-queue");
 	}
 	
 	@Override

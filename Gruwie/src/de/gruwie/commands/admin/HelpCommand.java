@@ -10,7 +10,7 @@ public class HelpCommand implements AdminCommand {
 
 	@Override
 	public void performAdminCommand(Message message, PrivateChannel privateChannel) throws Exception {
-		MessageManager.sendEmbedPrivateMessage(privateChannel, Gruwie_Startup.INSTANCE.getACmdMan().toString());
+		MessageManager.sendEmbedPrivateMessage(privateChannel, Gruwie_Startup.INSTANCE.getACmdMan().toString(), true);
 	}
 
 }

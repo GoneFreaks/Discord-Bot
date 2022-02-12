@@ -14,8 +14,8 @@ public class GruwieIO {
 		try {
 			URL url = new URL(link);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setConnectTimeout(5000);
-			con.setReadTimeout(5000);
+			con.setConnectTimeout(3000);
+			con.setReadTimeout(3000);
 			con.setRequestMethod("GET");
 			int responseCode = con.getResponseCode();
 			if(responseCode == 200) {

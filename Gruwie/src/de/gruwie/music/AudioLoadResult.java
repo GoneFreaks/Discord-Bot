@@ -29,7 +29,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			try {
 				queue.addTrackToQueue(track);
 				MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
-				if(ConfigManager.getDatabase()) TrackDA.writeTrack(uri);
+				if(ConfigManager.getDatabase()) if(!track.getInfo().isStream) TrackDA.writeTrack(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -48,7 +48,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 					queue.addTrackToQueue(track);
 					MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
 					if(ConfigManager.getDatabase()) {
-						TrackDA.writeTrack(track.getInfo().uri);
+						if(!track.getInfo().isStream) TrackDA.writeTrack(track.getInfo().uri);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,6 +57,11 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			else {
 				try {
 					queue.addPlaylistToQueue(playlist.getTracks());
+					if(ConfigManager.getDatabase()) {
+						playlist.getTracks().forEach((k) -> {
+							if(!k.getInfo().isStream) TrackDA.writeTrack(k.getInfo().uri);
+						});
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -22,8 +22,7 @@ public class MessageHolder {
 					final long current = System.currentTimeMillis();
 					delete_after_time.forEach((k,v) -> {
 						long difference = current - v;
-						System.out.println(difference);
-						if(difference > (60000 * ConfigManager.getInteger("delete_other_time"))) {
+						if(!k.isPinned() && difference > (60000 * ConfigManager.getInteger("delete_other_time"))) {
 							k.delete().queue(null, Filter.handler);
 							delete_after_time.remove(k);
 						}
@@ -44,12 +43,18 @@ public class MessageHolder {
 	
 	public static void shutdown() {
 		delete_after_time.forEach((k,v) -> {
-			k.delete().queue(null, Filter.handler);
+			if(!k.isPinned()) k.delete().queue(null, Filter.handler);
 			delete_after_time.remove(k);
 		});
 		delete_on_shutdown.forEach((k) -> {
-			k.delete().queue(null, Filter.handler);
+			if(!k.isPinned()) k.delete().queue(null, Filter.handler);
 			delete_on_shutdown.remove(k);
+		});
+	}
+	
+	public static void checkMessage(String id) {
+		delete_after_time.forEach((k,v) -> {
+			if(id.equals(k.getId())) delete_after_time.remove(k);
 		});
 	}
 	

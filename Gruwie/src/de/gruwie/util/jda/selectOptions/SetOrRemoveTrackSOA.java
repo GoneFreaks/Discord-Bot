@@ -5,14 +5,14 @@ import de.gruwie.music.util.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class SetOrRemoveTrack extends SelectOptionAction {
+public class SetOrRemoveTrackSOA extends SelectOptionAction {
 
 	private final Member member;
 	private final TextChannel channel;
 	private final String name;
 	private final boolean isSetter;
 	
-	public SetOrRemoveTrack (String name, Member member, TextChannel channel, boolean isSetter) {
+	public SetOrRemoveTrackSOA (String name, Member member, TextChannel channel, boolean isSetter) {
 		super(name);
 		this.member = member;
 		this.channel = channel;

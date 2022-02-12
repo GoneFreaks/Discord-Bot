@@ -31,7 +31,7 @@ public class SelectionMenuManager {
 		return result;
 	}
 	
-	private static void putAction (UUID uuid, SelectOptionAction action) {
+	public static void putAction (UUID uuid, SelectOptionAction action) {
 		storage.put(uuid, action);
 		taken.remove(uuid);
 	}

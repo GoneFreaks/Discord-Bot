@@ -206,7 +206,6 @@ public class PlaylistDA {
 	public static boolean updatePlaylist(long id, boolean isUser, String name, List<String> urls) {
 		
 		if(deletePlaylist(id, isUser, name)) {
-			System.out.println(urls.size());
 			if(urls.size() == 0) return true;
 			if(urls.size() > ConfigManager.getInteger("max_queue_size")) return false;
 			try {
