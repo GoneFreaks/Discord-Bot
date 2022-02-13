@@ -42,6 +42,7 @@ public class ClearCommand extends ServerCommand {
 				List<List<Message>> list = new ArrayList<>();
 				List<Message> list_messages = new ArrayList<>(100);
 				for(Message i: messages) {
+					if(i.isPinned()) continue;
 					list_messages.add(i);
 					if(list_messages.size() >= 100) {
 						list.add(list_messages);
@@ -51,7 +52,7 @@ public class ClearCommand extends ServerCommand {
 				}
 				try {
 					for (List<Message> i : list) {
-						channel.deleteMessages(i).queue();
+						channel.deleteMessages(i).queue(null, Filter.handler);
 					}
 				} catch (Exception e) {
 					deleteMessages(delete, channel, message);
@@ -64,6 +65,7 @@ public class ClearCommand extends ServerCommand {
 		channel.getHistoryAfter(message, delete).queue((history) ->{
 			history.retrievePast(delete).queue((messages) ->{
 				for (Message i : messages) {
+					if(i.isPinned()) continue;
 					try {
 						i.delete().queue(null, Filter.handler);
 						Thread.sleep(100);

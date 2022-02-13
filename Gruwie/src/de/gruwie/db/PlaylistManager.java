@@ -13,6 +13,7 @@ import de.gruwie.music.MusicController;
 import de.gruwie.music.util.CheckVoiceState;
 import de.gruwie.util.Threadpool;
 import de.gruwie.util.dto.PlaylistsDTO;
+import de.gruwie.util.exceptions.PlaylistAlreadyExistsException;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -25,7 +26,7 @@ public class PlaylistManager {
 		return new PlaylistsDTO(PlaylistDA.readAllPlaylists(guildId, false), PlaylistDA.readAllPlaylists(userId, true));
 	}
 	
-	public static boolean exportPlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) throws TooManyPlaylistsException {
+	public static boolean exportPlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) throws TooManyPlaylistsException, PlaylistAlreadyExistsException {
 		List<String> urls = new ArrayList<>();
 		tracks.forEach((k) -> {urls.add(k.getInfo().uri);});
 		return PlaylistDA.writePlaylist(urls, name, iD, isUser, false);

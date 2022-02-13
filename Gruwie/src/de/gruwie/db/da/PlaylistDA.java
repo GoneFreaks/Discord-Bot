@@ -9,6 +9,7 @@ import java.util.List;
 
 import de.gruwie.db.ConnectionManager;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.exceptions.PlaylistAlreadyExistsException;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 
 public class PlaylistDA {
@@ -52,11 +53,11 @@ public class PlaylistDA {
 		return false;
 	}
 	
-	public static boolean writePlaylist(List<String> tracks, String name, long iD, boolean isUser, boolean update) throws TooManyPlaylistsException {
+	public static boolean writePlaylist(List<String> tracks, String name, long iD, boolean isUser, boolean update) throws TooManyPlaylistsException, PlaylistAlreadyExistsException {
 		
-		countSmallerMax(iD);
+		countSmallerMax(iD, isUser);
 		
-		if(!update && playlistExists(iD, isUser, name)) return false;
+		if(!update && playlistExists(iD, isUser, name)) throw new PlaylistAlreadyExistsException(name);
 		
 		List<Integer> track_ids = insertIntoTracks(tracks);
 		
@@ -85,14 +86,14 @@ public class PlaylistDA {
 		return false;
 	}
 	
-	private static boolean countSmallerMax(long iD) throws TooManyPlaylistsException {
+	private static boolean countSmallerMax(long iD, boolean isUser) throws TooManyPlaylistsException {
 		try(Connection cn = ConnectionManager.getConnection(true)) {
 			try(PreparedStatement pstmt = cn.prepareStatement("SELECT COUNT(*) AS C FROM (SELECT DISTINCT playlist_name FROM playlist WHERE iD = ?)")) {
 				pstmt.setLong(1, iD);
 				try(ResultSet rs = pstmt.executeQuery()) {
 					if(rs.next()) {
 						long result = rs.getLong(1);
-						if(result < (25-1)) return true;
+						if(result < (isUser? 4 : 20)) return true;
 						else throw new TooManyPlaylistsException("Current Count: " + (result + 1));
 					}
 				}
@@ -212,6 +213,9 @@ public class PlaylistDA {
 				return writePlaylist(urls, name, id, isUser, true);
 			} catch (TooManyPlaylistsException e) {
 				e.printStackTrace();
+				return false;
+			} catch (PlaylistAlreadyExistsException ex) {
+				ex.printStackTrace();
 				return false;
 			}
 		}

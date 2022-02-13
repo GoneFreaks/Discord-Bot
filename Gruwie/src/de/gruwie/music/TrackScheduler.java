@@ -15,15 +15,12 @@ import de.gruwie.util.ConfigManager;
 import de.gruwie.util.View;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.interactions.components.Button;
 import net.dv8tion.jda.api.managers.AudioManager;
-import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class TrackScheduler extends AudioEventAdapter {
 
@@ -57,15 +54,13 @@ public class TrackScheduler extends AudioEventAdapter {
 			String videoID = url.replace("https://www.youtube.com/watch?v=", "");
 			img_url = "https://img.youtube.com/vi/" + videoID + "/hqdefault.jpg";
 		}
-		else img_url = "https://i.ibb.co/CW8h3zc/NA.png";
+		else img_url = "https://picsum.photos/800/600";
 		
 		try (InputStream file = new URL(img_url).openStream()){
 			
 			builder.setImage("attachment://thumbnail.png");
 			Message track_view = channel.sendFile(file, "thumbnail.png").setEmbeds(builder.build()).complete();
 			MessageEmbed embed = MessageManager.buildEmbedMessage(queue.toString(), null).build();
-			MessageAction action = channel.sendMessageEmbeds(embed);
-			action.setActionRow(Button.secondary("ID", "Test").withEmoji(Emoji.fromMarkdown("⏯️")));
 			view = new View(track_view, embed);
 			queue.setView(view);
 			

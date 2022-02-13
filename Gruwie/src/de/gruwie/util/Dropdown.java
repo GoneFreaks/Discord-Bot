@@ -6,7 +6,6 @@ import java.util.List;
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.util.dto.CheckTrackDTO;
 import de.gruwie.util.dto.PlaylistsDTO;
-import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.jda.SelectionMenuManager;
 import de.gruwie.util.jda.selectOptions.GetPlaylistSOA;
@@ -20,19 +19,9 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class Dropdown {
 
-	public static void getPlaylists(TextChannel channel, Member member, boolean isGet, EntityType type) throws TooManyPlaylistsException {
+	public static void getPlaylists(TextChannel channel, Member member, boolean isGet) {
 		
 		PlaylistsDTO playlists = PlaylistManager.getPlaylists(channel.getGuild().getIdLong(), member.getIdLong());
-		
-		if(type.equals(EntityType.ALL) && playlists.size() > 24) throw new TooManyPlaylistsException("Current size: " + playlists.size());
-		if(type.equals(EntityType.GUILD)) {
-			playlists.resetUser_playlists();
-			if(playlists.size() > 24) throw new TooManyPlaylistsException("Current size: " + playlists.size());
-		}
-		if(type.equals(EntityType.USER)) {
-			playlists.resetGuild_playlists();
-			if(playlists.size() > 24) throw new TooManyPlaylistsException("Current size: " + playlists.size());
-		}
 			
 		List<SelectOptionAction> actions = new ArrayList<>();
 		if(isGet) actions.add(new GetRandomPlaylistSOA(member, channel));

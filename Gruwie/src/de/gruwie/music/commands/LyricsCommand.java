@@ -56,8 +56,9 @@ public class LyricsCommand extends ServerCommand {
 					} 
 				});
 			}
-			
+			else MessageManager.sendEmbedMessage(true, "**Unable to find lyrics**", channel, null);
 		}
+		else MessageManager.sendEmbedMessage(true, "**Unable to find lyrics**", channel, null);
 	}
 	
 }

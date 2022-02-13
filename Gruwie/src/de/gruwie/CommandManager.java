@@ -1,6 +1,7 @@
 package de.gruwie;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,13 +84,12 @@ public class CommandManager {
 	}
 	
 	private void createServerCommands() {
-		try {
-			
-			File jarFile = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-			if(jarFile.isFile()) {
-				try(JarFile jar = new JarFile(jarFile)) {
-					Enumeration<JarEntry> entries = jar.entries();
-					while(entries.hasMoreElements()) {
+		File jarFile = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+		if(jarFile.isFile()) {
+			try(JarFile jar = new JarFile(jarFile)) {
+				Enumeration<JarEntry> entries = jar.entries();
+				while(entries.hasMoreElements()) {
+					try {
 						String name = entries.nextElement().getName();
 						if(name.startsWith("de/gruwie/")) {
 							if(name.contains("Command") && name.contains("commands") && !name.contains("types") && !name.contains("admin")) {
@@ -98,16 +98,22 @@ public class CommandManager {
 								commands.add(scmd);
 							}
 						}
-					}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} 
 				}
-			}
-			else {
-				String default_path = "de/gruwie/";
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+		}
+		else {
+			String default_path = "de/gruwie/";
+			try {
 				diffrentPackages(default_path + "music/commands/");
 				diffrentPackages(default_path + "commands/");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	

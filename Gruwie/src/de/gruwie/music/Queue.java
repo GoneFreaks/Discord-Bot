@@ -200,6 +200,7 @@ public class Queue {
 	}
 	
 	public boolean removeTrack (AudioTrack track) {
+		if(next_audio_track != null && next_audio_track.equals(track)) next_audio_track = null;
 		boolean result = queuelist.remove(track);
 		editMessage();
 		return result;

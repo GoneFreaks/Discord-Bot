@@ -17,7 +17,7 @@ public class DeletePlaylistSOA extends SelectOptionAction implements Confirmatio
 	private final PrivateChannel channel;
 	
 	public DeletePlaylistSOA(String name, boolean isUser, long iD, PrivateChannel channel) {
-		super(name);
+		super((isUser? "USER: " : "GUILD: ") + name);
 		this.isUser = isUser;
 		this.iD = iD;
 		this.name = name;
