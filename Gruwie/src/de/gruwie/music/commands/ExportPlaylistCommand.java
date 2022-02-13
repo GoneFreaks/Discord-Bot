@@ -33,22 +33,26 @@ public class ExportPlaylistCommand extends ServerCommand {
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		if(ConfigManager.getBoolean("database")) {
 			String[] args = message.getContentRaw().split(" ");
-			
-			if(args.length == 2) {
+			if(args.length > 1) {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();
-				if(args[1].length() <= 30) {
+				StringBuilder b = new StringBuilder("");
+				for (int i = 1; i < args.length; i++) {
+					b.append(args[i]);
+				}
+				String name = b.toString();
+				if(name.length() <= 30) {
 					if(tracks.size() > 0) {
-						MessageEmbed embed = MessageManager.buildEmbedMessage("HOW DO YOU WANT TO EXPORT THE PLAYLIST **" + args[1] + "**", null).build();
+						MessageEmbed embed = MessageManager.buildEmbedMessage("HOW DO YOU WANT TO EXPORT THE PLAYLIST **" + name + "**", null).build();
 						PrivateChannel privateChannel = member.getUser().openPrivateChannel().complete();
 						MessageAction action = privateChannel.sendMessageEmbeds(embed);
 						
 						List<Button> buttons = new ArrayList<>();
-						SelectOptionAction select = new ExportPlaylistSOA(tracks, args[1], member.getUser().getIdLong(), true, privateChannel);
+						SelectOptionAction select = new ExportPlaylistSOA(tracks, name, member.getUser().getIdLong(), true, privateChannel);
 						SelectionMenuManager.putAction(select.getUUID(), select);
 						buttons.add(Button.primary(select.getUUID().toString(), "PRIVATE"));
 						if(member.hasPermission(Permission.ADMINISTRATOR)) {
-							select = new ExportPlaylistSOA(tracks, args[1], channel.getGuild().getIdLong(), false, privateChannel);
+							select = new ExportPlaylistSOA(tracks, name, channel.getGuild().getIdLong(), false, privateChannel);
 							SelectionMenuManager.putAction(select.getUUID(), select);
 							buttons.add(Button.primary(select.getUUID().toString(), "SERVER"));
 						}
