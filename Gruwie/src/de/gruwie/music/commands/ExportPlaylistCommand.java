@@ -38,9 +38,9 @@ public class ExportPlaylistCommand extends ServerCommand {
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();
 				StringBuilder b = new StringBuilder("");
 				for (int i = 1; i < args.length; i++) {
-					b.append(args[i]);
+					b.append(args[i] + " ");
 				}
-				String name = b.toString();
+				String name = b.toString().trim();
 				if(name.length() <= 30) {
 					if(tracks.size() > 0) {
 						MessageEmbed embed = MessageManager.buildEmbedMessage("HOW DO YOU WANT TO EXPORT THE PLAYLIST **" + name + "**", null).build();
