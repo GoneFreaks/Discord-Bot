@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class DeleteCurrentTrackCommand extends ServerCommand {
 
 	public DeleteCurrentTrackCommand() {
-		super(true, true, DeleteCurrentTrackCommand.class, "Delete the current track", "Remove the track currently playing from the database.\nIn addition every entry of this track in playlists will also be removed");
+		super(true, true, DeleteCurrentTrackCommand.class, "Delete the current track from the database", "Remove the track currently playing from the database.\nIn addition every entry of this track in playlists will also be removed");
 	}
 
 	@Override

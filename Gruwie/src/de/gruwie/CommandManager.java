@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.jar.JarEntry;
@@ -23,22 +22,26 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class CommandManager {
 	
 	private List<ServerCommand> commands;
+	private List<ServerCommand> emotes;
 	private ConcurrentHashMap<String, ServerCommand> storage;
 	private static AtomicInteger counter = new AtomicInteger(0);
 	
 	public CommandManager () {
 		this.commands = new ArrayList<>();
+		this.emotes = new ArrayList<>();
 		createServerCommands();
 		Collections.sort(commands);
 		this.storage = initializeMap();
-		View.init(commands);
+		View.init(emotes);
 	}
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
 		
 		if(this.storage.containsKey(cmd)) {
 			counter.incrementAndGet();
-			this.storage.get(cmd).performServerCommand(member, channel, message);
+			ServerCommand scmd = this.storage.get(cmd);
+			if(scmd.getSymbol() != null && message != null) return true;
+			scmd.performServerCommand(member, channel, message);
 			return false;
 		}
 		else return true;
@@ -47,6 +50,10 @@ public class CommandManager {
 	public ConcurrentHashMap<String, ServerCommand> initializeMap() {
 		ConcurrentHashMap<String, ServerCommand> result = new ConcurrentHashMap<>();
 		for (ServerCommand i : commands) {
+			result.put(i.getCommand(), i);
+			if(i.getShortcut() != null) result.put(i.getShortcut(), i);
+		}
+		for (ServerCommand i : emotes) {
 			result.put(i.getCommand(), i);
 			if(i.getShortcut() != null) result.put(i.getShortcut(), i);
 		}
@@ -73,10 +80,13 @@ public class CommandManager {
 	}
 	
 	public String[] getCommandArray() {
-		Set<String> temp1 = storage.keySet();
+		List<String> temp1 = new ArrayList<>();
+		commands.forEach((k) -> {
+			if(k.getShortcut() != null) temp1.add(k.getShortcut());
+			temp1.add(k.getCommand());
+		});
 		Object[] temp2 = temp1.toArray();
-		
-		String[] result = new String[temp1.size()];
+		String[] result = new String[temp2.length];
 		for (int i = 0; i < temp2.length; i++) {
 			result[i] = temp2[i].toString();
 		}
@@ -95,7 +105,8 @@ public class CommandManager {
 							if(name.contains("Command") && name.contains("commands") && !name.contains("types") && !name.contains("admin")) {
 								Class<?> cls = Class.forName(name.replace(".class", "").replaceAll("/", "."));
 								ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
-								commands.add(scmd);
+								if(scmd.getSymbol() == null) commands.add(scmd);
+								else emotes.add(scmd);
 							}
 						}
 					} catch (Exception e) {
@@ -125,7 +136,8 @@ public class CommandManager {
 				String classpath = input.replaceAll("/", ".") + (i.getName().replaceAll(".class", ""));
 				Class<?> cls = Class.forName(classpath);
 				ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
-				commands.add(scmd);
+				if(scmd.getSymbol() == null) commands.add(scmd);
+				else emotes.add(scmd);
 			}
 		}
 	}

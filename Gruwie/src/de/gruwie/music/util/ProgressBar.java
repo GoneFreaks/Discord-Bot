@@ -22,23 +22,22 @@ public class ProgressBar implements Runnable {
 		while(true) {
 			try {
 				Thread.sleep(ConfigManager.getRefreshTimer() * 1000);
-				editMessage(queue.getCurrentTrack());
+				AudioTrack current = queue.getCurrentTrack();
+				if(current != null) {
+					long current_position = current.getPosition();
+					if(last_position != current_position) editMessage(current);
+					last_position = current_position;
+				}
 			} catch (Exception e) {
 			}
 		}
 	}
 	
 	public void editMessage(AudioTrack current) {
-		if(current != null) {
-			long current_position = current.getPosition();
-			if(last_position != current_position) {
-				Message m = queue.getQueueView();
-				if(m != null) {
-					String progressbar = queue.isStream()? ":red_circle: Stream" : listToString(current_position, current.getDuration());
-					MessageManager.editMessage(queue.getQueueView(), queue.toString() + progressbar);
-				}
-			}
-			last_position = current_position;
+		Message m = queue.getQueueView();
+		if(m != null) {
+			String progressbar = queue.isStream()? ":red_circle: Stream" : listToString(current.getPosition(), current.getDuration());
+			MessageManager.editMessage(queue.getQueueView(), queue.toString() + progressbar);
 		}
 	}
 	

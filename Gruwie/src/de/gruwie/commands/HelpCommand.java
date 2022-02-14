@@ -38,7 +38,7 @@ public class HelpCommand extends ServerCommand {
 				String optional_parameters = scmd.getOptionalParamters();
 				if(optional_parameters != null) b.append("Optional Paramters: *" + optional_parameters + "*\n");
 				String desc = scmd.getDescription();
-				b.append(desc != null? "\n\n" + desc : "NA");
+				b.append(desc != null? "\n" + desc : "NA");
 				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
 				
 				

@@ -6,10 +6,12 @@ import de.gruwie.util.jda.MessageHolder;
 import de.gruwie.util.jda.SelectionMenuManager;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.Button;
 
 public class InteractionListener extends ListenerAdapter {
 	
@@ -17,11 +19,21 @@ public class InteractionListener extends ListenerAdapter {
 		Threadpool.execute(() -> {
 			
 			if(event.getChannelType().equals(ChannelType.TEXT)) {
+				Button button = event.getButton();
 				try {
-					event.editButton(event.getButton().asDisabled()).queue(null, Filter.handler);
 					Gruwie_Startup.INSTANCE.getCmdMan().perform(event.getButton().getId(), event.getMember(), event.getTextChannel(), null);
-					Thread.sleep(1000);
-					event.editButton(event.getButton().asEnabled()).queue(null, Filter.handler);
+					switch (event.getButton().getEmoji().getName()) {
+						case "▶":
+							button = Button.success(event.getButton().getId(), Emoji.fromMarkdown("⏸️"));
+							break;
+							
+						case "⏸️":
+							button = Button.success(event.getButton().getId(), Emoji.fromMarkdown("▶"));
+							break;
+					}
+					event.editButton(button.asDisabled()).queue(null, Filter.handler);
+					Thread.sleep(2000);
+					event.editButton(button.asEnabled()).queue(null, Filter.handler);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
