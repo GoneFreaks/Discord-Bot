@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class GetPlaylistsCommand extends ServerCommand {
 
 	public GetPlaylistsCommand() {
-		super(true, true, GetPlaylistsCommand.class, null, "**Number n** --> Load n random tracks", "Load saved playlists", "If you're using this command with a number Gruwie will load a random playlist of the given size\nBy using only this command Gruwie will prompt a selectionmenu\nThere are three types of playlists:\n***Guild-Playlists:*** which can only be played if you're on the right server\n***User-Playlists:*** which are private and bound to your account (these playlists can be used globally)\n***Random-Playlist:*** which can be used by everyone, Gruwie will try to retrieve up to n-Tracks depending on the config");
+		super(false, true, GetPlaylistsCommand.class, null, "**Number n** --> Load n random tracks", "Load saved playlists", "If you're using this command with a number Gruwie will load a random playlist of the given size\nBy using only this command Gruwie will prompt a selectionmenu\nThere are three types of playlists:\n***Guild-Playlists:*** which can only be played if you're on the right server\n***User-Playlists:*** which are private and bound to your account (these playlists can be used globally)\n***Random-Playlist:*** which can be used by everyone, Gruwie will try to retrieve up to n-Tracks depending on the config");
 	}
 
 	@Override

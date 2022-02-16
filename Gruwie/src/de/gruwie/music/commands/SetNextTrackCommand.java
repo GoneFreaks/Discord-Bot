@@ -16,12 +16,12 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class SetNextTrackCommand extends ServerCommand {
 
 	public SetNextTrackCommand() {
-		super(true, true, SetNextTrackCommand.class, "Search-Query, in order to identify a track in the queue", null, "Set the next track to play", "Set the next track which will be played\nIf there's already one this won't work");
+		super(false, true, SetNextTrackCommand.class, "Search-Query, in order to identify a track in the queue", null, "Set the next track to play", "Set the next track which will be played\nIf there's already one this won't work");
 	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		String[] args = message.getContentRaw().split(" ");
+		String[] args = message.getContentStripped().split(" ");
 		
 		if(args.length > 1) {
 			StringBuilder b = new StringBuilder("");

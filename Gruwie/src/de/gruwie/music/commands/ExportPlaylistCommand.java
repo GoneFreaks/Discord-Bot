@@ -32,7 +32,7 @@ public class ExportPlaylistCommand extends ServerCommand {
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		if(ConfigManager.getBoolean("database")) {
-			String[] args = message.getContentRaw().split(" ");
+			String[] args = message.getContentStripped().split(" ");
 			if(args.length > 1) {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();

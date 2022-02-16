@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class GetFilterCommand extends ServerCommand {
 
 	public GetFilterCommand() {
-		super(true, true, GetFilterCommand.class, "Get all filters", "Get and load a filter, which can be applied to the music-equalizer.\nMore filters will be added in the future\nThe Bot-Hoster can also add Custom-Filters\nIf you want to add a certain filter just message either <@!" + ConfigManager.getString("owner_id") + "> or <@!690659763998031902>");
+		super(false, true, GetFilterCommand.class, "Get all filters", "Get and load a filter, which can be applied to the music-equalizer.\nMore filters will be added in the future\nThe Bot-Hoster can also add Custom-Filters\nIf you want to add a certain filter just message either <@!" + ConfigManager.getString("owner_id") + "> or <@!690659763998031902>");
 	}
 	
 	@Override

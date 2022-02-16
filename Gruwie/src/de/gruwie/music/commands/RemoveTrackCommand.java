@@ -16,13 +16,13 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class RemoveTrackCommand extends ServerCommand {
 	
 	public RemoveTrackCommand() {
-		super(true, true, RemoveTrackCommand.class, "Search-Query, in order to identify a track in the queue", null, "Remove track from queue", "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query");
+		super(false, true, RemoveTrackCommand.class, "Search-Query, in order to identify a track in the queue", null, "Remove track from queue", "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query");
 	}
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
-		String[] args = message.getContentRaw().split(" ");
+		String[] args = message.getContentStripped().split(" ");
 		
 		if(args.length > 1) {
 			StringBuilder b = new StringBuilder("");

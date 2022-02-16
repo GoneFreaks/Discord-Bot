@@ -27,7 +27,7 @@ public class FastForwardCommand extends ServerCommand {
 		
 		if(message == null) fastForward(track);
 		else {
-			String[] args = message.getContentRaw().split(" ");
+			String[] args = message.getContentStripped().split(" ");
 			if(args.length == 1) fastForward(track);
 			if(args.length == 2) {
 				try {

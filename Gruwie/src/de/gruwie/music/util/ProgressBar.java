@@ -43,7 +43,7 @@ public class ProgressBar implements Runnable {
 	
 	private String listToString(long current_position, long duration) {
 		StringBuilder b = new StringBuilder("");
-		b.append("\n`" + checkProcess(current_position, duration) + "`");
+		b.append("`" + checkProcess(current_position, duration) + "`");
 		b.append(" " + Formatter.formatTime(current_position) + "/" + Formatter.formatTime(duration));
 		return b.toString();
 	}

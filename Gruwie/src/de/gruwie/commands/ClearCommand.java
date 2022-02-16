@@ -20,7 +20,7 @@ public class ClearCommand extends ServerCommand {
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		if(member.hasPermission(Permission.MESSAGE_MANAGE)) {
-			String[] args = message.getContentRaw().split(" ");
+			String[] args = message.getContentStripped().split(" ");
 			if(args.length == 2) {
 				try {
 					int delete = Integer.parseInt(args[1]);

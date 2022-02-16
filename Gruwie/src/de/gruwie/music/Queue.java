@@ -151,12 +151,12 @@ public class Queue {
 		int size = ConfigManager.getInteger("queue_show");
 		
 		b.append("__**Queue: **__\n");
-		b.append("Current Filter: *" + filter.getCurrentFilter() + "*\n");
-		b.append("Looping: " + (repeat? "Active" : "Not active") + "\n");
+		b.append("Current Filter: *" + filter.getCurrentFilter() + "*⠀⠀⠀⠀⠀⠀⠀⠀");
 		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n");
+		b.append("Looping:" + (repeat? ":white_check_mark:" : ":negative_squared_cross_mark:") + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
 		String temp = queueTime();
 		if(temp != null) b.append("Duration: *" + temp +"*");
-		b.append("\n\n");
+		b.append("\n");
 		
 		int current_track_index = queuelist.indexOf(current_track);
 		if(current_track_index < 0) current_track_index = 0;

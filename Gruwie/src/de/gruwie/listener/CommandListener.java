@@ -22,7 +22,7 @@ public class CommandListener extends ListenerAdapter {
 			
 			if(event.getMessage().getContentRaw().length() > 100 || event.getAuthor().isBot()) return;
 			
-			String message_content = event.getMessage().getContentDisplay().toLowerCase();
+			String message_content = event.getMessage().getContentStripped().toLowerCase();
 			TextChannel channel = event.getChannel();
 			String symbol = ConfigManager.getString("symbol");
 			

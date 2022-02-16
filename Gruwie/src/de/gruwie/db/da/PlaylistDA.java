@@ -61,7 +61,7 @@ public class PlaylistDA {
 		
 		List<Integer> track_ids = insertIntoTracks(tracks);
 		
-		String query = "INSERT INTO playlist (iD, isUser, playlist_name, track) VALUES (?,?,?,?)";
+		String query = "INSERT INTO playlist (iD, isUser, playlist_name, trackid) VALUES (?,?,?,?)";
 		
 		try (Connection cn = ConnectionManager.getConnection(false)){
 			try(PreparedStatement pstmt = cn.prepareStatement(query)){
@@ -107,7 +107,7 @@ public class PlaylistDA {
 	public static List<String> readPlaylist(String name, long id, boolean isUser) {
 		List<String> urls = new ArrayList<>();
 		
-		String query = "SELECT url FROM track t JOIN playlist p ON t.iD = p.track WHERE p.id = ? AND isUser = ? AND playlist_name = ? ORDER BY t.iD";
+		String query = "SELECT url FROM track t JOIN playlist p ON t.iD = p.trackid WHERE p.id = ? AND isUser = ? AND playlist_name = ? ORDER BY t.iD";
 		try (Connection cn = ConnectionManager.getConnection(true)){
 			try(PreparedStatement pstmt = cn.prepareStatement(query)){
 				pstmt.setLong(1, id);

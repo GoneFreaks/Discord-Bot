@@ -23,7 +23,7 @@ public class PlayCommand extends ServerCommand {
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
-		String[] args = message.getContentDisplay().split(" ");
+		String[] args = message.getContentStripped().split(" ");
 		
 		if(args.length > 1) {
 			MusicController controller = CheckVoiceState.checkVoiceState(member, channel);

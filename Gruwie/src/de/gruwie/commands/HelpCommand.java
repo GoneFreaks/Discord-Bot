@@ -18,7 +18,7 @@ public class HelpCommand extends ServerCommand {
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
-		String[] args = message.getContentRaw().split(" ");
+		String[] args = message.getContentStripped().split(" ");
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		long guildId = channel.getGuild().getIdLong();
 		
