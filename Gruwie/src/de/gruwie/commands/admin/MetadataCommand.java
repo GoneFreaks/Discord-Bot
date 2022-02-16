@@ -1,7 +1,5 @@
 package de.gruwie.commands.admin;
 
-import java.util.concurrent.TimeUnit;
-
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.AdminCommand;
 import de.gruwie.db.da.PlaylistDA;
@@ -9,7 +7,6 @@ import de.gruwie.db.da.TrackDA;
 import de.gruwie.music.FilterManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
-import de.gruwie.util.Threadpool;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.streams.ErrInterceptor;
 import de.gruwie.util.streams.OutInterceptor;
@@ -18,23 +15,11 @@ import net.dv8tion.jda.api.entities.PrivateChannel;
 
 public class MetadataCommand implements AdminCommand {
 
-	private static Message view = null;
-	private static boolean active = false;
 	@Override
 	public void performAdminCommand(Message message, PrivateChannel privateChannel) throws Exception {
 		
-		if(ConfigManager.getDatabase() && !active) {
-			active = true;
-			Threadpool.execute(() -> {
-				while(true) {
-					try {
-						if(view != null) MessageManager.editMessage(view, getMetadataMessage());
-						else view = MessageManager.sendEmbedPrivateMessage(privateChannel, getMetadataMessage(), false);
-						TimeUnit.SECONDS.sleep(20);
-					}catch (Exception e) {
-					}
-				}
-			});
+		if(ConfigManager.getDatabase()) {
+			MessageManager.sendEmbedPrivateMessage(privateChannel, getMetadataMessage(), false);
 		}
 		else MessageManager.sendEmbedPrivateMessage(privateChannel, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", true);
 	}

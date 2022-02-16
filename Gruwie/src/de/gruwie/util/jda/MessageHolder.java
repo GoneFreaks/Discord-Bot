@@ -1,7 +1,5 @@
 package de.gruwie.util.jda;
 
-import java.util.Collections;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -11,8 +9,7 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class MessageHolder {
 
-	private static ConcurrentHashMap<Message, Long> delete_after_time = new ConcurrentHashMap<>();
-	private static Set<Message> delete_on_shutdown = Collections.newSetFromMap(new ConcurrentHashMap<Message, Boolean>());
+	private static ConcurrentHashMap<Message, Long> storage = new ConcurrentHashMap<>();
 	
 	public static void start() {
 		Thread checker = new Thread(() -> {
@@ -20,11 +17,11 @@ public class MessageHolder {
 				try {
 					TimeUnit.SECONDS.sleep(60);
 					final long current = System.currentTimeMillis();
-					delete_after_time.forEach((k,v) -> {
+					storage.forEach((k,v) -> {
 						long difference = current - v;
 						if(!k.isPinned() && difference > (60000 * ConfigManager.getInteger("delete_other_time"))) {
 							k.delete().queue(null, Filter.handler);
-							delete_after_time.remove(k);
+							storage.remove(k);
 						}
 					});
 				} catch (Exception e) {
@@ -36,25 +33,20 @@ public class MessageHolder {
 		checker.start();
 	}
 	
-	public static void add(Message m, boolean delete) {
-		if(delete) delete_after_time.put(m, System.currentTimeMillis());
-		else delete_on_shutdown.add(m);
+	public static void add(Message m) {
+		storage.put(m, System.currentTimeMillis());
 	}
 	
 	public static void shutdown() {
-		delete_after_time.forEach((k,v) -> {
+		storage.forEach((k,v) -> {
 			if(!k.isPinned()) k.delete().queue(null, Filter.handler);
-			delete_after_time.remove(k);
-		});
-		delete_on_shutdown.forEach((k) -> {
-			if(!k.isPinned()) k.delete().queue(null, Filter.handler);
-			delete_on_shutdown.remove(k);
+			storage.remove(k);
 		});
 	}
 	
 	public static void checkMessage(String id) {
-		delete_after_time.forEach((k,v) -> {
-			if(id.equals(k.getId())) delete_after_time.remove(k);
+		storage.forEach((k,v) -> {
+			if(id.equals(k.getId())) storage.remove(k);
 		});
 	}
 	
