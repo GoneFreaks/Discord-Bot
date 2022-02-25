@@ -37,10 +37,15 @@ public class CheckTrackDTO implements Comparable<CheckTrackDTO> {
 	@Override
 	public int compareTo(CheckTrackDTO o) {
 		if(this.getTreffer() == o.getTreffer()) return 0;
-		if(this.getTreffer() > o.getTreffer()) return 1;
-		if(this.getTreffer() < o.getTreffer()) return -1;
+		if(this.getTreffer() > o.getTreffer()) return -1;
+		if(this.getTreffer() < o.getTreffer()) return 1;
 		
 		return 0;
+	}
+	
+	@Override
+	public String toString() {
+		return title;
 	}
 	
 }

@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.entities.Message;
 public class ProgressBar implements Runnable {
 
 	private final Queue queue;
-	private long last_position;
 	
 	public ProgressBar(Queue queue) {
 		this.queue = queue;
@@ -23,11 +22,7 @@ public class ProgressBar implements Runnable {
 			try {
 				Thread.sleep(ConfigManager.getRefreshTimer() * 1000);
 				AudioTrack current = queue.getCurrentTrack();
-				if(current != null) {
-					long current_position = current.getPosition();
-					if(last_position != current_position) editMessage(current);
-					last_position = current_position;
-				}
+				if(current != null) editMessage(current);
 			} catch (Exception e) {
 			}
 		}

@@ -9,6 +9,7 @@ import de.gruwie.music.Queue;
 import de.gruwie.music.util.CheckTrack;
 import de.gruwie.util.Dropdown;
 import de.gruwie.util.dto.CheckTrackDTO;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -35,7 +36,8 @@ public class RemoveTrackCommand extends ServerCommand {
 			List<CheckTrackDTO> track_list = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());
 			if(track_list != null) {
 				if(track_list.size() == 1) queue.removeTrack(track_list.get(0).getTrack());
-				else Dropdown.multipleEntriesFound("\n\n**Which track should be deleted?**", track_list, channel, member, false);
+				else if(track_list.size() <= 5) Dropdown.multipleEntriesFound("\n\n**Which track should be deleted?**", track_list, channel, member, false);
+				else MessageManager.sendEmbedMessage(true, "**THE PROVIDED QUERY IS TO AMBIGUOUS**", channel, null);
 			}
 		}
 	}

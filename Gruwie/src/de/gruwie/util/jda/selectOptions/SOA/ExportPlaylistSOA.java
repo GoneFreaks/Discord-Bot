@@ -1,4 +1,4 @@
-package de.gruwie.util.jda.selectOptions;
+package de.gruwie.util.jda.selectOptions.SOA;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import de.gruwie.db.PlaylistManager;
 import de.gruwie.util.exceptions.PlaylistAlreadyExistsException;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 import de.gruwie.util.jda.MessageManager;
+import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 
 public class ExportPlaylistSOA extends SelectOptionAction {

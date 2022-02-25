@@ -77,7 +77,6 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 	@Override
 	public void loadFailed(FriendlyException exception) {
 		MessageManager.sendEmbedMessage(true, "**UNABLE TO LOAD THE FOLLOWING TRACK**\n" + uri, controller.getGuild().getIdLong(), null);
-		exception.printStackTrace();
 	}
 
 }

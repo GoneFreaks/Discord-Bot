@@ -1,8 +1,9 @@
-package de.gruwie.util.jda.selectOptions;
+package de.gruwie.util.jda.selectOptions.SOA;
 
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 

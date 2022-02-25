@@ -1,4 +1,7 @@
-package de.gruwie.util.jda.selectOptions;
+package de.gruwie.util.jda.selectOptions.BA;
+
+import de.gruwie.util.jda.selectOptions.types.Confirmation;
+import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
 
 public class ConfirmAction extends SelectOptionAction {
 

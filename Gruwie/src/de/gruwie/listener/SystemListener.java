@@ -7,6 +7,7 @@ import de.gruwie.db.ChannelManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.Threadpool;
 import de.gruwie.util.jda.MessageHolder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -17,12 +18,16 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class SystemListener extends ListenerAdapter {
 
+	public static JDA jda;
+	
 	@Override
 	public void onReady(ReadyEvent event) {
 		
 		ShardManager shardMan = Gruwie_Startup.INSTANCE.getShardMan();
 		shardMan.addEventListener(new CommandListener());
 		shardMan.addEventListener(new InteractionListener());
+		
+		jda = event.getJDA();
 		
 		List<Guild> guilds = event.getJDA().getGuilds();
 		System.out.println("Connected to:");

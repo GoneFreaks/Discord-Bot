@@ -1,4 +1,4 @@
-package de.gruwie.util.jda.selectOptions;
+package de.gruwie.util.jda.selectOptions.types;
 
 public interface Confirmation {
 

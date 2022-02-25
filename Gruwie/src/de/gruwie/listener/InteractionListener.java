@@ -42,6 +42,7 @@ public class InteractionListener extends ListenerAdapter {
 			if(event.getChannelType().equals(ChannelType.PRIVATE)) {
 				event.deferEdit().queue(null, Filter.handler);
 				SelectionMenuManager.executeAction(event.getButton().getId());
+				SelectionMenuManager.executeButtonAction(event.getButton().getId());
 				event.getMessage().delete().queue(null, Filter.handler);
 			}
 		});

@@ -1,46 +1,21 @@
 package de.gruwie.music.util;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.util.dto.CheckTrackDTO;
 
 public class CheckTrack {
-
-	private static void checkSubstring(List<CheckTrackDTO> storage, String input_query) {
-
-		for (CheckTrackDTO i : storage) {
-			String temp = i.getTitle();
-			
-			for (int j = 0; j < input_query.length(); j++) {
-				if(temp.contains(input_query.substring(0, j+1))) i.addTreffer();
-			}
-		}
-	}
-	
-	private static List<CheckTrackDTO> compareStrings(List<AudioTrack> input_list, String input_query) {
-		
-		List<CheckTrackDTO> storage = new ArrayList<>();
-		for (int i = 0; i < input_list.size(); i++) {
-			storage.add(new CheckTrackDTO(input_list.get(i)));
-		}
-		
-		if(input_query.contains(" ")) {
-			String[] input_arr = input_query.split(" ");
-			
-			for (int i = 0; i < input_arr.length; i++) {
-				checkSubstring(storage, input_arr[i]);
-			}
-		}
-		else checkSubstring(storage, input_query);
-		return storage;
-	}
 	
 	public static List<CheckTrackDTO> getAudioTrack (List<AudioTrack> queuelist, String query) {
-		List<CheckTrackDTO> storage = compareStrings(queuelist, query.toLowerCase());
+		
+		if(queuelist.size() == 0) return null;
+		
+		List<CheckTrackDTO> storage = compare(queuelist, query.toLowerCase());
 		Collections.sort(storage);
 		
 		if(storage.size() == 1) {
@@ -55,6 +30,29 @@ public class CheckTrack {
 			return storage.subList(0, storage.size());
 		}
 		return null;
+	}
+
+	private static List<CheckTrackDTO> compare(List<AudioTrack> queuelist, String query) {
+		String[] args = query.split(" ");
+		List<CheckTrackDTO> list = new LinkedList<>();
+		queuelist.forEach((k) -> {
+			list.add(new CheckTrackDTO(k));
+		});
+		list.forEach((k) -> {
+			String title = k.getTitle();
+			for (int i = 0; i < args.length; i++) {
+				String current = args[i].toLowerCase();
+				if(title.contains(current + " ") || title.contains(" " + current)) k.addTreffer();
+				if(title.contains(current)) k.addTreffer();
+			}
+		});
+		return reduceList(list);
+	}
+	
+	private static List<CheckTrackDTO> reduceList(List<CheckTrackDTO> list) {
+		Collections.sort(list);
+		int max = list.get(0).getTreffer();
+		return list.parallelStream().filter(i -> i.getTreffer() == max).collect(Collectors.toList());
 	}
 	
 }

@@ -5,8 +5,13 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import de.gruwie.db.da.TrackDA;
+import de.gruwie.listener.SystemListener;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.jda.MessageManager;
+import de.gruwie.util.jda.selectOptions.DeleteTrackBA;
+import de.gruwie.util.streams.Filter;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class AudioLoadResultBulk implements AudioLoadResultHandler {
 
@@ -37,13 +42,15 @@ public class AudioLoadResultBulk implements AudioLoadResultHandler {
 
 	@Override
 	public void loadFailed(FriendlyException exception) {
-		boolean delete_entry = exception.getMessage().equals("This video is not available") || exception.getMessage().equals("This video requires age verification.");
-		if(!delete_entry) {
-			MessageManager.sendEmbedMessage(false, "**UNABLE TO LOAD THE FOLLOWING TRACK**\n" + uri, controller.getGuild().getIdLong(), null);
-			exception.printStackTrace();
-		}
-		else if(TrackDA.deleteCertainTrack(uri)) MessageManager.sendEmbedMessage(true, "**THE FOLLOWING TRACK HAS BEEN DELETED, DUE TO LOADING ISSUES**\n" + uri, controller.getGuild().getIdLong(), null);
-			
+		SystemListener.jda.retrieveUserById(ConfigManager.getString("owner_id")).queue((user) -> {
+			user.openPrivateChannel().queue((channel) -> {
+				
+				MessageEmbed embed = MessageManager.buildEmbedMessage("**UNABLE TO LOAD THE FOLLOWING TRACK**\n" + uri, null).build();
+				MessageAction action = channel.sendMessageEmbeds(embed);
+				action.setActionRow(new DeleteTrackBA(true, uri).getButton(), new DeleteTrackBA(false, uri).getButton()).queue(null, Filter.handler);
+				
+			}, Filter.handler);
+		}, Filter.handler);
 	}
 
 	@Override

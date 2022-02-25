@@ -24,6 +24,7 @@ public class FilterManager {
 		
 		filters.add(new FilterDTO("DEFAULT", 0.0));
 		filters.add(new FilterDTO("BASS", 0.15, 0.1, 0.05, 0.0, 0.0, -0.05, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1));
+		filters.add(new FilterDTO("HIGH-BOOST", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.15, 0.15, 0.15, 0.15, 0.15));
 		filters.add(new FilterDTO("EARRAPE", 10, 10, 10, 10, 10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10));
 		
 		for (FilterDTO i : filters) {

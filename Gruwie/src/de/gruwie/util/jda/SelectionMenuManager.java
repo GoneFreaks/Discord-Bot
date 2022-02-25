@@ -7,7 +7,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.jda.selectOptions.SelectOptionAction;
+import de.gruwie.util.jda.selectOptions.types.ButtonAction;
+import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -18,26 +19,27 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class SelectionMenuManager {
 
-	private static ConcurrentHashMap<UUID, SelectOptionAction> storage = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<UUID, SelectOptionAction> selectionMenus = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<UUID, ButtonAction> buttons = new ConcurrentHashMap<>();
 	private static Set<UUID> taken = new HashSet<>();
 	
 	public static UUID getUUID () {
 		UUID result;
 		while(true) {
 			result = UUID.randomUUID();
-			if(!storage.contains(result)) break;
+			if(!selectionMenus.contains(result)) break;
 		}
 		taken.add(result);
 		return result;
 	}
 	
 	public static void putAction (UUID uuid, SelectOptionAction action) {
-		storage.put(uuid, action);
+		selectionMenus.put(uuid, action);
 		taken.remove(uuid);
 	}
 	
 	public static void executeAction (String uuid) {
-		SelectOptionAction action = storage.remove(UUID.fromString(uuid));
+		SelectOptionAction action = selectionMenus.remove(UUID.fromString(uuid));
 		if(action != null) action.perform();
 	}
 	
@@ -54,6 +56,15 @@ public class SelectionMenuManager {
 		MessageEmbed message_embed = MessageManager.buildEmbedMessage(message, null).build();
 		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
 		action.setActionRow(builder.build()).queue(null, Filter.handler);
+	}
+	
+	public static void putButtonAction (ButtonAction ba, UUID uuid) {
+		buttons.put(uuid, ba);
+	}
+	
+	public static void executeButtonAction(String uuid) {
+		ButtonAction ba = buttons.remove(UUID.fromString(uuid));
+		if(ba != null) ba.perform();
 	}
 	
 }

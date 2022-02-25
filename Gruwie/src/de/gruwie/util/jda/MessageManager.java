@@ -54,10 +54,10 @@ public class MessageManager {
 		m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
 	}
 	
-	public static Message sendEmbedPrivateMessage(PrivateChannel channel, String message, boolean delete) {
-		Message m = channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).complete();
-		if(!delete) MessageHolder.add(m);
-		else m.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
-		return m;
+	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message, boolean delete) {
+		channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).queue((m) -> {
+			if(!delete) MessageHolder.add(m);
+			else m.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
+		}, Filter.handler);
 	}
 }
