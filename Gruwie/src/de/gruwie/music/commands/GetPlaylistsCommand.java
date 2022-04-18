@@ -26,7 +26,7 @@ public class GetPlaylistsCommand extends ServerCommand {
 			if(args.length == 2) {
 				try {
 					int count = Integer.parseInt(args[1]);
-					if(count <= ConfigManager.getInteger("max_queue_size")) PlaylistManager.playPlaylist(member, channel, PlaylistDA.readRandom(count));
+					if(count <= ConfigManager.getInteger("max_queue_size")) PlaylistManager.playPlaylist(member, channel, PlaylistDA.readRandom(count), "Random[" + count + "]");
 					else MessageManager.sendEmbedMessage(true, "**THE GIVEN NUMBER (" + count + ") IS TOO BIG, PROVIDE A SMALLER NUMBER (<" + ConfigManager.getInteger("max_queue_size") + ")**", channel, null);
 				} catch (Exception e) {}
 			}

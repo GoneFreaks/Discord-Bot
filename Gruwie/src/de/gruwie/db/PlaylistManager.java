@@ -1,6 +1,7 @@
 package de.gruwie.db;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -8,13 +9,15 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.da.PlaylistDA;
-import de.gruwie.music.AudioLoadResultBulk;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.music.util.TrackLoadingThread;
+import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Threadpool;
 import de.gruwie.util.dto.PlaylistsDTO;
 import de.gruwie.util.exceptions.PlaylistAlreadyExistsException;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -45,16 +48,23 @@ public class PlaylistManager {
 		else return null;
 	}
 	
-	public static void playPlaylist(Member member, TextChannel channel, List<String> list) throws Exception {
+	public static void playPlaylist(Member member, TextChannel channel, List<String> list, String playlist_name) throws Exception {
 		if(list != null && list.size() > 0) {
 			MusicController controller = checkAndJoin(member, channel);
 			AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
 			
+			List<String> splitted = new LinkedList<>();
 			for (String i : list) {
-				Threadpool.execute(() -> {
-					apm.loadItem(i, new AudioLoadResultBulk(controller, i));
-				});
+				if(splitted.size() == ConfigManager.getInteger("max_queue_size") / 10) {
+					Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
+					splitted = new LinkedList<>();
+				}
+				splitted.add(i);
 			}
+			if(splitted.size() > 0) Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
+			
+			MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has loaded the playlist **" + playlist_name + "**", channel, null);
+			
 		}
 	}
 }

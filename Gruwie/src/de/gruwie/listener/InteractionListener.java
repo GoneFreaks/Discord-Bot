@@ -31,9 +31,7 @@ public class InteractionListener extends ListenerAdapter {
 							button = Button.success(event.getButton().getId(), Emoji.fromMarkdown("▶"));
 							break;
 					}
-					event.editButton(button.asDisabled()).queue(null, Filter.handler);
-					Thread.sleep(2000);
-					event.editButton(button.asEnabled()).queue(null, Filter.handler);
+					event.editButton(button).queue(null, Filter.handler);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -27,7 +27,7 @@ public class GetPlaylistSOA extends SelectOptionAction {
 	public void perform() {
 		List<String> list = PlaylistDA.readPlaylist(name, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
 		try {
-			PlaylistManager.playPlaylist(member, channel, list);
+			PlaylistManager.playPlaylist(member, channel, list, name);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -9,6 +9,7 @@ import de.gruwie.music.Queue;
 import de.gruwie.music.util.CheckTrack;
 import de.gruwie.util.Dropdown;
 import de.gruwie.util.dto.CheckTrackDTO;
+import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -33,7 +34,11 @@ public class SetNextTrackCommand extends ServerCommand {
 			Queue queue = controller.getQueue();
 			List<CheckTrackDTO> track_list = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());
 			if(track_list != null) {
-				if(track_list.size() == 1) queue.setNextTrack(track_list.get(0).getTrack().getInfo().title);
+				if(track_list.size() == 1) {
+					String title = track_list.get(0).getTrack().getInfo().title;
+					MessageManager.sendEmbedMessage(true, "**NEXT TRACK:\n" + title + "**", channel, null);
+					queue.setNextTrack(title);
+				}
 				else Dropdown.multipleEntriesFound("\n\n**Which track should be played next?**", track_list, channel, member, true);
 			}
 		}

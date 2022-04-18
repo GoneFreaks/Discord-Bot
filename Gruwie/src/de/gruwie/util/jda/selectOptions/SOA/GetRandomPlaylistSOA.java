@@ -21,7 +21,7 @@ public class GetRandomPlaylistSOA extends SelectOptionAction {
 	@Override
 	public void perform() {
 		try {
-			PlaylistManager.playPlaylist(member, channel, PlaylistDA.readRandom(ConfigManager.getInteger("random_count")));
+			PlaylistManager.playPlaylist(member, channel, PlaylistDA.readRandom(ConfigManager.getInteger("random_count")), "Random[" + ConfigManager.getInteger("random_count") +  "]");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

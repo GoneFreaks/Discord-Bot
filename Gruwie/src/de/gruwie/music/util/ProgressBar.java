@@ -1,5 +1,6 @@
 package de.gruwie.music.util;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.music.Queue;
@@ -11,9 +12,11 @@ import net.dv8tion.jda.api.entities.Message;
 public class ProgressBar implements Runnable {
 
 	private final Queue queue;
+	private final AudioPlayer player;
 	
-	public ProgressBar(Queue queue) {
+	public ProgressBar(Queue queue, AudioPlayer player) {
 		this.queue = queue;
+		this.player = player;
 	}
 
 	@Override
@@ -22,17 +25,20 @@ public class ProgressBar implements Runnable {
 			try {
 				Thread.sleep(ConfigManager.getRefreshTimer() * 1000);
 				AudioTrack current = queue.getCurrentTrack();
-				if(current != null) editMessage(current);
+				if(current != null) editMessage(current, false);
 			} catch (Exception e) {
 			}
 		}
 	}
 	
-	public void editMessage(AudioTrack current) {
-		Message m = queue.getQueueView();
-		if(m != null) {
-			String progressbar = queue.isStream()? ":red_circle: Stream" : listToString(current.getPosition(), current.getDuration());
-			MessageManager.editMessage(queue.getQueueView(), queue.toString() + progressbar);
+	public void editMessage(AudioTrack current, boolean manual) {
+		if(manual || (!player.isPaused() && current.getDuration() < 1_800_000)) {
+			Message m = queue.getQueueView();
+			
+			if(m != null) {
+				String progressbar = queue.isStream()? ":red_circle: Stream" : listToString(current.getPosition(), current.getDuration());
+				MessageManager.editMessage(queue.getQueueView(), queue.toString() + progressbar);
+			}
 		}
 	}
 	

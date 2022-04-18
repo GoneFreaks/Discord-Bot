@@ -1,5 +1,8 @@
 package de.gruwie.music;
 
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -15,29 +18,28 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class AudioLoadResultBulk implements AudioLoadResultHandler {
 
+	private List<AudioTrack> tracks;
 	private final MusicController controller;
 	private final String uri;
+	private final CountDownLatch latch;
 
-	public AudioLoadResultBulk(MusicController controller, String uri) {
+	public AudioLoadResultBulk(MusicController controller, String uri, List<AudioTrack> tracks, CountDownLatch latch) {
 		this.controller = controller;
 		this.uri = uri;
+		this.tracks = tracks;
+		this.latch = latch;
 	}
 	
 	@Override
 	public void trackLoaded(AudioTrack track) {
-		if(controller != null && track != null) {
-			Queue queue = controller.getQueue();
-			try {
-				queue.addTrackToQueue(track);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		if(controller != null && track != null) tracks.add(track);
+		latch.countDown();
 	}
 
 	@Override
 	public void noMatches() {
 		System.out.println("noMatches");
+		latch.countDown();
 	}
 
 	@Override
@@ -51,11 +53,13 @@ public class AudioLoadResultBulk implements AudioLoadResultHandler {
 				
 			}, Filter.handler);
 		}, Filter.handler);
+		latch.countDown();
 	}
 
 	@Override
 	public void playlistLoaded(AudioPlaylist playlist) {
 		MessageManager.sendEmbedMessage(false, "**A PLAYLIST HAS BEEN LOADED WHICH SHOULDN'T BE THE CASE**\n" + uri, controller.getGuild().getIdLong(), null);
+		latch.countDown();
 	}
 
 }

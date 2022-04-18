@@ -29,7 +29,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			try {
 				queue.addTrackToQueue(track);
 				MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
-				if(ConfigManager.getDatabase()) if(!track.getInfo().isStream) TrackDA.writeTrack(uri);
+				if(ConfigManager.getDatabase()) if(!track.getInfo().isStream && track.getDuration() > 30_000) TrackDA.writeTrack(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -48,7 +48,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 					queue.addTrackToQueue(track);
 					MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
 					if(ConfigManager.getDatabase()) {
-						if(!track.getInfo().isStream) TrackDA.writeTrack(track.getInfo().uri);
+						if(!track.getInfo().isStream && track.getDuration() > 30_000) TrackDA.writeTrack(track.getInfo().uri);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,7 +59,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 					queue.addPlaylistToQueue(playlist.getTracks());
 					if(ConfigManager.getDatabase()) {
 						playlist.getTracks().forEach((k) -> {
-							if(!k.getInfo().isStream) TrackDA.writeTrack(k.getInfo().uri);
+							if(!k.getInfo().isStream && k.getDuration() > 30_000) TrackDA.writeTrack(k.getInfo().uri);
 						});
 					}
 				} catch (Exception e) {

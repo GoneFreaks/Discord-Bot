@@ -55,7 +55,7 @@ public class TrackDA {
 			} catch (Exception e) {
 				cn.rollback();
 				e.printStackTrace();
-			} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,8 +65,7 @@ public class TrackDA {
 	private static void deleteFromTracks(Connection cn, String url) throws Exception{
 		try (PreparedStatement pstmt = cn.prepareStatement("DELETE FROM TRACK WHERE url = ?")){
 			pstmt.setString(1, url);
-			int result = pstmt.executeUpdate();
-			if(!(result > 0)) throw new Exception("No Tracks were affected");
+			pstmt.executeUpdate();
 		} 
 	}
 	

@@ -24,7 +24,7 @@ public class MusicController {
 		this.equalizer = new TrackEqualizer(player);
 		this.filter = new FilterManager(this);
 		this.queue = new Queue(this);
-		this.bar = new ProgressBar(queue);
+		this.bar = new ProgressBar(queue, player);
 		Threadpool.execute(bar);
 		
 		this.guild.getAudioManager().setSendingHandler(new AudioPlayerSendHandler(player));

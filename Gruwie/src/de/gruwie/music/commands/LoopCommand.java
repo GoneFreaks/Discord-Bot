@@ -8,10 +8,10 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class RepeatCommand extends ServerCommand {
+public class LoopCommand extends ServerCommand {
 	
-	public RepeatCommand() {
-		super(false, true, RepeatCommand.class, "Repeat queue or not", "If active playing a track will not affect the music-queue, if it is not active the next track will be pulled/removed from the music-queue");
+	public LoopCommand() {
+		super(false, true, LoopCommand.class, "Loop queue or not", "If active playing a track will not affect the music-queue, if it is not active the next track will be pulled/removed from the music-queue");
 	}
 	
 	@Override

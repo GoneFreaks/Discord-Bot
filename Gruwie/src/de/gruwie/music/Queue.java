@@ -40,12 +40,8 @@ public class Queue {
 		this.guild_id = controller.getGuild().getIdLong();
 	}
 	
-	private long last_updated;
-	private void editMessage() {
-		if((System.currentTimeMillis() - last_updated) > 1000) {
-			controller.getProgressBar().editMessage(current_track_clone);
-			last_updated = System.currentTimeMillis();
-		}
+	public void editMessage() {
+		controller.getProgressBar().editMessage(current_track_clone, true);
 	}
 	
 	public void shuffle() {
@@ -56,7 +52,8 @@ public class Queue {
 	public boolean next() {
 		
 		if(queuelist.size() > 0) {
-			offset = 0;
+			if(repeat) offset = queuelist.indexOf(current_track) + 1;
+			else offset = 0;
 			int next_track;
 			if(next_audio_track != null) next_track = queuelist.indexOf(next_audio_track);
 			else next_track = (queuelist.indexOf(current_track) + 1);
@@ -88,7 +85,7 @@ public class Queue {
 		else return null;
 	}
 
-	public synchronized void addTrackToQueue(AudioTrack track) {
+	public void addTrackToQueue(AudioTrack track) {
 
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
@@ -106,7 +103,7 @@ public class Queue {
 	public void addPlaylistToQueue(List<AudioTrack> tracks) {
 		
 		for (AudioTrack i : tracks) {
-			if(queuelist.size() + tracks.size() <= ConfigManager.getInteger("max_queue_size")) {
+			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
 				boolean already = false;
 				for (AudioTrack j : queuelist) {
 					if(j.getInfo().title.equals(i.getInfo().title)) {
@@ -118,7 +115,6 @@ public class Queue {
 			}
 			else break;
 		}
-
 		if (audioPlayer.getPlayingTrack() == null) next();
 		
 		editMessage();
@@ -140,7 +136,10 @@ public class Queue {
 	public void changeRepeat() {
 		repeat = !repeat;
 		if(!repeat) queuelist.remove(current_track);
-		else if(current_track != null) queuelist.add(current_track);
+		else if(current_track != null) {
+			offset = queuelist.indexOf(current_track);
+			queuelist.add(current_track);
+		}
 		shuffle();
 	}
 	
@@ -257,8 +256,9 @@ public class Queue {
 					break;
 				}
 			}
+			offset = 0;
 		}
-		else MessageManager.sendEmbedMessage(true, "**THERE'S ALREADY A NEXT TRACK**", guild_id, null);
+		else MessageManager.sendEmbedMessage(true, "**THERE'S ALREADY A NEXT TRACK:\n" + next_audio_track.getInfo().title + "**", guild_id, null);
 		editMessage();
 	}
 	

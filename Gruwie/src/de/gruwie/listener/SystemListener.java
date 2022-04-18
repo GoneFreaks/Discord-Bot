@@ -34,7 +34,7 @@ public class SystemListener extends ListenerAdapter {
 		for (int i = 0; i < guilds.size(); i++) {
 			Guild current = guilds.get(i);
 			System.out.println((i + 1) + ": " + current.getName());
-			System.out.println("\tMembers: " + current.getMemberCount() + "\tOwner: <@!" + current.getOwnerId() + ">");
+			System.out.println("\tMembers: " + current.getMemberCount() + "\tOwner: " + jda.retrieveUserById(current.getOwnerId()).complete().getName());
 			if(i + 1 != guilds.size()) Formatter.printBorderline("-");
 		}
 		Formatter.printBorderline("=");

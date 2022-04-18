@@ -35,7 +35,10 @@ public class RemoveTrackCommand extends ServerCommand {
 			Queue queue = controller.getQueue();
 			List<CheckTrackDTO> track_list = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());
 			if(track_list != null) {
-				if(track_list.size() == 1) queue.removeTrack(track_list.get(0).getTrack());
+				if(track_list.size() == 1) {
+					MessageManager.sendEmbedMessage(true, "**REMOVED TRACK:\n" + track_list.get(0).getTrack().getInfo().title + "**", channel, null);
+					queue.removeTrack(track_list.get(0).getTrack());
+				}
 				else if(track_list.size() <= 5) Dropdown.multipleEntriesFound("\n\n**Which track should be deleted?**", track_list, channel, member, false);
 				else MessageManager.sendEmbedMessage(true, "**THE PROVIDED QUERY IS TO AMBIGUOUS**", channel, null);
 			}
