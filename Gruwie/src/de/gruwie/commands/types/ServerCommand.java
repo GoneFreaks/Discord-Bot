@@ -18,10 +18,10 @@ public class ServerCommand implements Comparable<ServerCommand>{
 	private final String description;
 	private final boolean beta;
 	private final String package_name;
-	private final String paramters;
-	private final String optional_paramters;
+	private final String parameters;
+	private final String optional_parameters;
 	
-	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String symbol, int position, String paramters, String optional_paramters, String short_description, String description) {
+	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String symbol, int position, String parameters, String optional_parameters, String short_description, String description) {
 		CommandDTO dto = Formatter.createNames(callingClass.getSimpleName(), tryShortcut);
 		this.beta = beta;
 		this.command = dto.getCommand();
@@ -31,12 +31,12 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		this.short_description = short_description;
 		this.description = description;
 		this.package_name = callingClass.getPackage().getName();
-		this.paramters = paramters;
-		this.optional_paramters = optional_paramters;
+		this.parameters = parameters;
+		this.optional_parameters = optional_parameters;
 	}
 	
-	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String paramters, String optional_paramters, String short_description, String description) {
-		this(beta, tryShortcut, callingClass, null, -1, paramters, optional_paramters, short_description, description);
+	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String parameters, String optional_parameters, String short_description, String description) {
+		this(beta, tryShortcut, callingClass, null, -1, parameters, optional_parameters, short_description, description);
 	}
 	
 	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String short_description, String description) {
@@ -80,11 +80,11 @@ public class ServerCommand implements Comparable<ServerCommand>{
 	}
 	
 	public final String getParamters() {
-		return paramters;
+		return parameters;
 	}
 	
 	public final String getOptionalParamters() {
-		return optional_paramters;
+		return optional_parameters;
 	}
 	
 	@Override

@@ -81,7 +81,7 @@ public class FilterManager {
 		if(temp == null) temp = custom_filter.get(name.toUpperCase());
 		if(temp != null) {
 			current_filter = temp.getName();
-			controller.getEqualizer().changeFreq(temp.getFilter());
+			controller.getEqualizer().setGain(temp.getFilter());
 		}
 	}
 	
