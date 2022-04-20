@@ -30,8 +30,6 @@ public class EQualizerCommand extends ServerCommand{
 					
 					float gain_float = gain / 400.0f;
 					
-					System.out.println(gain_float);
-					
 					TrackEqualizer eq = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong()).getEqualizer();
 					eq.setGain(gain_float, band - 1);
 				}
