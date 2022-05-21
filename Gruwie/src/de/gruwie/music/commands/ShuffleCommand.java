@@ -4,6 +4,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
+import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShuffleCommand extends ServerCommand {
 	
 	public ShuffleCommand() {
-		super(false, false, ShuffleCommand.class, "Shuffle queue", "Shuffle the complete music-queue");
+		super(false, false, ShuffleCommand.class, Outputs.SHORT_DESCRIPTION_SHUFFLE, Outputs.DESCRIPTION_SHUFFLE);
 	}
 	
 	@Override

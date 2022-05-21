@@ -28,11 +28,11 @@ public class SetOrRemoveTrackSOA extends SelectOptionAction {
 			MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 			if(isSetter) {
 				controller.getQueue().setNextTrack(name);
-				MessageManager.sendEmbedMessage(true, "**NEXT TRACK:\n" + name + "**", channel, null);
+				MessageManager.sendEmbedMessageVariable(true, "**NEXT TRACK:\n" + name + "**", channel.getGuild().getIdLong());
 			}
 			else {
 				boolean removed = controller.getQueue().removeTrack(name);
-				if(removed) MessageManager.sendEmbedMessage(true, "**REMOVED TRACK:\n" + name + "**", channel, null);
+				if(removed) MessageManager.sendEmbedMessageVariable(true, "**REMOVED TRACK:\n" + name + "**", channel.getGuild().getIdLong());
 			}
 			
 		} catch (Exception e) {

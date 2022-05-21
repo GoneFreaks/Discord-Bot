@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.gruwie.commands.types.ServerCommand;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.Permission;
@@ -14,7 +15,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ClearCommand extends ServerCommand {
 	
 	public ClearCommand() {
-		super(false, true, ClearCommand.class, null, "**n** the number of messages to delete", "Delete messages", "Delete messages in the current channel\nYou need the permission to manage messages in order to use this command");
+		super(false, true, ClearCommand.class, null, Outputs.OPTIONAL_PARAMETERS_CLEAR, Outputs.SHORT_DESCRIPTION_CLEAR, Outputs.DESCRIPTION_CLEAR);
 	}
 	
 	@Override
@@ -27,13 +28,13 @@ public class ClearCommand extends ServerCommand {
 					if(delete < 10) deleteMessages(delete, channel, message);
 					else deleteBulkMessages(delete, channel, message);
 				} catch (Exception e) {
-					MessageManager.sendEmbedMessage(true, "**YOU HAVE TO PROVIDE A NUMBER**", channel, null);
+					MessageManager.sendEmbedMessage(true, Outputs.INVALID_PARAMETERS, channel);
 				}
 			}
 			if(args.length == 1) deleteMessages(1, channel, message);
-			if(args.length != 1 && args.length != 2) MessageManager.sendEmbedMessage(true, "**WRONG PATTERN, YOU HAVE TO PROVIDE EITHER ONE ARGUMENT OR NONE**", channel, null);
+			if(args.length != 1 && args.length != 2) MessageManager.sendEmbedMessage(true, Outputs.INVALID_PARAMETERS, channel);
 		}
-		else MessageManager.sendEmbedMessage(true, "**YOU DONT HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
+		else MessageManager.sendEmbedMessage(true, Outputs.PERMISSION, channel);
 	}
 	
 	private void deleteBulkMessages(int delete, TextChannel channel, Message message) {

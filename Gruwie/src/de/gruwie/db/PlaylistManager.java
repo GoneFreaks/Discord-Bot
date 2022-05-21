@@ -63,7 +63,7 @@ public class PlaylistManager {
 			}
 			if(splitted.size() > 0) Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
 			
-			MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has loaded the playlist **" + playlist_name + "**", channel, null);
+			MessageManager.sendEmbedMessageVariable(true, "<@!" + member.getId() + "> has loaded the playlist **" + playlist_name + "**", channel.getGuild().getIdLong());
 			
 		}
 	}

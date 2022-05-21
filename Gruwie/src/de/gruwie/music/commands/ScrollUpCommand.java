@@ -4,6 +4,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
+import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ScrollUpCommand extends ServerCommand {
 
 	public ScrollUpCommand() {
-		super(true, true, ScrollUpCommand.class, "⬆️", 5, "Scroll through the queue", "Scroll through the queue\nHas no effect if the queue is empty or completly displayed");
+		super(true, true, ScrollUpCommand.class, "⬆️", 4, Outputs.SHORT_DESCRIPTION_SCROLL, Outputs.DESCRIPTION_SCROLL);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
+import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class LoopCommand extends ServerCommand {
 	
 	public LoopCommand() {
-		super(false, true, LoopCommand.class, "Loop queue or not", "If active playing a track will not affect the music-queue, if it is not active the next track will be pulled/removed from the music-queue");
+		super(false, false, LoopCommand.class, Outputs.SHORT_DESCRIPTION_LOOP, Outputs.DESCRIPTION_LOOP);
 	}
 	
 	@Override

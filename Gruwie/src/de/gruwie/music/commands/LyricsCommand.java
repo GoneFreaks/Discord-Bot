@@ -12,6 +12,7 @@ import de.gruwie.music.Queue;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.GruwieIO;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.Threadpool;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
@@ -21,7 +22,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class LyricsCommand extends ServerCommand {
 	
 	public LyricsCommand() {
-		super(false, true, LyricsCommand.class, null, "The song-name and the interpret seperated by **-**", "Get Lyrics for tracks", "By just using the command itself Gruwie will try to get the lyrics for the track currently playing\nBy using *-command <interpret> - <title>* or *-command <title> - <interpret>* you can get the lyrics for the specific track");
+		super(false, true, LyricsCommand.class, null, Outputs.OPTIONAL_PARAMETERS_LYRICS, Outputs.SHORT_DESCRIPTION_LYRICS, Outputs.DESCRIPTION_LYRICS);
 	}
 	
 	@Override
@@ -49,16 +50,16 @@ public class LyricsCommand extends ServerCommand {
 				Threadpool.execute(() -> {
 					try {
 						String result = future.get();
-						if(result.length() > 0) MessageManager.sendEmbedMessage(false, result, channel, "Powered by: www.azlyrics.com");
-						else MessageManager.sendEmbedMessage(true, "**Unable to find lyrics**", channel, null);
+						if(result.length() > 0) MessageManager.sendEmbedMessageVariable(false, result, channel.getGuild().getIdLong(), Outputs.LYRICS_FOOTER);
+						else MessageManager.sendEmbedMessage(true, Outputs.LYRICS, channel);
 					} catch (Exception e) {
 						e.printStackTrace();
 					} 
 				});
 			}
-			else MessageManager.sendEmbedMessage(true, "**Unable to find lyrics**", channel, null);
+			else MessageManager.sendEmbedMessage(true, Outputs.LYRICS, channel);
 		}
-		else MessageManager.sendEmbedMessage(true, "**Unable to find lyrics**", channel, null);
+		else MessageManager.sendEmbedMessage(true, Outputs.LYRICS, channel);
 	}
 	
 }

@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -12,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ResumePauseCommand extends ServerCommand {
 	
 	public ResumePauseCommand() {
-		super(false, true, ResumePauseCommand.class, "⏸️", 2, "Resume/Pause current track", "Either pause or resume the playing of the track");
+		super(false, true, ResumePauseCommand.class, "⏸️", 2, Outputs.SHORT_DESCRIPTION_RESUMEPAUSE, Outputs.DESCRIPTION_RESUMEPAUSE);
 	}
 	
 	@Override

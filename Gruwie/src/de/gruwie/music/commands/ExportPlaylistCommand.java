@@ -9,6 +9,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.jda.SelectionMenuManager;
 import de.gruwie.util.jda.selectOptions.SOA.ExportPlaylistSOA;
@@ -26,7 +27,7 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 public class ExportPlaylistCommand extends ServerCommand {
 
 	public ExportPlaylistCommand() {
-		super(true, true, ExportPlaylistCommand.class, "The playlist-name with a length of up to 30 characters", null, "Export/Save the current queue", "Export/Save the current queue as an playlist with the provided name.\nThere are two types of playlist:\nGuild/Server: Visible to everyone on this server, but only manageable for admins (create,delete,update)\nPrivate/User: Globally but tied to the creator)");
+		super(true, true, ExportPlaylistCommand.class, Outputs.PARAMETERS_EXPORTPLAYLIST, null, Outputs.SHORT_DESCRIPTION_EXPORTPLAYLIST, Outputs.DESCRIPTION_EXPORTPLAYLIST);
 	}
 	
 	@Override
@@ -58,12 +59,12 @@ public class ExportPlaylistCommand extends ServerCommand {
 						}
 						action.setActionRow(buttons).queue(null, Filter.handler);
 					}
-					else MessageManager.sendEmbedMessage(true, "**THE QUEUE IS EMPTY, NOTHING TO SAVE**", channel, null);
+					else MessageManager.sendEmbedMessage(true, Outputs.EXPORT_EMPTY_QUEUE, channel);
 				}
-				else MessageManager.sendEmbedMessage(true, "**YOU CAN ONLY USE UP TO 30-CHARACTERS PER PLAYLIST**", channel, null);
+				else MessageManager.sendEmbedMessage(true, Outputs.EXPORT_MAX_CHARACTERS, channel);
 			}
-			else MessageManager.sendEmbedMessage(true, "**YOU HAVE TO PROVIDE A NAME FOR YOU'RE PLAYLIST**", channel, null);
+			else MessageManager.sendEmbedMessage(true, Outputs.EXPORT_MISSING_NAME, channel);
 		}
-		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
+		else MessageManager.sendEmbedMessage(true, Outputs.DATABASE, channel);
 	}
 }

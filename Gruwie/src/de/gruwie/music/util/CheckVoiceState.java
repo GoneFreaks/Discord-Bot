@@ -3,6 +3,7 @@ package de.gruwie.music.util;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.music.MusicController;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,12 +18,12 @@ public class CheckVoiceState {
 			VoiceChannel vc;
 			if((vc = state.getChannel()) != null) return Gruwie_Startup.INSTANCE.getPlayerManager().getController(vc.getGuild().getIdLong());
 			else {
-				MessageManager.sendEmbedMessage(true, "**YOU HAVE TO BE IN A VOICE-CHANNEL**", ChannelManager.getChannel(channel), null);
+				MessageManager.sendEmbedMessage(true, Outputs.VOICE_CHANNEL, ChannelManager.getChannel(channel));
 				return null;
 			}
 		}
 		else {
-			MessageManager.sendEmbedMessage(true, "**YOU HAVE TO BE IN A VOICE-CHANNEL**", ChannelManager.getChannel(channel), null);
+			MessageManager.sendEmbedMessage(true, Outputs.VOICE_CHANNEL, ChannelManager.getChannel(channel));
 			return null;
 		}
 	}

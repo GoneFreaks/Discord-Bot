@@ -5,6 +5,7 @@ import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.util.CheckVoiceState;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -13,7 +14,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShowQueueCommand extends ServerCommand {
 
 	public ShowQueueCommand() {
-		super(false, true, ShowQueueCommand.class, "Show complete queue", "Show complete queue, all messages of this type will be deleted during shutdown");
+		super(false, true, ShowQueueCommand.class, Outputs.SHORT_DESCRIPTION_SHOWQUEUE, Outputs.DESCRIPTION_SHOWQUEUE);
 	}
 	
 	@Override
@@ -28,7 +29,7 @@ public class ShowQueueCommand extends ServerCommand {
 				if(queuelist.length() < 4096) break;
 				else custom_character_count -= 2;
 			}
-			MessageManager.sendEmbedMessage(false, queuelist.toString(), channel, null);
+			MessageManager.sendEmbedMessageVariable(false, queuelist.toString(), channel.getGuild().getIdLong());
 		}
 	}
 

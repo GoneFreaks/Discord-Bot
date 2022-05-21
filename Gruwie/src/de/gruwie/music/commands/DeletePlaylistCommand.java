@@ -6,6 +6,7 @@ import java.util.List;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.jda.SelectionMenuManager;
 import de.gruwie.util.jda.selectOptions.SOA.DeletePlaylistSOA;
@@ -18,7 +19,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class DeletePlaylistCommand extends ServerCommand {
 
 	public DeletePlaylistCommand() {
-		super(true, true, DeletePlaylistCommand.class, "Delete a playlist", "Delete the chosen playlist.\nPrivate/User playlists can only be deleted by their creators\nServer playlists can only be deleted by admins");
+		super(true, true, DeletePlaylistCommand.class, Outputs.SHORT_DESCRIPTION_DELETEPLAYLIST, Outputs.DESCRIPTION_DELETEPLAYLIST);
 	}
 	
 	@Override
@@ -39,9 +40,9 @@ public class DeletePlaylistCommand extends ServerCommand {
 				
 				SelectionMenuManager.createDropdownMenu(actions, privateChannel, "**CHOOSE THE PLAYLIST WHICH SHOULD BE DELETED**");
 			}
-			else MessageManager.sendEmbedMessage(true, "**NO PLAYLISTS FOUND**", channel, null);
+			else MessageManager.sendEmbedMessage(true, Outputs.NOTHING_FOUND, channel);
 		}
-		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
+		else MessageManager.sendEmbedMessage(true, Outputs.DATABASE, channel);
 	}
 	
 }

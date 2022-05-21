@@ -28,7 +28,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			Queue queue = controller.getQueue();
 			try {
 				queue.addTrackToQueue(track);
-				MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
+				MessageManager.sendEmbedMessageVariable(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong());
 				if(ConfigManager.getDatabase()) if(!track.getInfo().isStream && track.getDuration() > 30_000) TrackDA.writeTrack(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -46,7 +46,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 				try {
 					AudioTrack track = playlist.getTracks().get(0);
 					queue.addTrackToQueue(track);
-					MessageManager.sendEmbedMessage(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong(), null);
+					MessageManager.sendEmbedMessageVariable(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong());
 					if(ConfigManager.getDatabase()) {
 						if(!track.getInfo().isStream && track.getDuration() > 30_000) TrackDA.writeTrack(track.getInfo().uri);
 					}
@@ -76,7 +76,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 
 	@Override
 	public void loadFailed(FriendlyException exception) {
-		MessageManager.sendEmbedMessage(true, "**UNABLE TO LOAD THE FOLLOWING TRACK**\n" + uri, controller.getGuild().getIdLong(), null);
+		MessageManager.sendEmbedMessageVariable(true, "**UNABLE TO LOAD THE FOLLOWING TRACK**\n" + uri, controller.getGuild().getIdLong());
 	}
 
 }

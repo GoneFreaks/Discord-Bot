@@ -2,7 +2,7 @@ package de.gruwie.commands;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.ConfigManager;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class SetCommand extends ServerCommand {
 	
 	public SetCommand() {
-		super(false, false, SetCommand.class, "Set Output-Channel" ,"Choose which channel Gruwie should use as the output-channel\nGruwie will react to messages regardless of the channel they were sent in");
+		super(false, false, SetCommand.class, Outputs.SHORT_DESCRIPTION_SET, Outputs.DESCRIPTION_SET);
 	}
 	
 	@Override
@@ -20,9 +20,9 @@ public class SetCommand extends ServerCommand {
 		
 		if(member.hasPermission(Permission.MANAGE_CHANNEL)) {
 			ChannelManager.putChannel(member.getGuild().getIdLong(), channel.getIdLong());
-			MessageManager.sendEmbedMessage(true, "**OUTPUT-CHANNEL HAS BEEN SET**" + (ConfigManager.getDatabase()? "" : " **TEMPORARILY**"), channel, null);
+			MessageManager.sendEmbedMessage(true, Outputs.OUTPUT_CHANNEL_SET, channel);
 		}
-		else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO YOU USE THIS COMMAND**", channel, null);
+		else MessageManager.sendEmbedMessage(true, Outputs.PERMISSION, channel);
 	}
 	
 }

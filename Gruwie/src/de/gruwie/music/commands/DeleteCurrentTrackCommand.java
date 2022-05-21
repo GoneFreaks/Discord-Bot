@@ -8,6 +8,7 @@ import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.util.CheckVoiceState;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,7 +18,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class DeleteCurrentTrackCommand extends ServerCommand {
 
 	public DeleteCurrentTrackCommand() {
-		super(true, true, DeleteCurrentTrackCommand.class, "Delete the current track from the database", "Remove the track currently playing from the database.\nIn addition every entry of this track in playlists will also be removed");
+		super(true, true, DeleteCurrentTrackCommand.class, Outputs.SHORT_DESCRIPTION_DELETECURRENTTRACK, Outputs.DESCRIPTION_DELETECURRENTTRACK);
 	}
 
 	@Override
@@ -29,13 +30,12 @@ public class DeleteCurrentTrackCommand extends ServerCommand {
 			if(member.hasPermission(Permission.ADMINISTRATOR)) {
 				if(track != null && track.getInfo().uri != null) {
 					boolean result = TrackDA.deleteCertainTrack(track.getInfo().uri);
-					MessageManager.sendEmbedMessage(true, result? "**REMOVED TRACK\n*" + track.getInfo().title + "*\nFROM THE DATABASE**" : "**TRACK WASN'T DELETED, MAYBE IT IS NOT STORED INSIDE THE DATABASE**", channel, null);
+					MessageManager.sendEmbedMessageVariable(true, result? "**REMOVED TRACK\n*" + track.getInfo().title + "*\nFROM THE DATABASE**" : "**TRACK WASN'T DELETED, MAYBE IT IS NOT STORED INSIDE THE DATABASE**", channel.getGuild().getIdLong());
 				}
-				else MessageManager.sendEmbedMessage(true, "**SOMETHING WENT WRONG WHILE REMOVING THE TRACK\nMOST LIKELY THERE IS NO ENTY FOR THIS TRACK**", channel, null);
 			}
-			else MessageManager.sendEmbedMessage(true, "**YOU DON'T HAVE THE PERMISSION TO USE THIS COMMAND**", channel, null);
+			else MessageManager.sendEmbedMessage(true, Outputs.PERMISSION, channel);
 		}
-		else MessageManager.sendEmbedMessage(true, "**WITHOUT A DATABASE CONNECTION THIS FEATURE IS NOT AVAILABLE**", channel, null);
+		else MessageManager.sendEmbedMessage(true, Outputs.DATABASE, channel);
 	}
 	
 }

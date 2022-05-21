@@ -4,6 +4,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
+import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ClearQueueCommand extends ServerCommand {
 
 	public ClearQueueCommand() {
-		super(false, true, ClearQueueCommand.class, "Clear current queue", "Clear the music-queue");
+		super(false, true, ClearQueueCommand.class, Outputs.SHORT_DESCRIPTION_CLEARQUEUE, Outputs.DESCRIPTION_CLEARQUEUE);
 	}
 	
 	@Override

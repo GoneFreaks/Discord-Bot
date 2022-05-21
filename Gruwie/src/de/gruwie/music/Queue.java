@@ -10,14 +10,11 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Formatter;
 import de.gruwie.util.View;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Message;
 
 public class Queue {
 	
 	private View view;
-	
-	private long guild_id;
 	
 	private MusicController controller;
 	private AudioPlayer audioPlayer;
@@ -37,19 +34,18 @@ public class Queue {
 		this.filter = controller.getFilterManager();
 		this.offset = 0;
 		this.next_audio_track = null;
-		this.guild_id = controller.getGuild().getIdLong();
 	}
 	
 	public void editMessage() {
 		controller.getProgressBar().editMessage(current_track_clone, true);
 	}
 	
-	public void shuffle() {
+	public synchronized void shuffle() {
 		Collections.shuffle(queuelist);
 		editMessage();
 	}
 	
-	public boolean next() {
+	public synchronized boolean next() {
 		
 		if(queuelist.size() > 0) {
 			if(repeat) offset = queuelist.indexOf(current_track) + 1;
@@ -85,7 +81,7 @@ public class Queue {
 		else return null;
 	}
 
-	public void addTrackToQueue(AudioTrack track) {
+	public synchronized void addTrackToQueue(AudioTrack track) {
 
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
@@ -100,7 +96,7 @@ public class Queue {
 		editMessage();
 	}
 	
-	public void addPlaylistToQueue(List<AudioTrack> tracks) {
+	public synchronized void addPlaylistToQueue(List<AudioTrack> tracks) {
 		
 		for (AudioTrack i : tracks) {
 			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
@@ -120,12 +116,12 @@ public class Queue {
 		editMessage();
 	}
 	
-	public void clearQueue() {
+	public synchronized void clearQueue() {
 		this.queuelist = new LinkedList<>();
 		editMessage();
 	}
 	
-	public List<AudioTrack> getQueueList() {
+	public synchronized List<AudioTrack> getQueueList() {
 		return queuelist;
 	}
 	
@@ -133,7 +129,7 @@ public class Queue {
 		return current_track_clone;
 	}
 	
-	public void changeRepeat() {
+	public synchronized void changeRepeat() {
 		repeat = !repeat;
 		if(!repeat) queuelist.remove(current_track);
 		else if(current_track != null) {
@@ -144,7 +140,7 @@ public class Queue {
 	}
 	
 	@Override
-	public String toString() {
+	public synchronized String toString() {
 		
 		StringBuilder b = new StringBuilder("");
 		int size = ConfigManager.getInteger("queue_show");
@@ -175,7 +171,7 @@ public class Queue {
 		return b.toString();
 	}
 	
-	public StringBuilder toStringHelper(int start, int end, int custom_character_count) {
+	public synchronized StringBuilder toStringHelper(int start, int end, int custom_character_count) {
 		
 		StringBuilder b = new StringBuilder("");
 		
@@ -198,14 +194,14 @@ public class Queue {
 		return b;
 	}
 	
-	public boolean removeTrack (AudioTrack track) {
+	public synchronized boolean removeTrack (AudioTrack track) {
 		if(next_audio_track != null && next_audio_track.equals(track)) next_audio_track = null;
 		boolean result = queuelist.remove(track);
 		editMessage();
 		return result;
 	}
 	
-	public boolean removeTrack (String track) {
+	public synchronized boolean removeTrack (String track) {
 		
 		boolean result = false;
 		
@@ -217,11 +213,11 @@ public class Queue {
 		return result;
 	}
 	
-	public int size () {
+	public synchronized int size () {
 		return queuelist.size();
 	}
 	
-	private String queueTime() {
+	private synchronized String queueTime() {
 		long sum = 0;
 		for (AudioTrack i : queuelist) {
 			sum += i.getDuration();
@@ -238,14 +234,14 @@ public class Queue {
 		move(1);
 	}
 	
-	private void move(int sign) {
+	private synchronized void move(int sign) {
 		int temp = offset;
 		temp += sign * ConfigManager.getInteger("queue_show");
 		if(temp < queuelist.size() && temp >= 0) offset = temp;
 		editMessage();
 	}
 	
-	public void setNextTrack(String track) {
+	public synchronized boolean setNextTrack(String track) {
 		if(next_audio_track == null) {
 			for (AudioTrack i : queuelist) {
 				if(i.getInfo().title.equals(track)) {
@@ -257,9 +253,10 @@ public class Queue {
 				}
 			}
 			offset = 0;
+			editMessage();
+			return true;
 		}
-		else MessageManager.sendEmbedMessage(true, "**THERE'S ALREADY A NEXT TRACK:\n" + next_audio_track.getInfo().title + "**", guild_id, null);
-		editMessage();
+		else return false;
 	}
 	
 	public boolean isStream() {

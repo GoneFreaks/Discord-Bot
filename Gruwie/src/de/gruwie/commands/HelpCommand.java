@@ -4,6 +4,7 @@ import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -12,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class HelpCommand extends ServerCommand {
 	
 	public HelpCommand() {
-		super(false, true, HelpCommand.class, null, "A command or its shortcut", "Help/Manual-Pages", "A collection of all commands available\nAlso the command to get help for other commands");
+		super(false, true, HelpCommand.class, null, Outputs.OPTIONAL_PARAMETERS_HELP, Outputs.SHORT_DESCRIPTION_HELP, Outputs.DESCRIPTION_HELP);
 	}
 	
 	@Override
@@ -22,7 +23,7 @@ public class HelpCommand extends ServerCommand {
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		long guildId = channel.getGuild().getIdLong();
 		
-		if(args.length == 1) MessageManager.sendEmbedMessage(false, cmdMan.toString(), guildId, "Executed by: Java " + System.getProperty("java.version") + "\nGitHub: https://github.com/GoneFreaks/Discord-Bot");
+		if(args.length == 1) MessageManager.sendEmbedMessageVariable(false, cmdMan.toString(), guildId, Outputs.DEFAULT_FOOTER);
 		else {
 			String command_symbol = ConfigManager.getString("symbol");
 			
@@ -42,9 +43,9 @@ public class HelpCommand extends ServerCommand {
 				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
 				
 				
-				MessageManager.sendEmbedMessage(false, b.toString(), guildId, null);
+				MessageManager.sendEmbedMessageVariable(false, b.toString(), guildId, Outputs.DEFAULT_FOOTER);
 			}
-			else MessageManager.sendEmbedMessage(true, "**YOU HAVE PROVIDED AN UNKNOWN COMMAND**", channel, null);
+			else MessageManager.sendEmbedMessage(true, Outputs.INVALID_PARAMETERS, channel);
 		}
 	}
 }

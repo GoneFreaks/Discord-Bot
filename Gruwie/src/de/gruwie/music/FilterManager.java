@@ -38,6 +38,7 @@ public class FilterManager {
 		Properties props = GruwieIO.loadProperties("filter.properties");
 		if(props != null) {
 			custom_filter = new ConcurrentHashMap<>();
+			if(default_filter == null) default_filter = new ConcurrentHashMap<>();
 			props.forEach((k,v) -> {
 				default_filter.forEach((sk, sv) -> {
 					if(sv.equals(k)) {

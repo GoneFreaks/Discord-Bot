@@ -58,7 +58,7 @@ public class AudioLoadResultBulk implements AudioLoadResultHandler {
 
 	@Override
 	public void playlistLoaded(AudioPlaylist playlist) {
-		MessageManager.sendEmbedMessage(false, "**A PLAYLIST HAS BEEN LOADED WHICH SHOULDN'T BE THE CASE**\n" + uri, controller.getGuild().getIdLong(), null);
+		MessageManager.sendEmbedMessageVariable(false, "**A PLAYLIST HAS BEEN LOADED WHICH SHOULDN'T BE THE CASE**\n" + uri, controller.getGuild().getIdLong());
 		latch.countDown();
 	}
 

@@ -4,6 +4,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
+import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class NextCommand extends ServerCommand {
 
 	public NextCommand() {
-		super(false, true, NextCommand.class, "⏭️", 3, "Next Track in queue", "Play the next track in the music-queue");
+		super(false, true, NextCommand.class, "⏭️", 3, Outputs.SHORT_DESCRIPTION_NEXT, Outputs.SHORT_DESCRIPTION_NEXT);
 	}
 	
 	@Override

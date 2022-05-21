@@ -8,6 +8,7 @@ import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.util.CheckTrack;
 import de.gruwie.util.Dropdown;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.dto.CheckTrackDTO;
 import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,7 +18,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class RemoveTrackCommand extends ServerCommand {
 	
 	public RemoveTrackCommand() {
-		super(false, true, RemoveTrackCommand.class, "Search-Query, in order to identify a track in the queue", null, "Remove track from queue", "In addition to the command itself you have to provide a query, to identify the track you want to remove.\nIf the result is a single track it will be removed immediately, else a dialog shows up with the possible options.\nIf there are more than five results you have to provide a more accurate query");
+		super(false, true, RemoveTrackCommand.class, Outputs.PARAMETERS_QUERY, null, Outputs.SHORT_DESCRIPTION_REMOVETRACK, Outputs.DESCRIPTION_REMOVETRACK);
 	}
 	
 	@Override
@@ -36,11 +37,11 @@ public class RemoveTrackCommand extends ServerCommand {
 			List<CheckTrackDTO> track_list = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());
 			if(track_list != null) {
 				if(track_list.size() == 1) {
-					MessageManager.sendEmbedMessage(true, "**REMOVED TRACK:\n" + track_list.get(0).getTrack().getInfo().title + "**", channel, null);
+					MessageManager.sendEmbedMessageVariable(true, "**REMOVED TRACK:\n" + track_list.get(0).getTrack().getInfo().title + "**", channel.getGuild().getIdLong());
 					queue.removeTrack(track_list.get(0).getTrack());
 				}
 				else if(track_list.size() <= 5) Dropdown.multipleEntriesFound("\n\n**Which track should be deleted?**", track_list, channel, member, false);
-				else MessageManager.sendEmbedMessage(true, "**THE PROVIDED QUERY IS TO AMBIGUOUS**", channel, null);
+				else MessageManager.sendEmbedMessage(true, Outputs.AMBIGUOUS, channel);
 			}
 		}
 	}

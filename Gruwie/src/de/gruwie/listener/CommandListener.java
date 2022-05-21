@@ -4,6 +4,7 @@ import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.GuessMeantCommand;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.Threadpool;
 import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.streams.Filter;
@@ -36,8 +37,8 @@ public class CommandListener extends ListenerAdapter {
 						if(cmdMan.perform(args[0], event.getMember(), channel, message)) {
 							if(ConfigManager.getBoolean("guess_command")) {
 								String meant_cmd = GuessMeantCommand.probableCommand(cmdMan.getCommandArray(), args[0], symbol);
-								if(meant_cmd == null) MessageManager.sendEmbedMessage(true, "**I DON'T KNOW THIS COMMAND (° ͜ʖ͡°)╭∩╮**", channel, null);
-								else MessageManager.sendEmbedMessage(true, "**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel, null);
+								if(meant_cmd == null) MessageManager.sendEmbedMessage(true, Outputs.UNKNOWN_COMMAND, channel);
+								else MessageManager.sendEmbedMessageVariable(true, "**MAYBE YOU WANTED TO USE: " + meant_cmd + "**", channel.getGuild().getIdLong());
 							}
 						}
 					} catch (Exception e) {

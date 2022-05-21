@@ -6,6 +6,7 @@ import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -14,7 +15,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 public class StopCommand extends ServerCommand {
 	
 	public StopCommand() {
-		super(false, true, StopCommand.class, "⏹️", 1, "Stop playing", "Gruwie will do the following things: *Stop playing music, Clearing the music-queue, leaving the voice-channel*\nIf noone except Gruwie is connected to a voice-channel this command will be executed automatically, if a track ends");
+		super(false, true, StopCommand.class, "⏹️", 1, Outputs.SHORT_DESCRIPTION_STOP, Outputs.DESCRIPTION_STOP);
 	}
 	
 	@Override

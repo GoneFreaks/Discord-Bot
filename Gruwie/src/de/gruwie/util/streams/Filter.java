@@ -35,9 +35,7 @@ public class Filter {
 	
 	private static void deleteExcessiveFiles(File[] files) {
 		if(files.length > KEEP_LOG_COUNT) {
-			for (int i = 0; i < files.length - (KEEP_LOG_COUNT - 1); i++) {
-				files[i].delete();
-			}
+			for (int i = 0; i < files.length - (KEEP_LOG_COUNT - 1); i++) files[i].delete();
 		}
 		if(files.length == KEEP_LOG_COUNT) files[0].delete();
 	}

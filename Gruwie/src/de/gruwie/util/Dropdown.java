@@ -47,7 +47,7 @@ public class Dropdown {
 	public static void multipleEntriesFound (String message, List<CheckTrackDTO> track_list, TextChannel channel, Member member, boolean isSetter) {
 		
 		if(track_list.size() > 5) {
-			MessageManager.sendEmbedMessage(true, "**THE PROVIDED INPUT IS TOO AMBIGUOUS**", channel, null);
+			MessageManager.sendEmbedMessage(true, Outputs.AMBIGUOUS, channel);
 		}
 		
 		StringBuilder c = new StringBuilder("**Multiple entries have been found:**\n\n*");

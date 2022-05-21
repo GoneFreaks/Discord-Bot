@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.Outputs;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -12,9 +13,9 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class MessageManager {
 	
-	public static Message sendEmbedMessage(boolean delete, String message, long guildId, String footer) {
+	public static Message sendEmbedMessage(boolean delete, Outputs message, long guildId) {
 		try {
-			Message output = sendEmbedMessage(message, guildId, footer);
+			Message output = sendMessage(message.getValue(), guildId, null);
 			if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
 			else MessageHolder.add(output);
 			return output;
@@ -24,17 +25,13 @@ public class MessageManager {
 		}
 	}
 	
-	public static Message sendEmbedMessage(String message, long guildId, String footer) {
+	private static Message sendMessage(String message, long guildId, String footer) {
 		TextChannel channel = ChannelManager.getChannel(guildId);
-		try {
-			return channel.sendMessageEmbeds(buildEmbedMessage(message, footer).build()).complete();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		Message output = channel.sendMessageEmbeds(buildEmbedMessage(message, footer).build()).complete();
+		return output;
 	}
 	
-	public static Message sendEmbedMessage(boolean delete, String message, TextChannel channel, String footer) {return sendEmbedMessage(delete, message, channel.getGuild().getIdLong(), footer);}
+	public static Message sendEmbedMessage(boolean delete, Outputs message, TextChannel channel) {return sendEmbedMessage(delete, message, channel.getGuild().getIdLong());}
 	
 	public static EmbedBuilder buildEmbedMessage (String message, String footer) {
 		
@@ -59,5 +56,16 @@ public class MessageManager {
 			if(!delete) MessageHolder.add(m);
 			else m.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
 		}, Filter.handler);
+	}
+	
+	public static Message sendEmbedMessageVariable(boolean delete, String message, long guildId) {
+		return sendEmbedMessageVariable(delete, message, guildId, null);
+	}
+	
+	public static Message sendEmbedMessageVariable(boolean delete, String message, long guildId, Outputs footer) {
+		Message output = sendMessage(message, guildId, null);
+		if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
+		else MessageHolder.add(output);
+		return output;
 	}
 }
