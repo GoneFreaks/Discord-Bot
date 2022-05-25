@@ -6,12 +6,14 @@ import de.gruwie.util.jda.MessageHolder;
 import de.gruwie.util.jda.SelectionMenuManager;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Emoji;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.Button;
 
 public class InteractionListener extends ListenerAdapter {
 	
@@ -19,19 +21,9 @@ public class InteractionListener extends ListenerAdapter {
 		Threadpool.execute(() -> {
 			
 			if(event.getChannelType().equals(ChannelType.TEXT)) {
-				Button button = event.getButton();
+				event.deferEdit().queue(null, Filter.handler);
 				try {
 					Gruwie_Startup.INSTANCE.getCmdMan().perform(event.getButton().getId(), event.getMember(), event.getTextChannel(), null);
-					switch (event.getButton().getEmoji().getName()) {
-						case "▶":
-							button = Button.success(event.getButton().getId(), Emoji.fromMarkdown("⏸️"));
-							break;
-							
-						case "⏸️":
-							button = Button.success(event.getButton().getId(), Emoji.fromMarkdown("▶"));
-							break;
-					}
-					event.editButton(button).queue(null, Filter.handler);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,6 +50,26 @@ public class InteractionListener extends ListenerAdapter {
 			event.deferEdit().queue();
 			SelectionMenuManager.executeAction(event.getSelectedOptions().get(0).getValue());
 			event.getMessage().delete().queue();
+		});
+	}
+	
+	@Override
+	public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
+		if(!event.getMember().getUser().isBot()) onGuildMessageReactionUpdate(event.getReactionEmote().getEmoji(), event.getMember(), event.getChannel());
+	}
+    
+	@Override
+	public void onGuildMessageReactionRemove(GuildMessageReactionRemoveEvent event) {
+		if(!event.getMember().getUser().isBot()) onGuildMessageReactionUpdate(event.getReactionEmote().getEmoji(), event.getMember(), event.getChannel());
+	}
+	
+	private void onGuildMessageReactionUpdate(String emote, Member member, TextChannel channel) {
+		Threadpool.execute(() -> {
+			try {
+				Gruwie_Startup.INSTANCE.getCmdMan().getEman().perform(emote, member, channel);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		});
 	}
 }

@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ShuffleCommand extends ServerCommand {
 	
 	public ShuffleCommand() {
-		super(false, false, ShuffleCommand.class, Outputs.SHORT_DESCRIPTION_SHUFFLE, Outputs.DESCRIPTION_SHUFFLE);
+		super(false, false, ShuffleCommand.class, null, "🔀", 2, null, null, Outputs.SHORT_DESCRIPTION_SHUFFLE, Outputs.DESCRIPTION_SHUFFLE);
 	}
 	
 	@Override

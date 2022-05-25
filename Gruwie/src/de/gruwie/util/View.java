@@ -15,7 +15,8 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class View {
 
-	private static List<SymbolDTO> emotes = new ArrayList<>();
+	private static List<SymbolDTO> button_symbols = new ArrayList<>();
+	private static List<SymbolDTO> emote_symbols = new ArrayList<>();
 	
 	private Message current_track_view;
 	private Message current_queue_view;
@@ -24,9 +25,10 @@ public class View {
 		MessageAction action = track_view.getChannel().sendMessageEmbeds(embed);
 		
 		List<Button> buttons = new ArrayList<>();
-		for (int i = 0; i < emotes.size(); i++) {
-			SymbolDTO k = emotes.get(i);
+		for (int i = 0; i < button_symbols.size(); i++) {
+			SymbolDTO k = button_symbols.get(i);
 			if(i == 0) buttons.add(Button.danger(k.getCmd(), Emoji.fromMarkdown(k.getSymbol())));
+			else if(i == 4) buttons.add(Button.primary(k.getCmd(), Emoji.fromMarkdown(k.getSymbol())));
 			else buttons.add(Button.success(k.getCmd(), Emoji.fromMarkdown(k.getSymbol())));
 		}
 		
@@ -46,10 +48,23 @@ public class View {
 		return current_queue_view;
 	}
 	
-	public static void init(List<ServerCommand> commands) {
+	public static void init(List<ServerCommand> commands, List<ServerCommand> emotes) {
 		for (ServerCommand i : commands) {
-			if(i.getSymbol() != null) emotes.add(new SymbolDTO(i.getSymbol(), i.getPosition(), i.getCommand()));
+			if(i.getSymbol() != null) button_symbols.add(new SymbolDTO(i.getSymbol(), i.getPosition(), i.getCommand()));
 		}
-		Collections.sort(emotes);
+		Collections.sort(button_symbols);
+		
+		for (ServerCommand i : emotes) {
+			if(i.getEmote() != null) emote_symbols.add(new SymbolDTO(i.getEmote(), i.getPosition(), i.getCommand()));
+		}
+		Collections.sort(emote_symbols);
+	}
+	
+	public void addEmotes() {
+		if(current_track_view != null) {
+			emote_symbols.forEach((k) -> {
+				current_track_view.addReaction(k.getSymbol()).complete();
+			});
+		}
 	}
 }

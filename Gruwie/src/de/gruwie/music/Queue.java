@@ -76,6 +76,10 @@ public class Queue {
 		this.view = view;
 	}
 	
+	public View getView() {
+		return view;
+	}
+	
 	public Message getQueueView () {
 		if(view != null) return view.getQueueView();
 		else return null;
@@ -146,9 +150,8 @@ public class Queue {
 		int size = ConfigManager.getInteger("queue_show");
 		
 		b.append("__**Queue: **__\n");
-		b.append("Current Filter: *" + filter.getCurrentFilter() + "*⠀⠀⠀⠀⠀⠀⠀⠀");
-		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs\n");
-		b.append("Looping:" + (repeat? ":white_check_mark:" : ":negative_squared_cross_mark:") + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
+		b.append("Current Filter: *" + filter.getCurrentFilter() + "*⠀⠀⠀⠀⠀⠀");
+		b.append(queuelist.size() + "/" + ConfigManager.getInteger("max_queue_size") + " Songs" + (repeat? " 🔁" : "") + "⠀⠀⠀⠀⠀⠀");
 		String temp = queueTime();
 		if(temp != null) b.append("Duration: *" + temp +"*");
 		b.append("\n");
@@ -185,10 +188,10 @@ public class Queue {
 			else if(j.equals(next_audio_track)) b.append("↪️ ");
 			else b.append("▪️ ");
 			
+			b.append("⠀***" + Formatter.formatTime(j.getInfo().length) + "***⠀⠀");
 			String title = j.getInfo().title.replaceAll("\\*", " ");
 			if(title.length() > title_size) b.append(title.substring(0, title_size) + "...");
 			else b.append(title);
-			b.append(" **" + Formatter.formatTime(j.getInfo().length) + "**");
 			b.append("\n");
 		}
 		return b;

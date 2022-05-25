@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ScrollDownCommand extends ServerCommand {
 
 	public ScrollDownCommand() {
-		super(true, true, ScrollDownCommand.class, "⬇️", 5, Outputs.SHORT_DESCRIPTION_SCROLL, Outputs.DESCRIPTION_SCROLL);
+		super(true, true, ScrollDownCommand.class, null, "⬇️", 5, null, null, Outputs.SHORT_DESCRIPTION_SCROLL, Outputs.DESCRIPTION_SCROLL);
 	}
 
 	@Override

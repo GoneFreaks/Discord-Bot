@@ -63,7 +63,7 @@ public class MessageManager {
 	}
 	
 	public static Message sendEmbedMessageVariable(boolean delete, String message, long guildId, Outputs footer) {
-		Message output = sendMessage(message, guildId, null);
+		Message output = sendMessage(message, guildId, footer != null? footer.getValue() : null);
 		if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
 		else MessageHolder.add(output);
 		return output;

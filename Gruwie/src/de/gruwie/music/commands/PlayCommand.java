@@ -43,7 +43,7 @@ public class PlayCommand extends ServerCommand {
 					
 			String url = str.toString().trim();
 			if(!url.startsWith("http")) {
-				url = "ytsearch:" + url;
+				url = "ytmsearch:" + url;
 			}
 			apm.loadItem(url, new AudioLoadResult(controller, url, member));
 		}

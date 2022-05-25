@@ -42,7 +42,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 		if(controller != null && playlist != null) {
 			Queue queue = controller.getQueue();
 
-			if (uri.startsWith("ytsearch:")) {
+			if (uri.startsWith("ytmsearch:")) {
 				try {
 					AudioTrack track = playlist.getTracks().get(0);
 					queue.addTrackToQueue(track);

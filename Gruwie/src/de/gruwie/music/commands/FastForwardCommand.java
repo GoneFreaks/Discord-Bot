@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class FastForwardCommand extends ServerCommand {
 	
 	public FastForwardCommand() {
-		super(true, true, FastForwardCommand.class, null, Outputs.OPTIONAL_PARAMETERS_FASTFORWARD, Outputs.SHORT_DESCRIPTION_FASTFORWARD, Outputs.DESCRIPTION_FASTFORWARD);
+		super(true, true, FastForwardCommand.class, null, "⏩", 1, null, Outputs.OPTIONAL_PARAMETERS_FASTFORWARD, Outputs.SHORT_DESCRIPTION_FASTFORWARD, Outputs.DESCRIPTION_FASTFORWARD);
 	}
 	
 	@Override

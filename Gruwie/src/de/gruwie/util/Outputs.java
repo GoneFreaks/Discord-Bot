@@ -211,8 +211,14 @@ public enum Outputs {
 	//###############
 	DESCRIPTION_UPDATEPLAYLIST("***Replace*** the playlist with the current queue.\n"
 			+ "Each track which has been in this playlist will be removed"),
-	SHORT_DESCRIPTION_UPDATEPLAYLIST("Update a playlist with the current queue")
+	SHORT_DESCRIPTION_UPDATEPLAYLIST("Update a playlist with the current queue"),
 	
+	//###############
+	// ShowEmotes
+	//###############
+	DESCRIPTION_SHOWEMOTES("Add all available emotes beneath the track-view\n"
+			+ "those can be used like buttons"),
+	SHORT_DESCRIPTION_SHOWEMOTES("Show emotes"),
 	;
 
 	private String value;

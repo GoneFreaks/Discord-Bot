@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class LoopCommand extends ServerCommand {
 	
 	public LoopCommand() {
-		super(false, false, LoopCommand.class, Outputs.SHORT_DESCRIPTION_LOOP, Outputs.DESCRIPTION_LOOP);
+		super(false, false, LoopCommand.class, "🔁", null, 4, null, null, Outputs.SHORT_DESCRIPTION_LOOP, Outputs.DESCRIPTION_LOOP);
 	}
 	
 	@Override

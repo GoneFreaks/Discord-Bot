@@ -68,20 +68,21 @@ public class Gruwie_Startup {
 
 	public void startup(String token) throws Exception {
 
+		shutdownTerminal();
+		
 		INSTANCE = this;
 		
 		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
 		builder.addEventListeners(new SystemListener());
 		
-		this.shardMan = builder.build();
-		this.playerManager = new PlayerManager();
 		this.cmdMan = new CommandManager();
+		this.playerManager = new PlayerManager();
 		this.acmdMan = new AdminCommandManager();
+		this.shardMan = builder.build();
 
 		this.audioPlayerManager = new DefaultAudioPlayerManager();
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
-		shutdownTerminal();
 
 	}
 

@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ResumePauseCommand extends ServerCommand {
 	
 	public ResumePauseCommand() {
-		super(false, true, ResumePauseCommand.class, "⏸️", 2, Outputs.SHORT_DESCRIPTION_RESUMEPAUSE, Outputs.DESCRIPTION_RESUMEPAUSE);
+		super(false, true, ResumePauseCommand.class, "⏯️", 2, Outputs.SHORT_DESCRIPTION_RESUMEPAUSE, Outputs.DESCRIPTION_RESUMEPAUSE);
 	}
 	
 	@Override

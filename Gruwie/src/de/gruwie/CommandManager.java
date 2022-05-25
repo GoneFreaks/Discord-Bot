@@ -15,6 +15,7 @@ import java.util.jar.JarFile;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.View;
+import de.gruwie.util.exceptions.IdentifierAlreadyTakenException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -22,17 +23,22 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class CommandManager {
 	
 	private List<ServerCommand> commands;
+	private List<ServerCommand> buttons;
 	private List<ServerCommand> emotes;
 	private ConcurrentHashMap<String, ServerCommand> storage;
 	private static AtomicInteger counter = new AtomicInteger(0);
 	
-	public CommandManager () {
+	private EmoteManager eman;
+	
+	public CommandManager () throws IdentifierAlreadyTakenException {
 		this.commands = new ArrayList<>();
+		this.buttons = new ArrayList<>();
 		this.emotes = new ArrayList<>();
 		createServerCommands();
 		Collections.sort(commands);
 		this.storage = initializeMap();
-		View.init(emotes);
+		View.init(buttons, emotes);
+		this.eman = new EmoteManager(emotes);
 	}
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
@@ -47,13 +53,13 @@ public class CommandManager {
 		else return true;
 	}
 	
-	public ConcurrentHashMap<String, ServerCommand> initializeMap() {
+	public ConcurrentHashMap<String, ServerCommand> initializeMap() throws IdentifierAlreadyTakenException {
 		ConcurrentHashMap<String, ServerCommand> result = new ConcurrentHashMap<>();
 		for (ServerCommand i : commands) {
-			result.put(i.getCommand(), i);
-			if(i.getShortcut() != null) result.put(i.getShortcut(), i);
-		}
-		for (ServerCommand i : emotes) {
+			if(result.get(i.getCommand()) != null) throw new IdentifierAlreadyTakenException("Command already taken: " + i.getCommand());
+			if(i.getShortcut() != null)
+			if(result.get(i.getShortcut()) != null) throw new IdentifierAlreadyTakenException("Shortcut already taken: " + i.getShortcut());
+			
 			result.put(i.getCommand(), i);
 			if(i.getShortcut() != null) result.put(i.getShortcut(), i);
 		}
@@ -105,8 +111,9 @@ public class CommandManager {
 							if(name.contains("Command") && name.contains("commands") && !name.contains("types") && !name.contains("admin")) {
 								Class<?> cls = Class.forName(name.replace(".class", "").replaceAll("/", "."));
 								ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
-								if(scmd.getSymbol() == null) commands.add(scmd);
-								else emotes.add(scmd);
+								if(scmd.getSymbol() != null) buttons.add(scmd);
+								if(scmd.getEmote() != null) emotes.add(scmd);
+								commands.add(scmd);
 							}
 						}
 					} catch (Exception e) {
@@ -136,8 +143,9 @@ public class CommandManager {
 				String classpath = input.replaceAll("/", ".") + (i.getName().replaceAll(".class", ""));
 				Class<?> cls = Class.forName(classpath);
 				ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
-				if(scmd.getSymbol() == null) commands.add(scmd);
-				else emotes.add(scmd);
+				if(scmd.getSymbol() != null) buttons.add(scmd);
+				if(scmd.getEmote() != null) emotes.add(scmd);
+				commands.add(scmd);
 			}
 		}
 	}
@@ -160,6 +168,10 @@ public class CommandManager {
 	
 	public int getCommandCount () {
 		return counter.get();
+	}
+
+	public EmoteManager getEman() {
+		return eman;
 	}
 	
 }

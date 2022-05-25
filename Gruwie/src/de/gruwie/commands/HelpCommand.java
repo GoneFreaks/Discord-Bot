@@ -41,6 +41,7 @@ public class HelpCommand extends ServerCommand {
 				String desc = scmd.getDescription();
 				b.append(desc != null? "\n" + desc : "NA");
 				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
+				if(scmd.getEmote() != null) b.append("\nThis command can also be used by pressing " + scmd.getEmote() + " below the music-track message");
 				
 				
 				MessageManager.sendEmbedMessageVariable(false, b.toString(), guildId, Outputs.DEFAULT_FOOTER);

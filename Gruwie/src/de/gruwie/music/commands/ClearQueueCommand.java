@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class ClearQueueCommand extends ServerCommand {
 
 	public ClearQueueCommand() {
-		super(false, true, ClearQueueCommand.class, Outputs.SHORT_DESCRIPTION_CLEARQUEUE, Outputs.DESCRIPTION_CLEARQUEUE);
+		super(false, true, ClearQueueCommand.class, null, "🆕", 3, null, null, Outputs.SHORT_DESCRIPTION_CLEARQUEUE, Outputs.DESCRIPTION_CLEARQUEUE);
 	}
 	
 	@Override

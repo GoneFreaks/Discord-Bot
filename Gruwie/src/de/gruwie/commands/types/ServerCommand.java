@@ -14,6 +14,7 @@ public class ServerCommand implements Comparable<ServerCommand>{
 	private final String command;
 	private final String shortcut;
 	private final String symbol;
+	private final String emote;
 	private final int position;
 	private final String short_description;
 	private final String description;
@@ -22,7 +23,7 @@ public class ServerCommand implements Comparable<ServerCommand>{
 	private final String parameters;
 	private final String optional_parameters;
 	
-	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String symbol, int position, Outputs outputs_parameters, Outputs outputs_optional_parameters, Outputs outputs_short_description, Outputs outputs_description) {
+	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String symbol, String emote, int position, Outputs outputs_parameters, Outputs outputs_optional_parameters, Outputs outputs_short_description, Outputs outputs_description) {
 		CommandDTO dto = Formatter.createNames(callingClass.getSimpleName(), tryShortcut);
 		this.beta = beta;
 		this.command = dto.getCommand();
@@ -34,22 +35,23 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		this.package_name = callingClass.getPackage().getName();
 		this.parameters = outputs_parameters != null? outputs_parameters.getValue() : null;
 		this.optional_parameters = outputs_optional_parameters != null? outputs_optional_parameters.getValue() : null;
+		this.emote = emote;
 	}
 	
 	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, Outputs outputs_parameters, Outputs outputs_optional_parameters, Outputs outputs_short_description, Outputs outputs_description) {
-		this(beta, tryShortcut, callingClass, null, -1, outputs_parameters, outputs_optional_parameters, outputs_short_description, outputs_description);
+		this(beta, tryShortcut, callingClass, null, null, -1, outputs_parameters, outputs_optional_parameters, outputs_short_description, outputs_description);
 	}
 	
 	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, Outputs outputs_short_description, Outputs outputs_description) {
-		this(beta, tryShortcut, callingClass, null, -1, null, null, outputs_short_description, outputs_description);
+		this(beta, tryShortcut, callingClass, null, null, -1, null, null, outputs_short_description, outputs_description);
 	}
 	
 	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String symbol, int position, Outputs outputs_short_description, Outputs outputs_description) {
-		this(beta, tryShortcut, callingClass, symbol, position, null, null, outputs_short_description, outputs_description);
+		this(beta, tryShortcut, callingClass, symbol, null, position, null, null, outputs_short_description, outputs_description);
 	}
 	
 	public ServerCommand(Class<?> callingClass) {
-		this(true, false, callingClass, null, -1, null, null, null, null);
+		this(true, false, callingClass, null, null, -1, null, null, null, null);
 	}
 
 	public final String getCommand() {
@@ -96,6 +98,7 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		if(shortcut != null) b.append("Shortcut: *" + cmd_symbol + shortcut + "*\n");
 		
 		if(symbol != null) b.append("Symbol: *" + symbol + "*\n");
+		if(emote != null) b.append("Emote: *" + emote + "*\n");
 		if(short_description != null) b.append("Description: *" + short_description + "*\n");
 		return b.toString() + (beta? "---------------------------------------------------------------\n" : "");
 	}
@@ -108,6 +111,10 @@ public class ServerCommand implements Comparable<ServerCommand>{
 	public final int compareTo(ServerCommand other) {
 		if(this.package_name.equals(other.getPackageName())) return this.getCommand().compareTo(other.getCommand());
 		else return this.getPackageName().compareTo(other.getPackageName());
+	}
+
+	public String getEmote() {
+		return emote;
 	}
 	
 }
