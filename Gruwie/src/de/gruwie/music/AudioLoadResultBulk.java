@@ -38,7 +38,7 @@ public class AudioLoadResultBulk implements AudioLoadResultHandler {
 
 	@Override
 	public void noMatches() {
-		System.out.println("noMatches");
+		MessageManager.sendEmbedMessageVariable(false, "No matches found for the given query: ***" + uri + "***", controller.getGuild().getIdLong());
 		latch.countDown();
 	}
 

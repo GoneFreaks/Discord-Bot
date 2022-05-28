@@ -178,6 +178,8 @@ public class Queue {
 		
 		StringBuilder b = new StringBuilder("");
 		
+		if(end != 0) b.append("```");
+		
 		if(end == 0) return b.append("THE QUEUE IS EMPTY\n");
 		
 		int title_size = custom_character_count > 0? custom_character_count : ConfigManager.getInteger("queue_character_count");
@@ -188,12 +190,13 @@ public class Queue {
 			else if(j.equals(next_audio_track)) b.append("↪️ ");
 			else b.append("▪️ ");
 			
-			b.append("⠀***" + Formatter.formatTime(j.getInfo().length) + "***⠀⠀");
-			String title = j.getInfo().title.replaceAll("\\*", " ");
+			b.append(Formatter.formatTime(j.getInfo().length) + "  ");
+			String title = j.getInfo().title;
 			if(title.length() > title_size) b.append(title.substring(0, title_size) + "...");
 			else b.append(title);
 			b.append("\n");
 		}
+		if(end != 0) b.append("```");
 		return b;
 	}
 	

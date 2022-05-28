@@ -53,9 +53,12 @@ public class PlaylistManager {
 			MusicController controller = checkAndJoin(member, channel);
 			AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
 			
+			int block_size = ConfigManager.getInteger("max_queue_size") / 10;
+			if(list.size() <= block_size) block_size /= 5;
+			
 			List<String> splitted = new LinkedList<>();
 			for (String i : list) {
-				if(splitted.size() == ConfigManager.getInteger("max_queue_size") / 10) {
+				if(splitted.size() == block_size) {
 					Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
 					splitted = new LinkedList<>();
 				}
@@ -64,7 +67,6 @@ public class PlaylistManager {
 			if(splitted.size() > 0) Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
 			
 			MessageManager.sendEmbedMessageVariable(true, "<@!" + member.getId() + "> has loaded the playlist **" + playlist_name + "**", channel.getGuild().getIdLong());
-			
 		}
 	}
 }
