@@ -188,7 +188,7 @@ public class Queue {
 			else if(j.equals(next_audio_track)) b.append("↪️ ");
 			else b.append("▪️ ");
 			
-			b.append(Formatter.formatTime(j.getInfo().length) + "  ");
+			b.append("***" + Formatter.formatTime(j.getInfo().length) + "***⠀⠀");
 			String title = j.getInfo().title;
 			if(title.length() > title_size) b.append(title.substring(0, title_size) + "...");
 			else b.append(title);
