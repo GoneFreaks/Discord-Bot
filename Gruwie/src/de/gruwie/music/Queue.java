@@ -178,8 +178,6 @@ public class Queue {
 		
 		StringBuilder b = new StringBuilder("");
 		
-		if(end != 0) b.append("```");
-		
 		if(end == 0) return b.append("THE QUEUE IS EMPTY\n");
 		
 		int title_size = custom_character_count > 0? custom_character_count : ConfigManager.getInteger("queue_character_count");
@@ -196,7 +194,7 @@ public class Queue {
 			else b.append(title);
 			b.append("\n");
 		}
-		if(end != 0) b.append("```");
+
 		return b;
 	}
 	
