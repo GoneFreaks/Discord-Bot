@@ -1,10 +1,10 @@
-package de.gruwie.util.jda.selectOptions.SOA;
+package de.gruwie.util.selectOptions;
 
 import java.util.List;
 
 import de.gruwie.db.PlaylistManager;
 import de.gruwie.db.da.PlaylistDA;
-import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
+import de.gruwie.util.dto.TrackDTO;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -25,7 +25,7 @@ public class GetPlaylistSOA extends SelectOptionAction {
 	
 	@Override
 	public void perform() {
-		List<String> list = PlaylistDA.readPlaylist(name, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
+		List<TrackDTO> list = PlaylistDA.readPlaylist(name, isUser? member.getIdLong() : channel.getGuild().getIdLong(), isUser);
 		try {
 			PlaylistManager.playPlaylist(member, channel, list, name);
 		} catch (Exception e) {

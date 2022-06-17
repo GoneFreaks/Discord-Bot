@@ -1,12 +1,9 @@
-package de.gruwie.music.util;
+package de.gruwie.util;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.music.Queue;
-import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Formatter;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Message;
 
 public class ProgressBar implements Runnable {
@@ -45,7 +42,7 @@ public class ProgressBar implements Runnable {
 	private String listToString(long current_position, long duration) {
 		StringBuilder b = new StringBuilder("");
 		b.append("`" + checkProcess(current_position, duration) + "`");
-		b.append(" " + Formatter.formatTime(current_position) + "/" + Formatter.formatTime(duration));
+		b.append(" " + GruwieUtilities.formatTime(current_position) + "/" + GruwieUtilities.formatTime(duration));
 		return b.toString();
 	}
 	

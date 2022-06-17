@@ -1,10 +1,8 @@
-package de.gruwie.util.jda;
+package de.gruwie.util;
 
 import java.util.concurrent.TimeUnit;
 
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Outputs;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;

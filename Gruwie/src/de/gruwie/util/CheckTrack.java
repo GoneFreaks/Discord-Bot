@@ -1,4 +1,4 @@
-package de.gruwie.music.util;
+package de.gruwie.util;
 
 import java.util.Collections;
 import java.util.LinkedList;

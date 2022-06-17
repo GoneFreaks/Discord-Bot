@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.gruwie.util.Formatter;
+import de.gruwie.util.GruwieUtilities;
 
 public class OutInterceptor extends PrintStream {
 
@@ -17,7 +17,7 @@ public class OutInterceptor extends PrintStream {
 	@Override
 	public void println(String s) {
 		super.println(s);
-		if(s.equals("=")) storage.add(Formatter.getBorder(35, "="));
+		if(s.equals("=")) storage.add(GruwieUtilities.getBorder(35, "="));
 		else storage.add(s + "\n");
 	}
 	

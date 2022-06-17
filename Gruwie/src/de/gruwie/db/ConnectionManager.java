@@ -4,17 +4,19 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.sqlite.SQLiteDataSource;
 
-import de.gruwie.util.Formatter;
+import de.gruwie.db.da.MetaDA;
+import de.gruwie.util.GruwieUtilities;
 
 public class ConnectionManager {
 	
 	private static SQLiteDataSource source;
 	
 	public static Connection getConnection (boolean autoCommit) throws SQLException {
-		if(source == null) createConnection();
 		Connection cn = source.getConnection();
 		cn.setAutoCommit(autoCommit);
 		return cn;
@@ -27,7 +29,7 @@ public class ConnectionManager {
 			File file = new File("data.db");
 			if(!file.exists()) {
 				System.out.println("No Database found --> creating an empty default-Database");
-				Formatter.printBorderline("-");
+				GruwieUtilities.printBorderline("-");
 				file.createNewFile();
 				newFile = true;
 			}
@@ -35,6 +37,7 @@ public class ConnectionManager {
 			source.setUrl("jdbc:sqlite:" + file.getPath());
 			if(source.getConnection() != null) {
 				if(newFile) initializeDatabase();
+				else if(!validateDatabase()) return false;
 				return true;
 			}
 			else return false;
@@ -44,11 +47,47 @@ public class ConnectionManager {
 		}
 	}
 	
+	private static boolean validateDatabase() {
+		try {
+			List<String> table_names = MetaDA.getAllTableNames();
+			for (int i = 0; i < DEFAULT_TABLES.length; i++) {
+				String current = DEFAULT_TABLES[i];
+				int begin_index = current.indexOf("TABLE") + 6;
+				int end_index = current.indexOf("(");
+				String table_name = current.substring(begin_index, end_index).trim();
+				table_names.remove(table_name);
+				
+				List<String> column_names = new ArrayList<>();
+				String[] splitted = current.substring(current.indexOf("(")).split(" ");
+				for(int j = 0; j < splitted.length; j++) {
+					if(splitted[j].contains("unique(")) break;
+					if(j > 0) {if(splitted[j-1].contains(",")) column_names.add(splitted[j]);}
+					else column_names.add(splitted[j].replace("(", ""));
+				}
+				
+				if(!MetaDA.compareDBToDDL(table_name, column_names)) {
+					System.out.println("Table doesn't match the DDL - Trying to convert " + table_name + " -");
+					MetaDA.renameTable(table_name);
+					MetaDA.createNewTable(current);
+					MetaDA.moveData(table_name, column_names.size());
+					MetaDA.dropTable(table_name  + "_temp");
+				}
+			}
+			for (String i : table_names) {
+				MetaDA.dropTable(i);
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	private static final String[] DEFAULT_TABLES = {"CREATE TABLE output_channel (guildId int(64) primary key, channelId int(64) unique not null)",
-			"CREATE TABLE track (iD integer primary key, url varchar unique not null)",
-			"CREATE TABLE playlist (iD int(64) not null, isUser boolean not null, playlist_name varchar not null, trackid int not null, unique(iD, isUser, playlist_name, trackid))"};
+			"CREATE TABLE track (iD integer primary key, url varchar unique not null, startpoint int, endpoint int)",
+			"CREATE TABLE playlist (iD int(64) not null, isUser boolean not null, playlist_name varchar not null, track int not null, unique(iD, isUser, playlist_name, track))"};
 	public static void initializeDatabase() throws Exception {
-		try (Connection cn = source.getConnection()){
+		try (Connection cn = getConnection(false)){
 			try {
 				for (int i = 0; i < DEFAULT_TABLES.length; i++) {
 					Statement stmt = cn.createStatement();

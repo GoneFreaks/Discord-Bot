@@ -1,10 +1,9 @@
-package de.gruwie.util.jda.selectOptions;
+package de.gruwie.util.selectOptions;
 
 import java.util.UUID;
 
 import de.gruwie.db.da.TrackDA;
-import de.gruwie.util.jda.SelectionMenuManager;
-import de.gruwie.util.jda.selectOptions.types.ButtonAction;
+import de.gruwie.util.SelectionMenuManager;
 import net.dv8tion.jda.api.interactions.components.Button;
 
 public class DeleteTrackBA implements ButtonAction{

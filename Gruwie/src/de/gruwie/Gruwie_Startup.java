@@ -16,8 +16,8 @@ import de.gruwie.listener.SystemListener;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Formatter;
-import de.gruwie.util.jda.MessageHolder;
+import de.gruwie.util.GruwieUtilities;
+import de.gruwie.util.MessageHolder;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
@@ -45,7 +45,7 @@ public class Gruwie_Startup {
 		
 		System.out.println("Running OS:\t\t" + System.getProperty("os.name"));
 		System.out.println("Running Java-Version:\t" + System.getProperty("java.version"));
-		Formatter.printBorderline("=");
+		GruwieUtilities.printBorderline("=");
 		start_time = System.currentTimeMillis();
 		if(ConfigManager.startup() && args.length == 1) {
 			try {
@@ -53,7 +53,7 @@ public class Gruwie_Startup {
 					if(!ConnectionManager.createConnection()) return;
 					else {
 						System.out.println("Connected to the Database");
-						Formatter.printBorderline("=");
+						GruwieUtilities.printBorderline("=");
 					}
 				}
 				ChannelManager.startup();

@@ -16,7 +16,7 @@ public class ConfigManager {
 	}
 	
 	public static boolean reload() {
-		config = GruwieIO.loadProperties("config.properties");
+		config = GruwieUtilities.loadProperties("config.properties");
 		if(config == null) return false;
 		else return true;
 	}

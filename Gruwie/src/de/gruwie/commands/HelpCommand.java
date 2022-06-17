@@ -4,8 +4,8 @@ import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -40,8 +40,8 @@ public class HelpCommand extends ServerCommand {
 				if(optional_parameters != null) b.append("Optional Paramters: *" + optional_parameters + "*\n");
 				String desc = scmd.getDescription();
 				b.append(desc != null? "\n" + desc : "NA");
-				if(scmd.getSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getSymbol() + " below the music-queue message");
-				if(scmd.getEmote() != null) b.append("\nThis command can also be used by pressing " + scmd.getEmote() + " below the music-track message");
+				if(scmd.getButtonSymbol() != null) b.append("\nThis command can also be used by pressing " + scmd.getButtonSymbol() + " below the music-queue message");
+				if(scmd.getReactionEmote() != null) b.append("\nThis command can also be used by pressing " + scmd.getReactionEmote() + " below the music-track message");
 				
 				
 				MessageManager.sendEmbedMessageVariable(false, b.toString(), guildId, Outputs.DEFAULT_FOOTER);

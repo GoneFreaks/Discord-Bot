@@ -3,7 +3,7 @@ package de.gruwie.music;
 import com.sedmelluq.discord.lavaplayer.filter.equalizer.EqualizerFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
-import de.gruwie.util.jda.MessageManager;
+import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Message;
 
 public class TrackEqualizer {

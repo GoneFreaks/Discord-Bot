@@ -10,11 +10,10 @@ import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Formatter;
-import de.gruwie.util.GruwieIO;
+import de.gruwie.util.GruwieUtilities;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import de.gruwie.util.Threadpool;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -42,7 +41,7 @@ public class LyricsCommand extends ServerCommand {
 		}
 		
 		if(query != null) {
-			String[] url = Formatter.getURL(query);
+			String[] url = GruwieUtilities.getURL(query);
 			if(url != null) {
 				List<Future<String>> futures = new ArrayList<>();
 				for (int i = 0; i < url.length; i++) futures.add(Threadpool.submit(new DoWebBrowsing(url[i])));
@@ -99,8 +98,8 @@ class DoWebBrowsing implements Callable<String> {
 
 	@Override
 	public String call() throws Exception {
-		String result = GruwieIO.doWebBrowsing(url);
+		String result = GruwieUtilities.doWebBrowsing(url);
 		if(result == null) return "";
-		else return Formatter.formatWebsite(result);
+		else return GruwieUtilities.formatWebsite(result);
 	}
 }

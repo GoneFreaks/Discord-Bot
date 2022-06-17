@@ -1,24 +1,25 @@
-package de.gruwie.music.util;
+package de.gruwie.util;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.music.AudioLoadResultBulk;
 import de.gruwie.music.MusicController;
+import de.gruwie.util.dto.AudioTrackTimed;
+import de.gruwie.util.dto.TrackDTO;
 
 public class TrackLoadingThread implements Runnable{
 
-	private final List<String> list;
+	private final List<TrackDTO> list;
 	private final AudioPlayerManager apm;
 	private final MusicController controller;
 	private CountDownLatch latch;
-	private List<AudioTrack> tracks;
+	private List<AudioTrackTimed> tracks;
 	
-	public TrackLoadingThread (List<String> list, AudioPlayerManager apm, MusicController controller) {
+	public TrackLoadingThread (List<TrackDTO> list, AudioPlayerManager apm, MusicController controller) {
 		this.list = list;
 		this.apm = apm;
 		this.controller = controller;
@@ -28,8 +29,8 @@ public class TrackLoadingThread implements Runnable{
 	
 	@Override
 	public void run() {
-		for (String i : list) {
-			apm.loadItem(i, new AudioLoadResultBulk(controller, i, tracks, latch));
+		for (TrackDTO i : list) {
+			apm.loadItem(i.getUrl(), new AudioLoadResultBulk(controller, i, tracks, latch));
 		}
 		try {
 			latch.await();

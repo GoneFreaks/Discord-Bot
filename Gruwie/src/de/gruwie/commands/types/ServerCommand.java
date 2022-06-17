@@ -1,10 +1,10 @@
 package de.gruwie.commands.types;
 
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Formatter;
+import de.gruwie.util.GruwieUtilities;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import de.gruwie.util.dto.CommandDTO;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -13,8 +13,8 @@ public class ServerCommand implements Comparable<ServerCommand>{
 
 	private final String command;
 	private final String shortcut;
-	private final String symbol;
-	private final String emote;
+	private final String button_symbol;
+	private final String reaction_emote;
 	private final int position;
 	private final String short_description;
 	private final String description;
@@ -24,18 +24,18 @@ public class ServerCommand implements Comparable<ServerCommand>{
 	private final String optional_parameters;
 	
 	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, String symbol, String emote, int position, Outputs outputs_parameters, Outputs outputs_optional_parameters, Outputs outputs_short_description, Outputs outputs_description) {
-		CommandDTO dto = Formatter.createNames(callingClass.getSimpleName(), tryShortcut);
+		CommandDTO dto = GruwieUtilities.createNames(callingClass.getSimpleName(), tryShortcut);
 		this.beta = beta;
 		this.command = dto.getCommand();
 		this.shortcut = dto.getShortcut();
-		this.symbol = symbol;
+		this.button_symbol = symbol;
 		this.position = position;
 		this.short_description = outputs_short_description != null? outputs_short_description.getValue() : null;
 		this.description = outputs_description != null? outputs_description.getValue() : null;
 		this.package_name = callingClass.getPackage().getName();
 		this.parameters = outputs_parameters != null? outputs_parameters.getValue() : null;
 		this.optional_parameters = outputs_optional_parameters != null? outputs_optional_parameters.getValue() : null;
-		this.emote = emote;
+		this.reaction_emote = emote;
 	}
 	
 	public ServerCommand(boolean beta, boolean tryShortcut, Class<?> callingClass, Outputs outputs_parameters, Outputs outputs_optional_parameters, Outputs outputs_short_description, Outputs outputs_description) {
@@ -62,8 +62,8 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		return shortcut;
 	}
 
-	public final String getSymbol() {
-		return symbol;
+	public final String getButtonSymbol() {
+		return button_symbol;
 	}
 	
 	public final int getPosition() {
@@ -97,8 +97,8 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		b.append("Command: *" + cmd_symbol + command + "*\n");
 		if(shortcut != null) b.append("Shortcut: *" + cmd_symbol + shortcut + "*\n");
 		
-		if(symbol != null) b.append("Symbol: *" + symbol + "*\n");
-		if(emote != null) b.append("Emote: *" + emote + "*\n");
+		if(button_symbol != null) b.append("Symbol: *" + button_symbol + "*\n");
+		if(reaction_emote != null) b.append("Emote: *" + reaction_emote + "*\n");
 		if(short_description != null) b.append("Description: *" + short_description + "*\n");
 		return b.toString() + (beta? "---------------------------------------------------------------\n" : "");
 	}
@@ -113,8 +113,8 @@ public class ServerCommand implements Comparable<ServerCommand>{
 		else return this.getPackageName().compareTo(other.getPackageName());
 	}
 
-	public String getEmote() {
-		return emote;
+	public String getReactionEmote() {
+		return reaction_emote;
 	}
 	
 }

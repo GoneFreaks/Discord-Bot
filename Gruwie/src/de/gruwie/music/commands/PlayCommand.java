@@ -6,9 +6,9 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.AudioLoadResult;
 import de.gruwie.music.MusicController;
-import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.util.CheckVoiceState;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -43,7 +43,7 @@ public class PlayCommand extends ServerCommand {
 					
 			String url = str.toString().trim();
 			if(!url.startsWith("http")) {
-				url = "ytmsearch:" + url;
+				url = "ytsearch:" + url;
 			}
 			apm.loadItem(url, new AudioLoadResult(controller, url, member));
 		}

@@ -10,14 +10,15 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.music.MusicController;
-import de.gruwie.music.util.CheckVoiceState;
-import de.gruwie.music.util.TrackLoadingThread;
+import de.gruwie.util.CheckVoiceState;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.Threadpool;
+import de.gruwie.util.TrackLoadingThread;
 import de.gruwie.util.dto.PlaylistsDTO;
+import de.gruwie.util.dto.TrackDTO;
 import de.gruwie.util.exceptions.PlaylistAlreadyExistsException;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -48,7 +49,7 @@ public class PlaylistManager {
 		else return null;
 	}
 	
-	public static void playPlaylist(Member member, TextChannel channel, List<String> list, String playlist_name) throws Exception {
+	public static void playPlaylist(Member member, TextChannel channel, List<TrackDTO> list, String playlist_name) throws Exception {
 		if(list != null && list.size() > 0) {
 			MusicController controller = checkAndJoin(member, channel);
 			AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
@@ -56,8 +57,8 @@ public class PlaylistManager {
 			int block_size = ConfigManager.getInteger("max_queue_size") / 10;
 			if(list.size() <= block_size) block_size /= 5;
 			
-			List<String> splitted = new LinkedList<>();
-			for (String i : list) {
+			List<TrackDTO> splitted = new LinkedList<>();
+			for (TrackDTO i : list) {
 				if(splitted.size() == block_size) {
 					Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
 					splitted = new LinkedList<>();

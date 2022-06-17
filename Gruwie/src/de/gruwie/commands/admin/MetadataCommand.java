@@ -6,8 +6,8 @@ import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.db.da.TrackDA;
 import de.gruwie.music.FilterManager;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Formatter;
-import de.gruwie.util.jda.MessageManager;
+import de.gruwie.util.GruwieUtilities;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.streams.ErrInterceptor;
 import de.gruwie.util.streams.OutInterceptor;
 import net.dv8tion.jda.api.entities.Message;
@@ -46,8 +46,8 @@ public class MetadataCommand implements AdminCommand {
 			b.append("\n\t\t\t[" + i + "]");
 		}
 		
-		b.append("\n\nGeneral:\n\tOnline since: " + Formatter.getDateTime(Gruwie_Startup.start_time));
-		b.append("\n\tOnline_Time: " + Formatter.formatTime(System.currentTimeMillis() - Gruwie_Startup.start_time));
+		b.append("\n\nGeneral:\n\tOnline since: " + GruwieUtilities.getDateTime(Gruwie_Startup.start_time));
+		b.append("\n\tOnline_Time: " + GruwieUtilities.formatTime(System.currentTimeMillis() - Gruwie_Startup.start_time));
 		int filter_count = FilterManager.filterCount();
 		b.append("\n\tLoaded_Filters: " + (filter_count == -1? "Not yet loaded" : filter_count));
 		int custom_filter_count = FilterManager.customFilterCount();

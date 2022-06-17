@@ -8,7 +8,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.Formatter;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.View;
 import de.gruwie.util.dto.AudioTrackTimed;
 import net.dv8tion.jda.api.entities.Message;
@@ -170,7 +170,7 @@ public class Queue {
 			b.append(toStringHelper(start, end, -1));
 			if(end != queuelist.size()) b.append("🠋 " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "\n");
 		}
-		b.append("**" + Formatter.getBorder(63, "⎯") + "**");
+		b.append("**" + GruwieUtilities.getBorder(63, "⎯") + "**");
 		return b.toString();
 	}
 	
@@ -186,9 +186,9 @@ public class Queue {
 			
 			if(j.equals(current_track) && repeat) b.append("➡️ ");
 			else if(j.equals(next_audio_track)) b.append("↪️ ");
-			else b.append("▪️ ");
+			else b.append("⬛ ");
 			
-			b.append("" + Formatter.formatTime(j.getLength()) + "⠀⠀");
+			b.append("" + GruwieUtilities.formatTime(j.getLength()) + "⠀⠀");
 			String title = j.getTitle();
 			if(title.length() > title_size) b.append(title.substring(0, title_size) + "...");
 			else b.append(title);
@@ -229,7 +229,7 @@ public class Queue {
 			sum += i.getLength();
 		}
 		if(sum < 0) return null;
-		else return Formatter.formatTime(sum);
+		else return GruwieUtilities.formatTime(sum);
 	}
 	
 	public void moveQueueUp() {

@@ -43,10 +43,9 @@ public class CommandManager {
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
 		
-		if(this.storage.containsKey(cmd)) {
+		if(storage.get(cmd) != null) {
 			counter.incrementAndGet();
 			ServerCommand scmd = this.storage.get(cmd);
-			if(scmd.getSymbol() != null && message != null) return true;
 			scmd.performServerCommand(member, channel, message);
 			return false;
 		}
@@ -111,8 +110,8 @@ public class CommandManager {
 							if(name.contains("Command") && name.contains("commands") && !name.contains("types") && !name.contains("admin")) {
 								Class<?> cls = Class.forName(name.replace(".class", "").replaceAll("/", "."));
 								ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
-								if(scmd.getSymbol() != null) buttons.add(scmd);
-								if(scmd.getEmote() != null) emotes.add(scmd);
+								if(scmd.getButtonSymbol() != null) buttons.add(scmd);
+								if(scmd.getReactionEmote() != null) emotes.add(scmd);
 								commands.add(scmd);
 							}
 						}
@@ -143,8 +142,8 @@ public class CommandManager {
 				String classpath = input.replaceAll("/", ".") + (i.getName().replaceAll(".class", ""));
 				Class<?> cls = Class.forName(classpath);
 				ServerCommand scmd = (ServerCommand) cls.getDeclaredConstructor().newInstance();
-				if(scmd.getSymbol() != null) buttons.add(scmd);
-				if(scmd.getEmote() != null) emotes.add(scmd);
+				if(scmd.getButtonSymbol() != null) buttons.add(scmd);
+				if(scmd.getReactionEmote() != null) emotes.add(scmd);
 				commands.add(scmd);
 			}
 		}
@@ -153,7 +152,7 @@ public class CommandManager {
 	public List<ServerCommand> getCommandsWithSymbol() {
 		List<ServerCommand> result = new ArrayList<>();
 		for (ServerCommand i : commands) {
-			if(i.getSymbol() != null) result.add(i);
+			if(i.getButtonSymbol() != null) result.add(i);
 		}
 		return result;
 	}

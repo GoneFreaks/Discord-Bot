@@ -9,6 +9,7 @@ import java.util.List;
 
 import de.gruwie.db.ConnectionManager;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.dto.TrackDTO;
 import de.gruwie.util.exceptions.PlaylistAlreadyExistsException;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
 
@@ -104,10 +105,10 @@ public class PlaylistDA {
 		return false;
 	}
 
-	public static List<String> readPlaylist(String name, long id, boolean isUser) {
-		List<String> urls = new ArrayList<>();
+	public static List<TrackDTO> readPlaylist(String name, long id, boolean isUser) {
+		List<TrackDTO> tracks = new ArrayList<>();
 		
-		String query = "SELECT url FROM track t JOIN playlist p ON t.iD = p.trackid WHERE p.id = ? AND isUser = ? AND playlist_name = ? ORDER BY t.iD";
+		String query = "SELECT url, startpoint, endpoint FROM track t JOIN playlist p ON t.iD = p.trackid WHERE p.id = ? AND isUser = ? AND playlist_name = ? ORDER BY t.iD";
 		try (Connection cn = ConnectionManager.getConnection(true)){
 			try(PreparedStatement pstmt = cn.prepareStatement(query)){
 				pstmt.setLong(1, id);
@@ -115,9 +116,9 @@ public class PlaylistDA {
 				pstmt.setString(3, name);
 				try(ResultSet rs = pstmt.executeQuery()){
 					while(rs.next()) {
-						urls.add(rs.getString(1));
+						tracks.add(new TrackDTO(rs.getString(1), rs.getLong(2), rs.getLong(3)));
 					}
-					return urls;
+					return tracks;
 				}
 			}
 		} catch (Exception e) {
@@ -169,20 +170,20 @@ public class PlaylistDA {
 		} 
 	}
 	
-	public static List<String> readRandom (int count) {
-		List<String> urls = new ArrayList<>();
+	public static List<TrackDTO> readRandom (int count) {
+		List<TrackDTO> tracks = new ArrayList<>();
 		
 		try (Connection cn = ConnectionManager.getConnection(true)) {
-			try(PreparedStatement pstmt = cn.prepareStatement("SELECT url FROM track ORDER BY RANDOM() LIMIT ?")){
+			try(PreparedStatement pstmt = cn.prepareStatement("SELECT url, startpoint, endpoint FROM track ORDER BY RANDOM() LIMIT ?")){
 				pstmt.setInt(1, count);
 				try(ResultSet rs = pstmt.executeQuery()) {
-					while(rs.next()) urls.add(rs.getString(1));
+					while(rs.next()) tracks.add(new TrackDTO(rs.getString(1), rs.getLong(2), rs.getLong(3)));
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return urls;
+		return tracks;
 	}
 	
 	public static boolean deletePlaylist(long id, boolean isUser, String name) {

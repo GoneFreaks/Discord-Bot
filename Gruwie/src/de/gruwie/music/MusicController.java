@@ -3,7 +3,7 @@ package de.gruwie.music;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.music.util.ProgressBar;
+import de.gruwie.util.ProgressBar;
 import de.gruwie.util.Threadpool;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;

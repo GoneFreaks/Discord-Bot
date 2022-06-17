@@ -1,11 +1,8 @@
-package de.gruwie.util.jda.selectOptions.SOA;
+package de.gruwie.util.selectOptions;
 
 import de.gruwie.db.da.PlaylistDA;
-import de.gruwie.util.jda.MessageManager;
-import de.gruwie.util.jda.SelectionMenuManager;
-import de.gruwie.util.jda.selectOptions.BA.ConfirmAction;
-import de.gruwie.util.jda.selectOptions.types.Confirmation;
-import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
+import de.gruwie.util.MessageManager;
+import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.PrivateChannel;

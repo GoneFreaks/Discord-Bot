@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.gruwie.util.Formatter;
+import de.gruwie.util.GruwieUtilities;
 
 /**
  * Redirect the <code>System.err</code> stream to the given file.</br>
@@ -25,10 +25,10 @@ public class ErrInterceptor extends PrintStream {
 	public void println(Object o) {
 		if(o instanceof Exception) {
 			super.println("--------------------------------------------------------------------------------------------------------------------------------\n"
-					+ Formatter.getTime(System.currentTimeMillis()));
+					+ GruwieUtilities.getTime(System.currentTimeMillis()));
 			Exception e = (Exception) o;
 			System.out.println("[" + e.getClass() + "]");
-			exceptions.add(Formatter.getTime(System.currentTimeMillis()) + ": " + ((Exception) o).getMessage());
+			exceptions.add(GruwieUtilities.getTime(System.currentTimeMillis()) + ": " + ((Exception) o).getMessage());
 			counter++;
 		}
 		super.println("\t\t" + o);

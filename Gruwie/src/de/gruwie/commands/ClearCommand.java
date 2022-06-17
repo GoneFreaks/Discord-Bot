@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.gruwie.commands.types.ServerCommand;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
-import de.gruwie.util.jda.MessageManager;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;

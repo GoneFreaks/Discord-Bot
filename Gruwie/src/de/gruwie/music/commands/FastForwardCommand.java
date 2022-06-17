@@ -5,7 +5,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
-import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.util.CheckVoiceState;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;

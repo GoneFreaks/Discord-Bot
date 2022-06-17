@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-import de.gruwie.util.GruwieIO;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.dto.FilterDTO;
 
 public class FilterManager {
@@ -35,7 +35,7 @@ public class FilterManager {
 	}
 	
 	public static void loadCustomFilters() {
-		Properties props = GruwieIO.loadProperties("filter.properties");
+		Properties props = GruwieUtilities.loadProperties("filter.properties");
 		if(props != null) {
 			custom_filter = new ConcurrentHashMap<>();
 			if(default_filter == null) default_filter = new ConcurrentHashMap<>();

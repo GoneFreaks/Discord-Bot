@@ -2,8 +2,8 @@ package de.gruwie.commands;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.ChannelManager;
+import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

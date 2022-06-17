@@ -7,7 +7,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.db.da.TrackDA;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.jda.MessageManager;
+import de.gruwie.util.MessageManager;
+import de.gruwie.util.dto.AudioTrackTimed;
 import net.dv8tion.jda.api.entities.Member;
 
 public class AudioLoadResult implements AudioLoadResultHandler {
@@ -27,7 +28,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 		if(controller != null && track != null) {
 			Queue queue = controller.getQueue();
 			try {
-				queue.addTrackToQueue(track);
+				queue.addTrackToQueue(AudioTrackTimed.convertToTimed(track));
 				MessageManager.sendEmbedMessageVariable(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong());
 				if(ConfigManager.getDatabase()) if(!track.getInfo().isStream && track.getDuration() > 30_000) TrackDA.writeTrack(uri);
 			} catch (Exception e) {
@@ -42,10 +43,10 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 		if(controller != null && playlist != null) {
 			Queue queue = controller.getQueue();
 
-			if (uri.startsWith("ytmsearch:")) {
+			if (uri.startsWith("ytsearch:")) {
 				try {
 					AudioTrack track = playlist.getTracks().get(0);
-					queue.addTrackToQueue(track);
+					queue.addTrackToQueue(AudioTrackTimed.convertToTimed(track));
 					MessageManager.sendEmbedMessageVariable(true, "<@!" + member.getId() + "> has added ***" + track.getInfo().title + "***", controller.getGuild().getIdLong());
 					if(ConfigManager.getDatabase()) {
 						if(!track.getInfo().isStream && track.getDuration() > 30_000) TrackDA.writeTrack(track.getInfo().uri);
@@ -56,7 +57,7 @@ public class AudioLoadResult implements AudioLoadResultHandler {
 			}	
 			else {
 				try {
-					queue.addPlaylistToQueue(playlist.getTracks());
+					queue.addPlaylistToQueue(AudioTrackTimed.convertToTimed(playlist.getTracks()));
 					if(ConfigManager.getDatabase()) {
 						playlist.getTracks().forEach((k) -> {
 							if(!k.getInfo().isStream && k.getDuration() > 30_000) TrackDA.writeTrack(k.getInfo().uri);

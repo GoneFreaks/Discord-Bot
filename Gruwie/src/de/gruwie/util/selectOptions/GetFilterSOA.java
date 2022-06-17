@@ -1,8 +1,7 @@
-package de.gruwie.util.jda.selectOptions.SOA;
+package de.gruwie.util.selectOptions;
 
 import de.gruwie.music.MusicController;
-import de.gruwie.music.util.CheckVoiceState;
-import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
+import de.gruwie.util.CheckVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 

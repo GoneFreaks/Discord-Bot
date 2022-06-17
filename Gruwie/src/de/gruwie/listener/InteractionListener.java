@@ -1,9 +1,9 @@
 package de.gruwie.listener;
 
 import de.gruwie.Gruwie_Startup;
+import de.gruwie.util.MessageHolder;
+import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.Threadpool;
-import de.gruwie.util.jda.MessageHolder;
-import de.gruwie.util.jda.SelectionMenuManager;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;

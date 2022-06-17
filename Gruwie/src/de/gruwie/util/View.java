@@ -50,12 +50,12 @@ public class View {
 	
 	public static void init(List<ServerCommand> commands, List<ServerCommand> emotes) {
 		for (ServerCommand i : commands) {
-			if(i.getSymbol() != null) button_symbols.add(new SymbolDTO(i.getSymbol(), i.getPosition(), i.getCommand()));
+			if(i.getButtonSymbol() != null) button_symbols.add(new SymbolDTO(i.getButtonSymbol(), i.getPosition(), i.getCommand()));
 		}
 		Collections.sort(button_symbols);
 		
 		for (ServerCommand i : emotes) {
-			if(i.getEmote() != null) emote_symbols.add(new SymbolDTO(i.getEmote(), i.getPosition(), i.getCommand()));
+			if(i.getReactionEmote() != null) emote_symbols.add(new SymbolDTO(i.getReactionEmote(), i.getPosition(), i.getCommand()));
 		}
 		Collections.sort(emote_symbols);
 	}

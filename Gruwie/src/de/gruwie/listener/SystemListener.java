@@ -4,9 +4,9 @@ import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.Formatter;
+import de.gruwie.util.GruwieUtilities;
+import de.gruwie.util.MessageHolder;
 import de.gruwie.util.Threadpool;
-import de.gruwie.util.jda.MessageHolder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -35,9 +35,9 @@ public class SystemListener extends ListenerAdapter {
 			Guild current = guilds.get(i);
 			System.out.println((i + 1) + ": " + current.getName());
 			System.out.println("\tMembers: " + current.getMemberCount() + "\tOwner: " + jda.retrieveUserById(current.getOwnerId()).complete().getName());
-			if(i + 1 != guilds.size()) Formatter.printBorderline("-");
+			if(i + 1 != guilds.size()) GruwieUtilities.printBorderline("-");
 		}
-		Formatter.printBorderline("=");
+		GruwieUtilities.printBorderline("=");
 		
 		shardMan.setStatus(OnlineStatus.ONLINE);
 		shardMan.setActivity(Activity.listening("help"));
@@ -45,7 +45,7 @@ public class SystemListener extends ListenerAdapter {
 		
 		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
 		System.out.println("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
-		Formatter.printBorderline("=");
+		GruwieUtilities.printBorderline("=");
 	}
 	
 	@Override

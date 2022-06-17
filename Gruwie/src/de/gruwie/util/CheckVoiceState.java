@@ -1,10 +1,8 @@
-package de.gruwie.music.util;
+package de.gruwie.util;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.music.MusicController;
-import de.gruwie.util.Outputs;
-import de.gruwie.util.jda.MessageManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;

@@ -1,4 +1,4 @@
-package de.gruwie.util.jda.selectOptions.types;
+package de.gruwie.util.selectOptions;
 
 import java.util.UUID;
 

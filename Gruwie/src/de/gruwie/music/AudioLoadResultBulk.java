@@ -10,29 +10,35 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.listener.SystemListener;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.jda.MessageManager;
-import de.gruwie.util.jda.selectOptions.DeleteTrackBA;
+import de.gruwie.util.MessageManager;
+import de.gruwie.util.dto.AudioTrackTimed;
+import de.gruwie.util.dto.TrackDTO;
+import de.gruwie.util.selectOptions.DeleteTrackBA;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 public class AudioLoadResultBulk implements AudioLoadResultHandler {
 
-	private List<AudioTrack> tracks;
+	private List<AudioTrackTimed> tracks;
 	private final MusicController controller;
 	private final String uri;
 	private final CountDownLatch latch;
+	private final long start;
+	private final long end;
 
-	public AudioLoadResultBulk(MusicController controller, String uri, List<AudioTrack> tracks, CountDownLatch latch) {
+	public AudioLoadResultBulk(MusicController controller, TrackDTO track_dto, List<AudioTrackTimed> tracks, CountDownLatch latch) {
 		this.controller = controller;
-		this.uri = uri;
+		this.uri = track_dto.getUrl();
 		this.tracks = tracks;
 		this.latch = latch;
+		this.start = track_dto.getStart();
+		this.end = track_dto.getEnd();
 	}
 	
 	@Override
 	public void trackLoaded(AudioTrack track) {
-		if(controller != null && track != null) tracks.add(track);
+		if(controller != null && track != null) tracks.add(new AudioTrackTimed(track, start, end == 0? track.getDuration() : end));
 		latch.countDown();
 	}
 

@@ -14,7 +14,7 @@ public class EmoteManager {
 	public EmoteManager(List<ServerCommand> emotes) {
 		this.storage = new ConcurrentHashMap<>();
 		for (ServerCommand i : emotes) {
-			storage.put(i.getEmote(), i);
+			storage.put(i.getReactionEmote(), i);
 		}
 	}
 	

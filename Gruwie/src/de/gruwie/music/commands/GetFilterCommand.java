@@ -5,12 +5,12 @@ import java.util.List;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
-import de.gruwie.music.util.CheckVoiceState;
+import de.gruwie.util.CheckVoiceState;
 import de.gruwie.util.Outputs;
+import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.dto.FilterDTO;
-import de.gruwie.util.jda.SelectionMenuManager;
-import de.gruwie.util.jda.selectOptions.SOA.GetFilterSOA;
-import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
+import de.gruwie.util.selectOptions.GetFilterSOA;
+import de.gruwie.util.selectOptions.SelectOptionAction;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class GetFilterCommand extends ServerCommand {
 
 	public GetFilterCommand() {
-		super(false, true, GetFilterCommand.class, Outputs.SHORT_DESCRIPTION_GETFILTER, Outputs.DESCRIPTION_GETFILTER);
+		super(false, true, GetFilterCommand.class, null, "📻", 7, null, null, Outputs.SHORT_DESCRIPTION_GETFILTER, Outputs.DESCRIPTION_GETFILTER);
 	}
 	
 	@Override

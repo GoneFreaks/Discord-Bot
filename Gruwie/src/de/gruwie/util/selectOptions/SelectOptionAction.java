@@ -1,8 +1,8 @@
-package de.gruwie.util.jda.selectOptions.types;
+package de.gruwie.util.selectOptions;
 
 import java.util.UUID;
 
-import de.gruwie.util.jda.SelectionMenuManager;
+import de.gruwie.util.SelectionMenuManager;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
 public class SelectOptionAction extends SelectOption {

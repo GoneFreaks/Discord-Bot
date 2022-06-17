@@ -1,4 +1,4 @@
-package de.gruwie.util.jda;
+package de.gruwie.util;
 
 import java.util.HashSet;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.jda.selectOptions.types.ButtonAction;
-import de.gruwie.util.jda.selectOptions.types.SelectOptionAction;
+import de.gruwie.util.selectOptions.ButtonAction;
+import de.gruwie.util.selectOptions.SelectOptionAction;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
