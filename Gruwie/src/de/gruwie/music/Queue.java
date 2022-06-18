@@ -15,17 +15,16 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class Queue {
 	
-	private View view;
+	private LinkedList<AudioTrackTimed> queuelist;
 	
+	private View view;
 	private MusicController controller;
 	private AudioPlayer audioPlayer;
-	private List<AudioTrackTimed> queuelist;
 	private boolean repeat;
 	private AudioTrackTimed current_track;
 	private AudioTrack current_track_clone;
-	private AudioTrackTimed next_audio_track;
 	private FilterManager filter;
-	private int offset;
+	int offset;
 
 	public Queue(MusicController controller) {
 		this.controller = controller;
@@ -34,33 +33,26 @@ public class Queue {
 		this.repeat = ConfigManager.getBoolean("repeat");
 		this.filter = controller.getFilterManager();
 		this.offset = 0;
-		this.next_audio_track = null;
 	}
 	
 	public void editMessage() {
 		controller.getProgressBar().editMessage(current_track_clone, true);
 	}
 	
-	public synchronized void shuffle() {
+	public void shuffle() {
 		Collections.shuffle(queuelist);
 		editMessage();
 	}
 	
-	public synchronized boolean next() {
+	public boolean next() {
 		
 		if(queuelist.size() > 0) {
-			if(repeat) offset = queuelist.indexOf(current_track) + 1;
-			else offset = 0;
-			int next_track;
-			if(next_audio_track != null) next_track = queuelist.indexOf(next_audio_track);
-			else next_track = (queuelist.indexOf(current_track) + 1);
-			
-			if(next_track < 0 || next_track >= queuelist.size()) next_track = 0;
 			
 			audioPlayer.stopTrack();
 			
-			AudioTrackTimed track = repeat? queuelist.get(next_track) : queuelist.remove(next_audio_track != null? next_track : 0);
-			next_audio_track = null;
+			if(repeat) queuelist.add(queuelist.remove(0));
+			
+			AudioTrackTimed track = repeat? queuelist.get(0) : queuelist.remove(0);
 			
 			if(track != null) {
 				current_track = track;
@@ -86,7 +78,7 @@ public class Queue {
 		else return null;
 	}
 
-	public synchronized void addTrackToQueue(AudioTrackTimed track) {
+	public void addTrackToQueue(AudioTrackTimed track) {
 
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
@@ -101,7 +93,7 @@ public class Queue {
 		editMessage();
 	}
 	
-	public synchronized void addPlaylistToQueue(List<AudioTrackTimed> tracks) {
+	public void addPlaylistToQueue(List<AudioTrackTimed> tracks) {
 		
 		for (AudioTrackTimed i : tracks) {
 			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
@@ -121,12 +113,12 @@ public class Queue {
 		editMessage();
 	}
 	
-	public synchronized void clearQueue() {
+	public void clearQueue() {
 		this.queuelist = new LinkedList<>();
 		editMessage();
 	}
 	
-	public synchronized List<AudioTrack> getQueueList() {
+	public List<AudioTrack> getQueueList() {
 		return AudioTrackTimed.convertToNonTimed(queuelist);
 	}
 	
@@ -134,18 +126,17 @@ public class Queue {
 		return current_track_clone;
 	}
 	
-	public synchronized void changeRepeat() {
+	public void changeRepeat() {
 		repeat = !repeat;
 		if(!repeat) queuelist.remove(current_track);
 		else if(current_track != null) {
-			offset = queuelist.indexOf(current_track);
-			queuelist.add(current_track);
+			queuelist.addFirst(current_track);
 		}
-		shuffle();
+		editMessage();
 	}
 	
 	@Override
-	public synchronized String toString() {
+	public String toString() {
 		
 		StringBuilder b = new StringBuilder("");
 		int size = ConfigManager.getInteger("queue_show");
@@ -161,20 +152,13 @@ public class Queue {
 		if(current_track_index < 0) current_track_index = 0;
 		
 		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size(), -1));
-		else {
-			
-			int start = offset < 0? 0 : offset;
-			int end = ((int) Math.min(queuelist.size(), start + size));
-			if(end - start < size) start -= size - (end - start);
-			if(start != 0) b.append("🠉 " + start + " Track" + (start > 1? "s" : "") + "\n");
-			b.append(toStringHelper(start, end, -1));
-			if(end != queuelist.size()) b.append("🠋 " + (queuelist.size()-end) + " Track" + ((queuelist.size()-end) > 1? "s" : "") + "\n");
-		}
+		else b.append(toStringHelper(offset, size + offset, -1));
+		
 		b.append("**" + GruwieUtilities.getBorder(63, "⎯") + "**");
 		return b.toString();
 	}
 	
-	public synchronized StringBuilder toStringHelper(int start, int end, int custom_character_count) {
+	public StringBuilder toStringHelper(int start, int end, int custom_character_count) {
 		
 		StringBuilder b = new StringBuilder("");
 		
@@ -185,7 +169,6 @@ public class Queue {
 			AudioTrackTimed j = queuelist.get(i);
 			
 			if(j.equals(current_track) && repeat) b.append("➡️ ");
-			else if(j.equals(next_audio_track)) b.append("↪️ ");
 			else b.append("⬛ ");
 			
 			b.append("" + GruwieUtilities.formatTime(j.getLength()) + "⠀⠀");
@@ -200,14 +183,13 @@ public class Queue {
 		return b;
 	}
 	
-	private synchronized boolean removeTrack (AudioTrackTimed track) {
-		if(next_audio_track != null && next_audio_track.equals(track)) next_audio_track = null;
+	private boolean removeTrack (AudioTrackTimed track) {
 		boolean result = queuelist.remove(track);
 		editMessage();
 		return result;
 	}
 	
-	public synchronized boolean removeTrack (String track) {
+	public boolean removeTrack (String track) {
 		
 		boolean result = false;
 		
@@ -219,11 +201,11 @@ public class Queue {
 		return result;
 	}
 	
-	public synchronized int size () {
+	public int size () {
 		return queuelist.size();
 	}
 	
-	private synchronized String queueTime() {
+	private String queueTime() {
 		long sum = 0;
 		for (AudioTrackTimed i : queuelist) {
 			sum += i.getLength();
@@ -240,29 +222,23 @@ public class Queue {
 		move(1);
 	}
 	
-	private synchronized void move(int sign) {
+	private void move(int sign) {
 		int temp = offset;
 		temp += sign * ConfigManager.getInteger("queue_show");
 		if(temp < queuelist.size() && temp >= 0) offset = temp;
 		editMessage();
 	}
 	
-	public synchronized boolean setNextTrack(String track) {
-		if(next_audio_track == null) {
-			for (AudioTrackTimed i : queuelist) {
-				if(i.getTitle().equals(track)) {
-					this.next_audio_track = i;
-					queuelist.remove(i);
-					if(repeat) queuelist.add(queuelist.indexOf(current_track) + 1, i);
-					else queuelist.add(0, i);
-					break;
-				}
+	public void setNextTrack(String track) {
+		for (AudioTrackTimed i : queuelist) {
+			if(i.getTitle().equals(track)) {
+				queuelist.remove(i);
+				queuelist.addFirst(i);
+				break;
 			}
-			offset = 0;
-			editMessage();
-			return true;
 		}
-		else return false;
+		offset = 0;
+		editMessage();
 	}
 	
 	public boolean isStream() {
