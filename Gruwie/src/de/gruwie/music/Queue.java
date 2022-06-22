@@ -1,12 +1,11 @@
 package de.gruwie.music;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import de.gruwie.util.ConcurrentLinkedList;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.View;
@@ -15,7 +14,7 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class Queue {
 	
-	private LinkedList<AudioTrackTimed> queuelist;
+	private ConcurrentLinkedList<AudioTrackTimed> queuelist;
 	
 	private View view;
 	private MusicController controller;
@@ -29,7 +28,7 @@ public class Queue {
 	public Queue(MusicController controller) {
 		this.controller = controller;
 		this.audioPlayer = controller.getPlayer();
-		this.queuelist = new LinkedList<>();
+		this.queuelist = new ConcurrentLinkedList<>();
 		this.repeat = ConfigManager.getBoolean("repeat");
 		this.filter = controller.getFilterManager();
 		this.offset = 0;
@@ -40,7 +39,9 @@ public class Queue {
 	}
 	
 	public void shuffle() {
-		Collections.shuffle(queuelist);
+		queuelist.shuffle();
+		queuelist.remove(current_track);
+		queuelist.addFirst(current_track);
 		editMessage();
 	}
 	
@@ -82,7 +83,7 @@ public class Queue {
 
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
-		for (AudioTrackTimed i : queuelist) {
+		for (AudioTrackTimed i : queuelist.getContentCopy()) {
 			if(i.getTitle().equals(track.getTitle())) return;
 		}
 		
@@ -98,7 +99,7 @@ public class Queue {
 		for (AudioTrackTimed i : tracks) {
 			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
 				boolean already = false;
-				for (AudioTrackTimed j : queuelist) {
+				for (AudioTrackTimed j : queuelist.getContentCopy()) {
 					if(j.getTitle().equals(i.getTitle())) {
 						already = true;
 						break;
@@ -114,12 +115,12 @@ public class Queue {
 	}
 	
 	public void clearQueue() {
-		this.queuelist = new LinkedList<>();
+		this.queuelist = new ConcurrentLinkedList<>();
 		editMessage();
 	}
 	
 	public List<AudioTrack> getQueueList() {
-		return AudioTrackTimed.convertToNonTimed(queuelist);
+		return AudioTrackTimed.convertToNonTimed(queuelist.getContentCopy());
 	}
 	
 	public AudioTrack getCurrentTrack() {
@@ -147,9 +148,6 @@ public class Queue {
 		String temp = queueTime();
 		if(temp != null) b.append("Duration: *" + temp +"*");
 		b.append("\n");
-		
-		int current_track_index = queuelist.indexOf(current_track);
-		if(current_track_index < 0) current_track_index = 0;
 		
 		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size(), -1));
 		else b.append(toStringHelper(offset, size + offset, -1));
@@ -190,13 +188,14 @@ public class Queue {
 	}
 	
 	public boolean removeTrack (String track) {
-		
+		queuelist.lock();
 		boolean result = false;
 		
-		for (AudioTrackTimed i : queuelist) {
+		for (AudioTrackTimed i : queuelist.getContentCopy()) {
 			String title = i.getTitle();
 			if(track.equals(title)) result = removeTrack(i);
 		}
+		queuelist.unlock();
 		editMessage();
 		return result;
 	}
@@ -206,10 +205,12 @@ public class Queue {
 	}
 	
 	private String queueTime() {
+		queuelist.lock();
 		long sum = 0;
-		for (AudioTrackTimed i : queuelist) {
+		for (AudioTrackTimed i : queuelist.getContentCopy()) {
 			sum += i.getLength();
 		}
+		queuelist.unlock();
 		if(sum < 0) return null;
 		else return GruwieUtilities.formatTime(sum);
 	}
@@ -230,7 +231,8 @@ public class Queue {
 	}
 	
 	public void setNextTrack(String track) {
-		for (AudioTrackTimed i : queuelist) {
+		queuelist.lock();
+		for (AudioTrackTimed i : queuelist.getContentCopy()) {
 			if(i.getTitle().equals(track)) {
 				queuelist.remove(i);
 				queuelist.addFirst(i);
@@ -238,6 +240,7 @@ public class Queue {
 			}
 		}
 		offset = 0;
+		queuelist.unlock();
 		editMessage();
 	}
 	

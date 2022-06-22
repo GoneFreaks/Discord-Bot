@@ -83,6 +83,7 @@ public class ConnectionManager {
 				return true;
 			} catch (Exception e) {
 				cn.rollback();
+				System.out.println("Unable to convert the database automatically, please inform the Bot-Author");
 				e.printStackTrace();
 				return false;
 			}
