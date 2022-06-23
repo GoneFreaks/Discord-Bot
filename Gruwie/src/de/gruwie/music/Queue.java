@@ -235,7 +235,8 @@ public class Queue {
 		for (AudioTrackTimed i : queuelist.getContentCopy()) {
 			if(i.getTitle().equals(track)) {
 				queuelist.remove(i);
-				queuelist.addFirst(i);
+				if(repeat) queuelist.add(1, i);
+				else queuelist.addFirst(i);
 				break;
 			}
 		}
