@@ -150,8 +150,20 @@ public class Queue {
 		b.append("\n");
 		
 		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size(), -1));
-		else b.append(toStringHelper(offset, size + offset, -1));
-		
+		else {
+			int start, end;
+			if(size + offset > queuelist.size()) {
+				start = queuelist.size() - size;
+				end = queuelist.size();
+			}
+			else {
+				start = offset;
+				end = size + offset;
+			}
+			
+			b.append(toStringHelper(start, end, -1));
+			
+		}
 		b.append("**" + GruwieUtilities.getBorder(63, "⎯") + "**");
 		return b.toString();
 	}
@@ -161,6 +173,8 @@ public class Queue {
 		StringBuilder b = new StringBuilder("");
 		
 		if(end != 0) b.append("```fix\n");
+		
+		if(start != 0) b.append("▲ " + start + " Track" + (start > 1? "s" : "") + "\n\n");
 		
 		int title_size = custom_character_count > 0? custom_character_count : ConfigManager.getInteger("queue_character_count");
 		for (int i = start; i < end; i++) {
@@ -176,6 +190,8 @@ public class Queue {
 			b.append("\n");
 		}
 
+		if(end != queuelist.size()) b.append("\n▼ " + (queuelist.size() - end) + " Track" + ((queuelist.size() - end) > 1? "s" : "") + "\n");
+		
 		if(end != 0) b.append("```");
 		
 		return b;

@@ -52,22 +52,24 @@ public class PlaylistManager {
 	public static void playPlaylist(Member member, TextChannel channel, List<TrackDTO> list, String playlist_name) throws Exception {
 		if(list != null && list.size() > 0) {
 			MusicController controller = checkAndJoin(member, channel);
-			AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
-			
-			int block_size = ConfigManager.getInteger("max_queue_size") / 10;
-			if(list.size() <= block_size) block_size /= 5;
-			
-			List<TrackDTO> splitted = new LinkedList<>();
-			for (TrackDTO i : list) {
-				if(splitted.size() == block_size) {
-					Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
-					splitted = new LinkedList<>();
+			if(controller != null) {
+				AudioPlayerManager apm = Gruwie_Startup.INSTANCE.getAudioPlayerManager();
+				
+				int block_size = ConfigManager.getInteger("max_queue_size") / 10;
+				if(list.size() <= block_size) block_size /= 5;
+				
+				List<TrackDTO> splitted = new LinkedList<>();
+				for (TrackDTO i : list) {
+					if(splitted.size() == block_size) {
+						Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
+						splitted = new LinkedList<>();
+					}
+					splitted.add(i);
 				}
-				splitted.add(i);
+				if(splitted.size() > 0) Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
+				
+				MessageManager.sendEmbedMessageVariable(true, "<@!" + member.getId() + "> has loaded the playlist **" + playlist_name + "**", channel.getGuild().getIdLong());
 			}
-			if(splitted.size() > 0) Threadpool.execute(new TrackLoadingThread(splitted, apm, controller));
-			
-			MessageManager.sendEmbedMessageVariable(true, "<@!" + member.getId() + "> has loaded the playlist **" + playlist_name + "**", channel.getGuild().getIdLong());
 		}
 	}
 }

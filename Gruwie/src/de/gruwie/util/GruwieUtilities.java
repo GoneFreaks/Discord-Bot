@@ -38,10 +38,7 @@ public class GruwieUtilities {
 	}
 	
 	public static void printBorderline (String element) {
-		for (int i = 0; i < 50; i++) {
-			if(i < 49) System.out.print(element);
-			else System.out.println(element);
-		}
+		System.out.print(getBorder(50, element));
 	}
 	
 	private static String[] getInfoFromTitle (String title) throws Exception {
