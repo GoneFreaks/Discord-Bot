@@ -98,7 +98,7 @@ class DoWebBrowsing implements Callable<String> {
 
 	@Override
 	public String call() throws Exception {
-		String result = GruwieUtilities.doWebBrowsing(url);
+		String result = GruwieUtilities.doWebBrowsing(url, "<!-- MxM banner -->");
 		if(result == null) return "";
 		else return GruwieUtilities.formatWebsite(result);
 	}

@@ -26,11 +26,17 @@ public class ErrInterceptor extends PrintStream {
 		if(o instanceof Exception) {
 			super.println("--------------------------------------------------------------------------------------------------------------------------------\n"
 					+ GruwieUtilities.getTime(System.currentTimeMillis()));
-			Exception e = (Exception) o;
-			System.out.println("[" + e.getClass() + "]");
 			exceptions.add(GruwieUtilities.getTime(System.currentTimeMillis()) + ": " + ((Exception) o).getMessage());
 			counter++;
 		}
 		super.println("\t\t" + o);
+		System.out.println(o);
+	}
+	
+	@Override
+	public void println(String o) {
+		if(!o.startsWith("<")) o = "<" + GruwieUtilities.getTime(System.currentTimeMillis()) + ">\t" + o;
+		super.println(o);
+		System.out.println(o);
 	}
 }

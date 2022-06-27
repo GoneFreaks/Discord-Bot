@@ -37,10 +37,6 @@ public class GruwieUtilities {
 		return (hours > 0? h : "") + (minutes > 0? m : (hours > 0? "00:" : "0:")) + s;
 	}
 	
-	public static void printBorderline (String element) {
-		System.out.print(getBorder(50, element));
-	}
-	
 	private static String[] getInfoFromTitle (String title) throws Exception {
 		
 		if(!title.contains("-")) return null;
@@ -173,7 +169,7 @@ public class GruwieUtilities {
 		return null;
 	}
 	
-	public static String doWebBrowsing(String input) throws Exception {
+	public static String doWebBrowsing(String input, String break_string) throws Exception {
 		
 		StringBuilder b = new StringBuilder("");
 		InputStream website = getInputStream(input);
@@ -182,7 +178,7 @@ public class GruwieUtilities {
 			while (in.hasNext()) {
 				String line = in.nextLine();
 				b.append(line);
-				if(line.contains("<!-- MxM banner -->")) break;
+				if(line.contains(break_string)) break;
 			}
 				
 		}
@@ -201,6 +197,26 @@ public class GruwieUtilities {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public static void log(String message) {
+		StackWalker walker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+		String calling_class = walker.getCallerClass().getName();
+		String calling_method = walker.walk(frames -> frames.map(StackWalker.StackFrame::getMethodName).skip(1).findFirst()).toString().replace("Optional[", "").replace("]", "");
+		
+		System.err.println("<" + getTime(System.currentTimeMillis()) + ">\tCLASS: " + calling_class + " METHOD: " + calling_method + "\t" + message);
+	}
+	
+	public static void log() {
+		StackWalker walker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+		String calling_class = walker.getCallerClass().getName();
+		String calling_method = walker.walk(frames -> frames.map(StackWalker.StackFrame::getMethodName).skip(1).findFirst()).toString().replace("Optional[", "").replace("]", "");
+		
+		System.err.println("<" + getTime(System.currentTimeMillis()) + ">\tCLASS: " + calling_class + " METHOD: " + calling_method + "\tENTER");
+	}
+	
+	public static void logMeta(String message) {
+		System.err.println("<" + getTime(System.currentTimeMillis()) + ">\t" + message);
 	}
  	
 }

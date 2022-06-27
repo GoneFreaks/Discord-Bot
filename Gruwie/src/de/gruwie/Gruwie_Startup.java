@@ -43,17 +43,16 @@ public class Gruwie_Startup {
 			return;
 		}
 		
-		System.out.println("Running OS:\t\t" + System.getProperty("os.name"));
-		System.out.println("Running Java-Version:\t" + System.getProperty("java.version"));
-		GruwieUtilities.printBorderline("=");
+		GruwieUtilities.logMeta("Running OS:\t\t" + System.getProperty("os.name"));
+		GruwieUtilities.logMeta("Running Java-Version:\t" + System.getProperty("java.version"));
+
 		start_time = System.currentTimeMillis();
 		if(ConfigManager.startup() && args.length == 1) {
 			try {
 				if(ConfigManager.getBoolean("database")) {
 					if(!ConnectionManager.createConnection()) return;
 					else {
-						System.out.println("Connected to the Database");
-						GruwieUtilities.printBorderline("=");
+						GruwieUtilities.logMeta("Connected to the Database");
 					}
 				}
 				ChannelManager.startup();
@@ -63,11 +62,12 @@ public class Gruwie_Startup {
 				e.printStackTrace();
 			}
 		}
-		else System.out.println("PROBLEM BEIM LADEN DER PROPERTIES-DATEI");
+		else GruwieUtilities.logMeta("Unable to load the properties file");
 	}
 
 	public void startup(String token) throws Exception {
 
+		GruwieUtilities.log();
 		shutdownTerminal();
 		
 		INSTANCE = this;
@@ -87,6 +87,7 @@ public class Gruwie_Startup {
 	}
 
 	private void shutdownTerminal() {
+		GruwieUtilities.log();
 		Thread shutdown = new Thread (() -> {
 			String line = "";
 			try {
@@ -108,6 +109,7 @@ public class Gruwie_Startup {
 	}
 	
 	public void shutdown() throws Exception{
+		GruwieUtilities.log();
 		if (shardMan != null) {
 			List<Guild> guilds = Gruwie_Startup.INSTANCE.getShardMan().getGuilds();
 			for (Guild i : guilds) {
@@ -122,22 +124,27 @@ public class Gruwie_Startup {
 	}
 
 	public CommandManager getCmdMan() {
+		GruwieUtilities.log();
 		return this.cmdMan;
 	}
 	
 	public AdminCommandManager getACmdMan() {
+		GruwieUtilities.log();
 		return this.acmdMan;
 	}
 	
 	public ShardManager getShardMan() {
+		GruwieUtilities.log();
 		return this.shardMan;
 	}
 	
 	public PlayerManager getPlayerManager() {
+		GruwieUtilities.log();
 		return this.playerManager;
 	}
 	
 	public AudioPlayerManager getAudioPlayerManager() {
+		GruwieUtilities.log();
 		return this.audioPlayerManager;
 	}
 

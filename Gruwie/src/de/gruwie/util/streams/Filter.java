@@ -30,7 +30,6 @@ public class Filter {
 			if(file.exists()) file.delete();
 			System.setErr(new ErrInterceptor(file));
 		}
-		System.setOut(new OutInterceptor(System.out));
 	}
 	
 	private static void deleteExcessiveFiles(File[] files) {

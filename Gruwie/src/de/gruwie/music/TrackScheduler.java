@@ -12,6 +12,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.View;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -36,6 +37,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
 	@Override
 	public void onTrackStart(AudioPlayer player, AudioTrack track) {
+		GruwieUtilities.log();
 		long guild_id = Gruwie_Startup.INSTANCE.getPlayerManager().getGuildByPlayerHash(player.hashCode());
 		TextChannel channel = ChannelManager.getChannel(guild_id);
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
@@ -71,7 +73,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
 	@Override
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-		
+		GruwieUtilities.log();
 		long guild_id = Gruwie_Startup.INSTANCE.getPlayerManager().getGuildByPlayerHash(player.hashCode());
 		Guild guild = Gruwie_Startup.INSTANCE.getShardMan().getGuildById(guild_id);
 		
@@ -97,6 +99,7 @@ public class TrackScheduler extends AudioEventAdapter {
 	}
 	
 	private void closeAudio(Guild guild, AudioPlayer player, Queue queue) {
+		GruwieUtilities.log();
 		if(ConfigManager.getBoolean("leave")) {
 			AudioManager manager = guild.getAudioManager();
 			player.stopTrack();

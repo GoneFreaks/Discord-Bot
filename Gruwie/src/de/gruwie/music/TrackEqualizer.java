@@ -3,6 +3,7 @@ package de.gruwie.music;
 import com.sedmelluq.discord.lavaplayer.filter.equalizer.EqualizerFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -14,6 +15,7 @@ public class TrackEqualizer {
 	private Message message;
 	
 	public TrackEqualizer(AudioPlayer player) {
+		GruwieUtilities.log();
 		this.player = player;
 		this.equalizer = new EqualizerFactory();
 		this.player.setFrameBufferDuration(500);
@@ -22,18 +24,21 @@ public class TrackEqualizer {
 	}
 	
 	public void setGain(float[] gain) {
+		GruwieUtilities.log();
 		for (int i = 0; i < gain.length; i++) equalizer.setGain(i, gain[i]);
 		buildString();
 		if(message != null) MessageManager.editMessage(message, toString);
 	}
 	
 	public void setGain(float gain, int band) {
+		GruwieUtilities.log();
 		equalizer.setGain(band, gain);
 		buildString();
 		if(message != null) MessageManager.editMessage(message, toString);
 	}
 	
 	public void removeEqualizer() {
+		GruwieUtilities.log();
 		for (int i = 0; i < 15; i++) {
 			equalizer.setGain(i, 0);
 		}
@@ -42,15 +47,18 @@ public class TrackEqualizer {
 	
 	@Override
 	public String toString() {
-		buildString(); //TODO entfernen
+		GruwieUtilities.log();
+		buildString();
 		return toString;
 	}
 	
 	public void setMessage(Message message) {
+		GruwieUtilities.log();
 		this.message = message;
 	}
 	
 	private void buildString() {
+		GruwieUtilities.log();
 		StringBuilder b = new StringBuilder("```");
 		
 		float[] current_filter = new float[15];

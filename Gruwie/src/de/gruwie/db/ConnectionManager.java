@@ -17,19 +17,21 @@ public class ConnectionManager {
 	private static SQLiteDataSource source;
 	
 	public static Connection getConnection (boolean autoCommit) throws SQLException {
+		GruwieUtilities.log();
+		GruwieUtilities.log("open connection auto-commit=" + autoCommit);
 		Connection cn = source.getConnection();
 		cn.setAutoCommit(autoCommit);
 		return cn;
 	}
 	
 	public static boolean createConnection () {
+		GruwieUtilities.log();
 		try { 
 			boolean newFile = false;
 			
 			File file = new File("data.db");
 			if(!file.exists()) {
-				System.out.println("No Database found --> creating an empty default-Database");
-				GruwieUtilities.printBorderline("-");
+				GruwieUtilities.logMeta("No Database found --> creating an empty default-Database");
 				file.createNewFile();
 				newFile = true;
 			}
@@ -48,7 +50,7 @@ public class ConnectionManager {
 	}
 	
 	private static boolean validateDatabase() {
-		
+		GruwieUtilities.log();
 		try (Connection cn = getConnection(false)) {
 			MetaDA meta = new MetaDA(cn);
 			try {
@@ -69,7 +71,7 @@ public class ConnectionManager {
 					}
 					
 					if(!meta.compareDBToDDL(table_name, column_names)) {
-						System.out.println("Table doesn't match the DDL - Trying to convert " + table_name + " -");
+						GruwieUtilities.logMeta("Table doesn't match the DDL - Trying to convert " + table_name + " -");
 						meta.renameTable(table_name);
 						meta.createNewTable(current);
 						meta.moveData(table_name, column_names.size());
@@ -83,7 +85,7 @@ public class ConnectionManager {
 				return true;
 			} catch (Exception e) {
 				cn.rollback();
-				System.out.println("Unable to convert the database automatically, please inform the Bot-Author");
+				GruwieUtilities.logMeta("Unable to convert the database automatically, please inform the Bot-Author");
 				e.printStackTrace();
 				return false;
 			}
@@ -98,6 +100,7 @@ public class ConnectionManager {
 			"CREATE TABLE track (iD integer primary key, url varchar unique not null, startpoint int, endpoint int)",
 			"CREATE TABLE playlist (iD int(64) not null, isUser boolean not null, playlist_name varchar not null, track int not null, unique(iD, isUser, playlist_name, track))"};
 	public static void initializeDatabase() throws Exception {
+		GruwieUtilities.log();
 		try (Connection cn = getConnection(false)){
 			try {
 				for (int i = 0; i < DEFAULT_TABLES.length; i++) {
