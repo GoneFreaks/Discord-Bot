@@ -7,6 +7,7 @@ public class ConfigManager {
 	private static Properties config;
 	
 	public static boolean startup() {
+		GruwieUtilities.log();
 		boolean result = reload();
 		if(result) {
 			databaseActive = getBoolean("database");
@@ -16,12 +17,14 @@ public class ConfigManager {
 	}
 	
 	public static boolean reload() {
+		GruwieUtilities.log();
 		config = GruwieUtilities.loadProperties("config.properties");
 		if(config == null) return false;
 		else return true;
 	}
 	
 	public static String configToString() {
+		GruwieUtilities.log();
 		StringBuilder b = new StringBuilder("***0 --> false --> deactivated\n1 --> true --> activated\n\n***");
 		for (Object i : config.keySet()) {
 			b.append(i + "\n**" + config.getProperty(i.toString()) + "**\n\n");
@@ -30,7 +33,7 @@ public class ConfigManager {
 	}
 
 	public static boolean getBoolean(String name) {
-		
+		GruwieUtilities.log();
 		String value = config.getProperty(name);
 		if(value.equals("0") || value.equals("1")) {
 			return value.equals("1");
@@ -53,6 +56,7 @@ public class ConfigManager {
 	}
 	
 	public static double getDouble(String name) {
+		GruwieUtilities.log();
 		try {
 			return Double.parseDouble(config.getProperty("name"));
 		} catch (Exception e) {
@@ -62,6 +66,7 @@ public class ConfigManager {
 	
 	private static boolean databaseActive;
 	public static boolean getDatabase() {
+		GruwieUtilities.log();
 		return databaseActive;
 	}
 	

@@ -7,6 +7,7 @@ import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.AudioLoadResult;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.CheckVoiceState;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
@@ -23,8 +24,9 @@ public class PlayCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		
+		GruwieUtilities.log();
 		String[] args = message.getContentStripped().split(" ");
+		GruwieUtilities.log("Parameter-Count " + args.length);
 		
 		if(args.length > 1) {
 			MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
@@ -45,6 +47,7 @@ public class PlayCommand extends ServerCommand {
 			if(!url.startsWith("http")) {
 				url = "ytsearch:" + url;
 			}
+			GruwieUtilities.log("Url: " + url);
 			apm.loadItem(url, new AudioLoadResult(controller, url, member));
 		}
 		else MessageManager.sendEmbedMessage(true, Outputs.INVALID_PARAMETERS, channel);

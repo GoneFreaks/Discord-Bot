@@ -2,6 +2,7 @@ package de.gruwie.util.selectOptions;
 
 import de.gruwie.music.MusicController;
 import de.gruwie.util.CheckVoiceState;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -15,6 +16,7 @@ public class SetOrRemoveTrackSOA extends SelectOptionAction {
 	
 	public SetOrRemoveTrackSOA (String name, Member member, TextChannel channel, boolean isSetter) {
 		super(name);
+		GruwieUtilities.log("name=" + name + " isSetter=" + isSetter);
 		this.member = member;
 		this.channel = channel;
 		this.name = name;
@@ -23,6 +25,7 @@ public class SetOrRemoveTrackSOA extends SelectOptionAction {
 
 	@Override
 	public void perform() {
+		GruwieUtilities.log();
 		try {
 			MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 			if(isSetter) {

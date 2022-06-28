@@ -12,12 +12,14 @@ public class ProgressBar implements Runnable {
 	private final AudioPlayer player;
 	
 	public ProgressBar(Queue queue, AudioPlayer player) {
+		GruwieUtilities.log();
 		this.queue = queue;
 		this.player = player;
 	}
 
 	@Override
 	public void run() {
+		GruwieUtilities.log();
 		while(true) {
 			try {
 				Thread.sleep(ConfigManager.getRefreshTimer() * 1000);

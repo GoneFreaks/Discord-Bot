@@ -7,6 +7,7 @@ import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.CheckVoiceState;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -21,6 +22,7 @@ public class FastForwardCommand extends ServerCommand {
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
+		GruwieUtilities.log();
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller == null) return;
 		AudioPlayer player = controller.getPlayer();
@@ -29,6 +31,7 @@ public class FastForwardCommand extends ServerCommand {
 		if(message == null) fastForward(track);
 		else {
 			String[] args = message.getContentStripped().split(" ");
+			GruwieUtilities.log("Parameter-Count " + args.length);
 			if(args.length == 1) fastForward(track);
 			if(args.length == 2) {
 				try {

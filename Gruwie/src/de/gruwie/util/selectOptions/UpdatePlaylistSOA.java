@@ -6,6 +6,7 @@ import java.util.List;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.music.Queue;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.streams.Filter;
@@ -28,10 +29,12 @@ public class UpdatePlaylistSOA extends SelectOptionAction implements Confirmatio
 		this.member = member;
 		this.channel = member.getUser().openPrivateChannel().complete();
 		this.isUser = isUser;
+		GruwieUtilities.log("name=" + name + " isUser=" + isUser);
 	}
 	
 	@Override
 	public void perform() {
+		GruwieUtilities.log();
 		SelectOptionAction update = new ConfirmAction(this, true);
 		SelectionMenuManager.putAction(update.getUUID(), update);
 		SelectOptionAction deny = new ConfirmAction(this, false);
@@ -44,6 +47,7 @@ public class UpdatePlaylistSOA extends SelectOptionAction implements Confirmatio
 
 	@Override
 	public void confirm(boolean accept) {
+		GruwieUtilities.log();
 		boolean result;
 		if(accept) {
 			Queue queue = Gruwie_Startup.INSTANCE.getPlayerManager().getController(member.getGuild().getIdLong()).getQueue();

@@ -1,7 +1,6 @@
 package de.gruwie.listener;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageHolder;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.Threadpool;
@@ -19,7 +18,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class InteractionListener extends ListenerAdapter {
 	
 	public void onButtonClick(ButtonClickEvent event) {
-		GruwieUtilities.log();
 		Threadpool.execute(() -> {
 			
 			if(event.getChannelType().equals(ChannelType.TEXT)) {
@@ -41,7 +39,6 @@ public class InteractionListener extends ListenerAdapter {
 	}
 	
 	public void onMessageDelete(MessageDeleteEvent event) {
-		GruwieUtilities.log();
 		Threadpool.execute(() -> {
 			MessageHolder.checkMessage(event.getMessageId());
 		});
@@ -49,7 +46,6 @@ public class InteractionListener extends ListenerAdapter {
 	
 	@Override
 	public void onSelectionMenu(SelectionMenuEvent event) {
-		GruwieUtilities.log();
 		Threadpool.execute(() -> {
 			event.deferEdit().queue();
 			SelectionMenuManager.executeAction(event.getSelectedOptions().get(0).getValue());
@@ -68,7 +64,6 @@ public class InteractionListener extends ListenerAdapter {
 	}
 	
 	private void onGuildMessageReactionUpdate(String emote, Member member, TextChannel channel) {
-		GruwieUtilities.log();
 		Threadpool.execute(() -> {
 			try {
 				Gruwie_Startup.INSTANCE.getCmdMan().getEman().perform(emote, member, channel);

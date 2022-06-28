@@ -38,7 +38,7 @@ public class GruwieUtilities {
 	}
 	
 	private static String[] getInfoFromTitle (String title) throws Exception {
-		
+		log();
 		if(!title.contains("-")) return null;
 		
 		String[] temp = title.split("-");
@@ -66,6 +66,7 @@ public class GruwieUtilities {
 	}
 	
 	public static String[] getURL(String title) throws Exception {
+		log();
 		String[] title_author = getInfoFromTitle(title);
 		String[] result = new String[2];
 		
@@ -78,6 +79,7 @@ public class GruwieUtilities {
 	}
 	
 	public static String formatWebsite(String input) {
+		log();
 		if(input.equals("")) return input;
 		
 		int index1 = 0;
@@ -153,6 +155,7 @@ public class GruwieUtilities {
 	}
 	
 	private static InputStream getInputStream (String link) {
+		log();
 		try {
 			URL url = new URL(link);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -170,7 +173,7 @@ public class GruwieUtilities {
 	}
 	
 	public static String doWebBrowsing(String input, String break_string) throws Exception {
-		
+		log();
 		StringBuilder b = new StringBuilder("");
 		InputStream website = getInputStream(input);
 		if(website == null) return "";
@@ -187,6 +190,7 @@ public class GruwieUtilities {
 	}
 	
 	public static Properties loadProperties(String file) {
+		log();
 		try {
 			Properties result = new Properties();
 			File temp = new File(file);

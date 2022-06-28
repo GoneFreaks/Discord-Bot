@@ -10,7 +10,7 @@ public class GuessMeantCommand {
 	private static int LENGTH_MULTIPLIER;
 	
 	public static String probableCommand(String[] cmd, String input, String symbol) {
-		
+		GruwieUtilities.log();
 		ORDER_MULTIPLIER = ConfigManager.getInteger("order_multiplier");
 		CHARACTER_MULTIPLIER = ConfigManager.getInteger("character_multiplier");
 		LENGTH_MULTIPLIER = ConfigManager.getInteger("length_multiplier");
@@ -45,6 +45,7 @@ public class GuessMeantCommand {
 	}
 	
 	private static int[] orderComparison(String[] cmd, String test) {
+		GruwieUtilities.log();
 		int[] result = new int[cmd.length];
 		
 		for (int i = 0; i < test.length(); i++) {
@@ -65,7 +66,7 @@ public class GuessMeantCommand {
 	}
 	
 	private static int[] characterComparison(String[] cmd, String test) {
-		
+		GruwieUtilities.log();
 		int[] result = new int[cmd.length];
 		
 		int[] test_characters = stringToCharacterCount(test);
@@ -88,6 +89,7 @@ public class GuessMeantCommand {
 	}
 	
 	private static int[] stringToCharacterCount(String input) {
+		GruwieUtilities.log();
 		int[] characters = new int[26];
 		
 		for (int i = 0; i < input.length(); i++) {
@@ -99,7 +101,7 @@ public class GuessMeantCommand {
 	}
 	
 	private static int[] matchingLength(String[] cmd, String test) {
-		
+		GruwieUtilities.log();
 		int[] result = new int[cmd.length];
 		for (int i = 0; i < cmd.length; i++) {
 			if(cmd[i].length() == test.length()) result[i]++;
@@ -109,12 +111,14 @@ public class GuessMeantCommand {
 	}
 	
 	private static int abs(int a, int b) {
+		GruwieUtilities.log();
 		int temp = a - b;
 		if(temp > 0) return temp;
 		else return b - a;
 	}
 	
 	private static int max(int[] input) {
+		GruwieUtilities.log();
 		int max = 0;
 		for (int i = 0; i < input.length; i++) {
 			if(input[i] > max) max = input[i];

@@ -22,7 +22,6 @@ public class SystemListener extends ListenerAdapter {
 	
 	@Override
 	public void onReady(ReadyEvent event) {
-		GruwieUtilities.log();
 		ShardManager shardMan = Gruwie_Startup.INSTANCE.getShardMan();
 		shardMan.addEventListener(new CommandListener());
 		shardMan.addEventListener(new InteractionListener());
@@ -50,7 +49,6 @@ public class SystemListener extends ListenerAdapter {
 	
 	@Override
 	public void onShutdown(ShutdownEvent event) {
-		GruwieUtilities.log();
 		try {
 			ChannelManager.shutdown();
 			Threadpool.shutdown();

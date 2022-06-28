@@ -45,7 +45,7 @@ public class CheckTrackDTO implements Comparable<CheckTrackDTO> {
 	
 	@Override
 	public String toString() {
-		return title;
+		return title + " " + treffer;
 	}
 	
 }

@@ -27,6 +27,7 @@ public class Threadpool {
 	}
 	
 	public static void shutdown() {
+		GruwieUtilities.log();
 		exc.shutdownNow();
 	}
 	

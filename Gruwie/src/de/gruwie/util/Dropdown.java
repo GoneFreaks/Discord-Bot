@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class Dropdown {
 
 	public static void getPlaylists(TextChannel channel, Member member, boolean isGet) {
-		
+		GruwieUtilities.log();
 		PlaylistsDTO playlists = PlaylistManager.getPlaylists(channel.getGuild().getIdLong(), member.getIdLong());
 			
 		List<SelectOptionAction> actions = new ArrayList<>();
@@ -43,7 +43,7 @@ public class Dropdown {
 	}
 	
 	public static void multipleEntriesFound (String message, List<CheckTrackDTO> track_list, TextChannel channel, Member member, boolean isSetter) {
-		
+		GruwieUtilities.log();
 		if(track_list.size() > 5) {
 			MessageManager.sendEmbedMessage(true, Outputs.AMBIGUOUS, channel);
 		}

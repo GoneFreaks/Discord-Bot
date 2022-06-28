@@ -5,6 +5,7 @@ import de.gruwie.db.PlaylistManager;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Dropdown;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
@@ -20,10 +21,11 @@ public class GetPlaylistsCommand extends ServerCommand {
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) {
 		
+		GruwieUtilities.log();
 		if(message == null) Dropdown.getPlaylists(channel, member, true);
 		else {
 			String[] args = message.getContentRaw().split(" ");
-			
+			GruwieUtilities.log("Parameter-Count " + args.length);
 			if(ConfigManager.getDatabase()) {
 				if(args.length == 1) Dropdown.getPlaylists(channel, member, true);
 				if(args.length == 2) {

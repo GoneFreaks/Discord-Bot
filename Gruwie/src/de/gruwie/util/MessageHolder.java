@@ -11,6 +11,7 @@ public class MessageHolder {
 	private static ConcurrentHashMap<Message, Long> storage = new ConcurrentHashMap<>();
 	
 	public static void start() {
+		GruwieUtilities.log();
 		Thread checker = new Thread(() -> {
 			while(true) {
 				try {
@@ -37,6 +38,7 @@ public class MessageHolder {
 	}
 	
 	public static void shutdown() {
+		GruwieUtilities.log();
 		storage.forEach((k,v) -> {
 			if(!k.isPinned()) k.delete().queue(null, Filter.handler);
 			storage.remove(k);

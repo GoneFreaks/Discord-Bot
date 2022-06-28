@@ -9,6 +9,7 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import de.gruwie.util.SelectionMenuManager;
@@ -32,6 +33,7 @@ public class ExportPlaylistCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+		GruwieUtilities.log();
 		if(ConfigManager.getBoolean("database")) {
 			String[] args = message.getContentStripped().split(" ");
 			if(args.length > 1) {
@@ -42,6 +44,7 @@ public class ExportPlaylistCommand extends ServerCommand {
 					b.append(args[i] + " ");
 				}
 				String name = b.toString().trim();
+				GruwieUtilities.log("Playlist-Name: " + name);
 				if(name.length() <= 30) {
 					if(tracks.size() > 0) {
 						MessageEmbed embed = MessageManager.buildEmbedMessage("HOW DO YOU WANT TO EXPORT THE PLAYLIST **" + name + "**", null).build();

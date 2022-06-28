@@ -2,6 +2,7 @@ package de.gruwie.util.selectOptions;
 
 import de.gruwie.music.MusicController;
 import de.gruwie.util.CheckVoiceState;
+import de.gruwie.util.GruwieUtilities;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -16,6 +17,7 @@ public class GetFilterSOA extends SelectOptionAction {
 		this.name = name;
 		this.channel = channel;
 		this.member = member;
+		GruwieUtilities.log("name=" + name);
 	}
 
 	@Override

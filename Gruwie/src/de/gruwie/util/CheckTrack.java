@@ -12,10 +12,12 @@ import de.gruwie.util.dto.CheckTrackDTO;
 public class CheckTrack {
 	
 	public static List<CheckTrackDTO> getAudioTrack (List<AudioTrack> queuelist, String query) {
-		
+		GruwieUtilities.log();
+		GruwieUtilities.log("Query: " + query);
 		if(queuelist.size() == 0) return null;
 		
 		List<CheckTrackDTO> storage = compare(queuelist, query.toLowerCase());
+		GruwieUtilities.log(storage.toString());
 		Collections.sort(storage);
 		
 		if(storage.size() == 1) {
@@ -27,12 +29,14 @@ public class CheckTrack {
 					return storage.subList(0, i);
 				}
 			}
+			GruwieUtilities.log(storage.subList(0, storage.size()).toString());
 			return storage.subList(0, storage.size());
 		}
 		return null;
 	}
 
 	private static List<CheckTrackDTO> compare(List<AudioTrack> queuelist, String query) {
+		GruwieUtilities.log();
 		String[] args = query.split(" ");
 		List<CheckTrackDTO> list = new LinkedList<>();
 		queuelist.forEach((k) -> {
@@ -50,6 +54,7 @@ public class CheckTrack {
 	}
 	
 	private static List<CheckTrackDTO> reduceList(List<CheckTrackDTO> list) {
+		GruwieUtilities.log();
 		Collections.sort(list);
 		int max = list.get(0).getTreffer();
 		return list.parallelStream().filter(i -> i.getTreffer() == max).collect(Collectors.toList());

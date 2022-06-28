@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class MessageManager {
 	
 	public static Message sendEmbedMessage(boolean delete, Outputs message, long guildId) {
+		GruwieUtilities.log();
 		try {
 			Message output = sendMessage(message.getValue(), guildId, null);
 			if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
@@ -24,12 +25,16 @@ public class MessageManager {
 	}
 	
 	private static Message sendMessage(String message, long guildId, String footer) {
+		GruwieUtilities.log();
 		TextChannel channel = ChannelManager.getChannel(guildId);
 		Message output = channel.sendMessageEmbeds(buildEmbedMessage(message, footer).build()).complete();
 		return output;
 	}
 	
-	public static Message sendEmbedMessage(boolean delete, Outputs message, TextChannel channel) {return sendEmbedMessage(delete, message, channel.getGuild().getIdLong());}
+	public static Message sendEmbedMessage(boolean delete, Outputs message, TextChannel channel) {
+		GruwieUtilities.log();
+		return sendEmbedMessage(delete, message, channel.getGuild().getIdLong());
+	}
 	
 	public static EmbedBuilder buildEmbedMessage (String message, String footer) {
 		
@@ -50,6 +55,7 @@ public class MessageManager {
 	}
 	
 	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message, boolean delete) {
+		GruwieUtilities.log();
 		channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).queue((m) -> {
 			if(!delete) MessageHolder.add(m);
 			else m.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
@@ -57,10 +63,12 @@ public class MessageManager {
 	}
 	
 	public static Message sendEmbedMessageVariable(boolean delete, String message, long guildId) {
+		GruwieUtilities.log();
 		return sendEmbedMessageVariable(delete, message, guildId, null);
 	}
 	
 	public static Message sendEmbedMessageVariable(boolean delete, String message, long guildId, Outputs footer) {
+		GruwieUtilities.log();
 		Message output = sendMessage(message, guildId, footer != null? footer.getValue() : null);
 		if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
 		else MessageHolder.add(output);

@@ -26,10 +26,10 @@ public class LyricsCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		
+		GruwieUtilities.log();
 		String query;
 		String[] args = message.getContentRaw().split(" ");
-		
+		GruwieUtilities.log("Parameter-Count " + args.length);
 		if(args.length != 1) {
 			String symbol = ConfigManager.getString("symbol");
 			query = message.getContentRaw().replaceAll(symbol + "lyrics", "").replaceAll(symbol + "l", "").replaceAll(" ", "");

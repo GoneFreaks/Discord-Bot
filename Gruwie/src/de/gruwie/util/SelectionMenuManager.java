@@ -24,6 +24,7 @@ public class SelectionMenuManager {
 	private static Set<UUID> taken = new HashSet<>();
 	
 	public static UUID getUUID () {
+		GruwieUtilities.log();
 		UUID result;
 		while(true) {
 			result = UUID.randomUUID();
@@ -34,16 +35,19 @@ public class SelectionMenuManager {
 	}
 	
 	public static void putAction (UUID uuid, SelectOptionAction action) {
+		GruwieUtilities.log();
 		selectionMenus.put(uuid, action);
 		taken.remove(uuid);
 	}
 	
 	public static void executeAction (String uuid) {
+		GruwieUtilities.log();
 		SelectOptionAction action = selectionMenus.remove(UUID.fromString(uuid));
 		if(action != null) action.perform();
 	}
 	
 	public static void createDropdownMenu (List<SelectOptionAction> actions, MessageChannel channel, String message) {
+		GruwieUtilities.log();
 		Builder builder = SelectionMenu.create(getUUID().toString());
 		actions.forEach((k) -> {
 			builder.addOptions(k);
@@ -59,10 +63,12 @@ public class SelectionMenuManager {
 	}
 	
 	public static void putButtonAction (ButtonAction ba, UUID uuid) {
+		GruwieUtilities.log();
 		buttons.put(uuid, ba);
 	}
 	
 	public static void executeButtonAction(String uuid) {
+		GruwieUtilities.log();
 		ButtonAction ba = buttons.remove(UUID.fromString(uuid));
 		if(ba != null) ba.perform();
 	}

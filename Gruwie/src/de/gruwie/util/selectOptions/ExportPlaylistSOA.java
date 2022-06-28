@@ -5,6 +5,7 @@ import java.util.List;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import de.gruwie.db.PlaylistManager;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.exceptions.PlaylistAlreadyExistsException;
 import de.gruwie.util.exceptions.TooManyPlaylistsException;
@@ -25,10 +26,12 @@ public class ExportPlaylistSOA extends SelectOptionAction {
 		this.isUser = isUser;
 		this.tracks = tracks;
 		this.channel = channel;
+		GruwieUtilities.log("tracks_size=" + tracks.size() + " name=" + name + " id=" + id + " isUser=" + isUser);
 	}
 	
 	@Override
 	public void perform () {
+		GruwieUtilities.log();
 		try {
 			boolean result = PlaylistManager.exportPlaylist(tracks, name, id, isUser);
 			if(result) MessageManager.sendEmbedPrivateMessage(channel, "**A PLAYLIST NAMED " + name + " HAS BEEN CREATED**", true);

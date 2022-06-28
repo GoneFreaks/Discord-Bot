@@ -22,6 +22,7 @@ public class View {
 	private Message current_queue_view;
 	
 	public View(Message track_view, MessageEmbed embed) {
+		GruwieUtilities.log();
 		MessageAction action = track_view.getChannel().sendMessageEmbeds(embed);
 		
 		List<Button> buttons = new ArrayList<>();
@@ -38,6 +39,7 @@ public class View {
 	}
 	
 	public void deleteView() {
+		GruwieUtilities.log();
 		if(current_track_view != null) current_track_view.delete().queue(null, Filter.handler);
 		if(current_queue_view != null) current_queue_view.delete().queue(null, Filter.handler);
 		current_track_view = null;
@@ -49,6 +51,7 @@ public class View {
 	}
 	
 	public static void init(List<ServerCommand> commands, List<ServerCommand> emotes) {
+		GruwieUtilities.log();
 		for (ServerCommand i : commands) {
 			if(i.getButtonSymbol() != null) button_symbols.add(new SymbolDTO(i.getButtonSymbol(), i.getPosition(), i.getCommand()));
 		}
@@ -61,6 +64,7 @@ public class View {
 	}
 	
 	public void addEmotes() {
+		GruwieUtilities.log();
 		if(current_track_view != null) {
 			emote_symbols.forEach((k) -> {
 				current_track_view.addReaction(k.getSymbol()).complete();

@@ -3,7 +3,6 @@ package de.gruwie.listener;
 import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.util.ConfigManager;
-import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.GuessMeantCommand;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
@@ -19,10 +18,11 @@ public class CommandListener extends ListenerAdapter {
 	
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+		
 		Threadpool.execute(() -> {
 			
 			if(event.getMessage().getContentRaw().length() > 100 || event.getAuthor().isBot()) return;
-			GruwieUtilities.log();
+			
 			String message_content = event.getMessage().getContentStripped().toLowerCase();
 			TextChannel channel = event.getChannel();
 			String symbol = ConfigManager.getString("symbol");
@@ -52,11 +52,10 @@ public class CommandListener extends ListenerAdapter {
 	
 	@Override
 	public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
+		
 		Threadpool.execute(() -> {
-			if(event.getAuthor().isBot()) {
-				return;
-			}
-			GruwieUtilities.log();
+			
+			if(event.getAuthor().isBot()) return;
 			
 			if(event.getAuthor().getId().equals(ConfigManager.getString("owner_id"))) {
 				Message message = event.getMessage();

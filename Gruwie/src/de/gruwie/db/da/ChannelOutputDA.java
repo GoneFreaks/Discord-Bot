@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.gruwie.db.ConnectionManager;
+import de.gruwie.util.GruwieUtilities;
 
 public class ChannelOutputDA {
 
@@ -25,6 +26,7 @@ public class ChannelOutputDA {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		GruwieUtilities.log(result.toString());
 		return result;
 	}
 	

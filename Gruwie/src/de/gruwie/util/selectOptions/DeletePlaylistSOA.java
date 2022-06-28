@@ -1,6 +1,7 @@
 package de.gruwie.util.selectOptions;
 
 import de.gruwie.db.da.PlaylistDA;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.streams.Filter;
@@ -22,10 +23,12 @@ public class DeletePlaylistSOA extends SelectOptionAction implements Confirmatio
 		this.iD = iD;
 		this.name = name;
 		this.channel = channel;
+		GruwieUtilities.log("name=" + name + " isUser=" + isUser + " iD=" + iD);
 	}
 
 	@Override
 	public void perform() {
+		GruwieUtilities.log();
 		SelectOptionAction delete = new ConfirmAction(this, true);
 		SelectionMenuManager.putAction(delete.getUUID(), delete);
 		SelectOptionAction deny = new ConfirmAction(this, false);
@@ -38,6 +41,7 @@ public class DeletePlaylistSOA extends SelectOptionAction implements Confirmatio
 
 	@Override
 	public void confirm(boolean accept) {
+		GruwieUtilities.log();
 		boolean result;
 		if(accept) result = PlaylistDA.deletePlaylist(iD, isUser, name);
 		else result = false;

@@ -3,6 +3,7 @@ package de.gruwie.music.commands;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.Dropdown;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,7 +18,7 @@ public class UpdatePlaylistCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) {
-		
+		GruwieUtilities.log();
 		if(ConfigManager.getDatabase()) Dropdown.getPlaylists(channel, member, false);
 		else MessageManager.sendEmbedMessage(true, Outputs.DATABASE, channel);
 	}

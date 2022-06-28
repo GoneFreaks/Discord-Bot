@@ -69,7 +69,6 @@ public class FilterManager {
 	}
 	
 	public String getCurrentFilter() {
-		GruwieUtilities.log();
 		return current_filter;
 	}
 	

@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.CheckVoiceState;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -18,6 +19,7 @@ public class ResumePauseCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+		GruwieUtilities.log();
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller == null) return;
 		AudioPlayer player = controller.getPlayer();

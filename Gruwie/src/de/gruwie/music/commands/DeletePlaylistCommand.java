@@ -6,6 +6,7 @@ import java.util.List;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import de.gruwie.util.SelectionMenuManager;
@@ -24,6 +25,7 @@ public class DeletePlaylistCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+		GruwieUtilities.log();
 		if(ConfigManager.getDatabase()) {
 			List<String> server_playlists = PlaylistDA.readAllPlaylists(member.getGuild().getIdLong(), false);
 			List<String> user_playlists = PlaylistDA.readAllPlaylists(member.getUser().getIdLong(), true);
