@@ -34,6 +34,7 @@ public class ConfigManager {
 
 	public static boolean getBoolean(String name) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("name=" + name);
 		String value = config.getProperty(name);
 		if(value.equals("0") || value.equals("1")) {
 			return value.equals("1");
@@ -57,6 +58,7 @@ public class ConfigManager {
 	
 	public static double getDouble(String name) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("name=" + name);
 		try {
 			return Double.parseDouble(config.getProperty("name"));
 		} catch (Exception e) {

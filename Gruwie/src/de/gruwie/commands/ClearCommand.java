@@ -7,7 +7,6 @@ import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -57,7 +56,7 @@ public class ClearCommand extends ServerCommand {
 				}
 				try {
 					for (List<Message> i : list) {
-						channel.deleteMessages(i).queue(null, Filter.handler);
+						channel.deleteMessages(i).queue(null, (e) -> {});
 					}
 				} catch (Exception e) {
 					deleteMessages(delete, channel, message);
@@ -73,7 +72,7 @@ public class ClearCommand extends ServerCommand {
 				for (Message i : messages) {
 					if(i.isPinned()) continue;
 					try {
-						i.delete().queue(null, Filter.handler);
+						i.delete().queue(null, (e) -> {});
 						Thread.sleep(100);
 					} catch (Exception e) {
 						e.printStackTrace();

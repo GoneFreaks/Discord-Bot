@@ -3,9 +3,7 @@ package de.gruwie;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.util.List;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
@@ -13,14 +11,12 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.db.ConnectionManager;
 import de.gruwie.listener.SystemListener;
-import de.gruwie.music.MusicController;
 import de.gruwie.music.PlayerManager;
 import de.gruwie.util.ConfigManager;
 import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageHolder;
 import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
@@ -111,12 +107,7 @@ public class Gruwie_Startup {
 	public void shutdown() throws Exception{
 		GruwieUtilities.log();
 		if (shardMan != null) {
-			List<Guild> guilds = Gruwie_Startup.INSTANCE.getShardMan().getGuilds();
-			for (Guild i : guilds) {
-				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(i.getIdLong());
-				AudioPlayer player = null;
-				if((player = controller.getPlayer()) != null) player.destroy();
-			}
+			Gruwie_Startup.INSTANCE.getPlayerManager().destroyPlayers();
 			MessageHolder.shutdown();
 			shardMan.setStatus(OnlineStatus.OFFLINE);
 			shardMan.shutdown();

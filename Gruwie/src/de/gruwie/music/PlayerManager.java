@@ -35,4 +35,11 @@ public class PlayerManager {
 		}
 		return -1;
 	}
+	
+	public void destroyPlayers() {
+		GruwieUtilities.log();
+		controller.forEach((k,v) -> {
+			v.getPlayer().destroy();
+		});
+	}
 }

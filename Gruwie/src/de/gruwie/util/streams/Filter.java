@@ -5,12 +5,8 @@ import java.io.FileNotFoundException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.requests.ErrorResponse;
-
 public class Filter {
 
-	public static ErrorHandler handler = new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, (error) -> {});
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 	private static int KEEP_LOG_COUNT = 5;
 	

@@ -4,7 +4,6 @@ import de.gruwie.db.da.PlaylistDA;
 import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.SelectionMenuManager;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.interactions.components.Button;
@@ -36,7 +35,7 @@ public class DeletePlaylistSOA extends SelectOptionAction implements Confirmatio
 		
 		MessageEmbed embed = MessageManager.buildEmbedMessage("*ARE YOU SURE YOU WANT TO DELETE THE PLAYLIST **" + name + "***", null).build();
 		MessageAction action = channel.sendMessageEmbeds(embed);
-		action.setActionRow(Button.danger(delete.getUUID().toString(), "DELETE"), Button.success(deny.getUUID().toString(), "CANCEL")).queue(null, Filter.handler);
+		action.setActionRow(Button.danger(delete.getUUID().toString(), "DELETE"), Button.success(deny.getUUID().toString(), "CANCEL")).queue(null, (e) -> {});
 	}
 
 	@Override

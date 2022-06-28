@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.selectOptions.ButtonAction;
 import de.gruwie.util.selectOptions.SelectOptionAction;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -59,7 +58,7 @@ public class SelectionMenuManager {
 		else output_channel = channel;
 		MessageEmbed message_embed = MessageManager.buildEmbedMessage(message, null).build();
 		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
-		action.setActionRow(builder.build()).queue(null, Filter.handler);
+		action.setActionRow(builder.build()).queue(null, (e) -> {});
 	}
 	
 	public static void putButtonAction (ButtonAction ba, UUID uuid) {

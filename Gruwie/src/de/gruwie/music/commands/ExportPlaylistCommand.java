@@ -15,7 +15,6 @@ import de.gruwie.util.Outputs;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.selectOptions.ExportPlaylistSOA;
 import de.gruwie.util.selectOptions.SelectOptionAction;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -60,7 +59,7 @@ public class ExportPlaylistCommand extends ServerCommand {
 							SelectionMenuManager.putAction(select.getUUID(), select);
 							buttons.add(Button.primary(select.getUUID().toString(), "SERVER"));
 						}
-						action.setActionRow(buttons).queue(null, Filter.handler);
+						action.setActionRow(buttons).queue(null, (e) -> {});
 					}
 					else MessageManager.sendEmbedMessage(true, Outputs.EXPORT_EMPTY_QUEUE, channel);
 				}

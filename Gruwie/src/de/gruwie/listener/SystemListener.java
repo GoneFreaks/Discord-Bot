@@ -32,9 +32,10 @@ public class SystemListener extends ListenerAdapter {
 		StringBuilder b = new StringBuilder();
 		b.append("Connected to:\n");
 		for (int i = 0; i < guilds.size(); i++) {
+			if(i != 0) b.append("\n");
 			Guild current = guilds.get(i);
-			b.append("\t\t\t" + (i + 1) + ": " + current.getName() + "\n");
-			b.append("\t\t\t" + "\tMembers: " + current.getMemberCount() + "\tOwner: " + jda.retrieveUserById(current.getOwnerId()).complete().getName() + "\n");
+			b.append("\t\t" + current.getName());
+			b.append("\tMembers: " + current.getMemberCount() + "\tOwner: " + jda.retrieveUserById(current.getOwnerId()).complete().getName());
 		}
 		
 		GruwieUtilities.logMeta(b.toString());
@@ -42,8 +43,7 @@ public class SystemListener extends ListenerAdapter {
 		shardMan.setStatus(OnlineStatus.ONLINE);
 		shardMan.setActivity(Activity.listening("help"));
 		MessageHolder.start();
-		
-		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
+		long startup_time = Math.round((System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000.0);
 		GruwieUtilities.logMeta("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
 	}
 	

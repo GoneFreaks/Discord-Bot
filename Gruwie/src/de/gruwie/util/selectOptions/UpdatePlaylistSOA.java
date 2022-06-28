@@ -9,7 +9,6 @@ import de.gruwie.music.Queue;
 import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.SelectionMenuManager;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.PrivateChannel;
@@ -42,7 +41,7 @@ public class UpdatePlaylistSOA extends SelectOptionAction implements Confirmatio
 		
 		MessageEmbed embed = MessageManager.buildEmbedMessage("*ARE YOU SURE YOU WANT TO UPDATE THE PLAYLIST **" + name + "***", null).build();
 		MessageAction action = channel.sendMessageEmbeds(embed);
-		action.setActionRow(Button.danger(update.getUUID().toString(), "UPDATE"), Button.success(deny.getUUID().toString(), "CANCEL")).queue(null, Filter.handler);
+		action.setActionRow(Button.danger(update.getUUID().toString(), "UPDATE"), Button.success(deny.getUUID().toString(), "CANCEL")).queue(null, (e) -> {});
 	}
 
 	@Override

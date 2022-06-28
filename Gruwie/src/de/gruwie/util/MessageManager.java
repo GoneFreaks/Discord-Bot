@@ -3,7 +3,6 @@ package de.gruwie.util;
 import java.util.concurrent.TimeUnit;
 
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.PrivateChannel;
@@ -15,7 +14,7 @@ public class MessageManager {
 		GruwieUtilities.log();
 		try {
 			Message output = sendMessage(message.getValue(), guildId, null);
-			if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
+			if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, (e) -> {}, null);
 			else MessageHolder.add(output);
 			return output;
 		} catch (Exception e) {
@@ -51,15 +50,15 @@ public class MessageManager {
 	}
 	
 	public static void editMessage (Message m, String message) {
-		m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, Filter.handler);
+		m.editMessageEmbeds(buildEmbedMessage(message, null).build()).queue(null, (e) -> {});
 	}
 	
 	public static void sendEmbedPrivateMessage(PrivateChannel channel, String message, boolean delete) {
 		GruwieUtilities.log();
 		channel.sendMessageEmbeds(buildEmbedMessage(message, null).build()).queue((m) -> {
 			if(!delete) MessageHolder.add(m);
-			else m.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
-		}, Filter.handler);
+			else m.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, (e) -> {}, null);
+		}, (e) -> {});
 	}
 	
 	public static Message sendEmbedMessageVariable(boolean delete, String message, long guildId) {
@@ -70,7 +69,7 @@ public class MessageManager {
 	public static Message sendEmbedMessageVariable(boolean delete, String message, long guildId, Outputs footer) {
 		GruwieUtilities.log();
 		Message output = sendMessage(message, guildId, footer != null? footer.getValue() : null);
-		if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, Filter.handler, null);
+		if(ConfigManager.getBoolean("delete?") && delete) output.delete().queueAfter(ConfigManager.getInteger("delete_time"), TimeUnit.MILLISECONDS, null, (e) -> {}, null);
 		else MessageHolder.add(output);
 		return output;
 	}

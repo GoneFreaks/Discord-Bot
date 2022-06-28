@@ -6,7 +6,6 @@ import java.util.List;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.dto.SymbolDTO;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -40,8 +39,8 @@ public class View {
 	
 	public void deleteView() {
 		GruwieUtilities.log();
-		if(current_track_view != null) current_track_view.delete().queue(null, Filter.handler);
-		if(current_queue_view != null) current_queue_view.delete().queue(null, Filter.handler);
+		if(current_track_view != null) current_track_view.delete().queue(null, (e) -> {});
+		if(current_queue_view != null) current_queue_view.delete().queue(null, (e) -> {});
 		current_track_view = null;
 		current_queue_view = null;
 	}
