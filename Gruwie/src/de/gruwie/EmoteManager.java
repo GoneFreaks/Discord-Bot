@@ -26,7 +26,7 @@ public class EmoteManager {
 			ServerCommand scmd = storage.get(emote);
 			if(scmd != null) {
 				scmd.performServerCommand(member, channel, null);
-				GruwieUtilities.log("executed Emotecommand " + emote + " " + scmd.getCommand());
+				GruwieUtilities.log("executed Emotecommand emote=" + emote + " cmd=" + scmd.getCommand());
 			}
 		}
 	}

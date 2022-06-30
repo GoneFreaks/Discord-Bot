@@ -29,7 +29,7 @@ public class LyricsCommand extends ServerCommand {
 		GruwieUtilities.log();
 		String query;
 		String[] args = message.getContentRaw().split(" ");
-		GruwieUtilities.log("Parameter-Count " + args.length);
+		GruwieUtilities.log("args-count=" + args.length);
 		if(args.length != 1) {
 			String symbol = ConfigManager.getString("symbol");
 			query = message.getContentRaw().replaceAll(symbol + "lyrics", "").replaceAll(symbol + "l", "").replaceAll(" ", "");

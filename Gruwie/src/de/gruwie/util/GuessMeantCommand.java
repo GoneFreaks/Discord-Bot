@@ -1,6 +1,7 @@
 package de.gruwie.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GuessMeantCommand {
@@ -11,6 +12,7 @@ public class GuessMeantCommand {
 	
 	public static String probableCommand(String[] cmd, String input, String symbol) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("input=" + input + " symbol=" + symbol + " cmd=" + cmd.length + " " + Arrays.toString(cmd));
 		ORDER_MULTIPLIER = ConfigManager.getInteger("order_multiplier");
 		CHARACTER_MULTIPLIER = ConfigManager.getInteger("character_multiplier");
 		LENGTH_MULTIPLIER = ConfigManager.getInteger("length_multiplier");
@@ -44,19 +46,19 @@ public class GuessMeantCommand {
 		return null;
 	}
 	
-	private static int[] orderComparison(String[] cmd, String test) {
+	private static int[] orderComparison(String[] cmd, String input) {
 		GruwieUtilities.log();
 		int[] result = new int[cmd.length];
 		
-		for (int i = 0; i < test.length(); i++) {
-			char temp = test.charAt(i);
+		for (int i = 0; i < input.length(); i++) {
+			char temp = input.charAt(i);
 			for (int j = 0; j < cmd.length; j++) {
 				if(cmd[j].length() > i) if(temp == cmd[j].charAt(i)) result[j]++;
 			}
 		}
 		
 		int max = max(result);
-		if(((double) max) / test.length() > ConfigManager.getDouble("min_similarity")) {
+		if(((double) max) / input.length() > ConfigManager.getDouble("min_similarity")) {
 			for (int i = 0; i < result.length; i++) {
 				result[i] = result[i] / max;
 			}
@@ -65,11 +67,11 @@ public class GuessMeantCommand {
 		return result;
 	}
 	
-	private static int[] characterComparison(String[] cmd, String test) {
+	private static int[] characterComparison(String[] cmd, String input) {
 		GruwieUtilities.log();
 		int[] result = new int[cmd.length];
 		
-		int[] test_characters = stringToCharacterCount(test);
+		int[] test_characters = stringToCharacterCount(input);
 		
 		for (int i = 0; i < cmd.length; i++) {
 			int[] temp = stringToCharacterCount(cmd[i]);
@@ -79,7 +81,7 @@ public class GuessMeantCommand {
 		}
 		
 		int max = max(result);
-		if(((double) max) / test.length() > ConfigManager.getDouble("min_similarity")) {
+		if(((double) max) / input.length() > ConfigManager.getDouble("min_similarity")) {
 			for (int i = 0; i < result.length; i++) {
 				result[i] = result[i] / max;
 			}
@@ -100,21 +102,14 @@ public class GuessMeantCommand {
 		return characters;
 	}
 	
-	private static int[] matchingLength(String[] cmd, String test) {
+	private static int[] matchingLength(String[] cmd, String input) {
 		GruwieUtilities.log();
 		int[] result = new int[cmd.length];
 		for (int i = 0; i < cmd.length; i++) {
-			if(cmd[i].length() == test.length()) result[i]++;
-			else if(abs(cmd[i].length(), test.length()) > 2) result[i]--;
+			if(cmd[i].length() == input.length()) result[i]++;
+			else if(Math.abs(cmd[i].length() - input.length()) > 2) result[i]--;
 		}
 		return result;
-	}
-	
-	private static int abs(int a, int b) {
-		GruwieUtilities.log();
-		int temp = a - b;
-		if(temp > 0) return temp;
-		else return b - a;
 	}
 	
 	private static int max(int[] input) {

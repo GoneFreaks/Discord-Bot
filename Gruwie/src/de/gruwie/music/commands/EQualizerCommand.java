@@ -19,7 +19,7 @@ public class EQualizerCommand extends ServerCommand{
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		GruwieUtilities.log();
 		String[] args = message.getContentRaw().split(" ");
-		GruwieUtilities.log("Parameter-Count " + args.length);
+		GruwieUtilities.log("args-count=" + args.length);
 		if(args.length == 1) {
 			TrackEqualizer eq = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong()).getEqualizer();
 			Message m = MessageManager.sendEmbedMessageVariable(false, eq.toString(), channel.getGuild().getIdLong());

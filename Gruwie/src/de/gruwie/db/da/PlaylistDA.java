@@ -59,7 +59,7 @@ public class PlaylistDA {
 	
 	public static boolean writePlaylist(List<String> tracks, String playlist_name, long iD, boolean isUser, boolean update) throws TooManyPlaylistsException, PlaylistAlreadyExistsException {
 		GruwieUtilities.log();
-		GruwieUtilities.log("iD=" + iD + " isUser=" + isUser + " update=" + update + " tracks_size=" + tracks.size() + " playlist_name=" + playlist_name);
+		GruwieUtilities.log("iD=" + iD + " isUser=" + isUser + " update=" + update + " tracks=" + tracks.size() + " " + tracks.size() + " playlist_name=" + playlist_name);
 		countSmallerMax(iD, isUser);
 		
 		if(!update && playlistExists(iD, isUser, playlist_name)) throw new PlaylistAlreadyExistsException(playlist_name);
@@ -136,7 +136,7 @@ public class PlaylistDA {
 	
 	private static List<Integer> insertIntoTracks(List<String> playlist_complete) {
 		GruwieUtilities.log();
-		GruwieUtilities.log("playlist_size=" + playlist_complete.size());
+		GruwieUtilities.log("playlist=" + playlist_complete.size() + " " + playlist_complete.toString());
 		List<Integer> result = new ArrayList<>();
 		
 		try (Connection cn = ConnectionManager.getConnection(false)) {
@@ -163,7 +163,7 @@ public class PlaylistDA {
 	
 	private static List<Integer> getTrackIds(List<String> urls) throws Exception{
 		GruwieUtilities.log();
-		GruwieUtilities.log("urls_count=" + urls.size());
+		GruwieUtilities.log("urls=" + urls.size() + " " + urls.toString());
 		List<Integer> available_id = new ArrayList<>();
 		
 		try (Connection cn = ConnectionManager.getConnection(true)) {
@@ -224,7 +224,7 @@ public class PlaylistDA {
 	
 	public static boolean updatePlaylist(long iD, boolean isUser, String playlist_name, List<String> urls) {
 		GruwieUtilities.log();
-		GruwieUtilities.log("iD=" + iD + " isUser=" + isUser + " playlist_name=" + playlist_name + " urls_count=" + urls.size());
+		GruwieUtilities.log("iD=" + iD + " isUser=" + isUser + " playlist_name=" + playlist_name + " urls=" + urls.size() + " " + urls.toString());
 		if(deletePlaylist(iD, isUser, playlist_name)) {
 			if(urls.size() == 0) return true;
 			if(urls.size() > ConfigManager.getInteger("max_queue_size")) return false;

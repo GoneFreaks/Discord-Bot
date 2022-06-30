@@ -85,7 +85,7 @@ public class Queue {
 
 	public void addTrackToQueue(AudioTrackTimed track) {
 		GruwieUtilities.log();
-		GruwieUtilities.log("adding track=" + track.getTitle());
+		GruwieUtilities.log("track=" + track.getTitle());
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
 		for (AudioTrackTimed i : queuelist.getContentCopy()) {
@@ -101,6 +101,7 @@ public class Queue {
 	
 	public void addPlaylistToQueue(List<AudioTrackTimed> tracks) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("tracks=" + tracks.size() + " " + tracks.toString());
 		for (AudioTrackTimed i : tracks) {
 			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
 				boolean already = false;
@@ -207,6 +208,7 @@ public class Queue {
 	
 	private boolean removeTrack (AudioTrackTimed track) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("track=" + track.getTitle());
 		boolean result = queuelist.remove(track);
 		editMessage();
 		return result;
@@ -214,6 +216,7 @@ public class Queue {
 	
 	public boolean removeTrack (String track) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("track=" + track);
 		queuelist.lock();
 		boolean result = false;
 		
@@ -254,6 +257,7 @@ public class Queue {
 	
 	private void move(int sign) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("sign=" + sign);
 		int temp = offset;
 		temp += sign * ConfigManager.getInteger("queue_show");
 		if(temp < queuelist.size() && temp >= 0) offset = temp;
@@ -262,6 +266,7 @@ public class Queue {
 	
 	public void setNextTrack(String track) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("track=" + track);
 		queuelist.lock();
 		for (AudioTrackTimed i : queuelist.getContentCopy()) {
 			if(i.getTitle().equals(track)) {

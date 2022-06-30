@@ -21,7 +21,7 @@ public class SetCommand extends ServerCommand {
 		GruwieUtilities.log();
 		if(member.hasPermission(Permission.MANAGE_CHANNEL)) {
 			TextChannel old_channel = ChannelManager.getChannel(member.getGuild().getIdLong());
-			GruwieUtilities.log("Output-Channel " + old_channel.getName() + " --> " + channel.getName());
+			GruwieUtilities.log("Output-Channel: " + old_channel.getName() + " --> " + channel.getName());
 			ChannelManager.putChannel(member.getGuild().getIdLong(), channel.getIdLong());
 			MessageManager.sendEmbedMessage(true, Outputs.OUTPUT_CHANNEL_SET, channel);
 		}

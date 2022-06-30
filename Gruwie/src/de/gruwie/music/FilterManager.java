@@ -82,7 +82,7 @@ public class FilterManager {
 	
 	public void applyFilter(String name) throws Exception {
 		GruwieUtilities.log();
-		GruwieUtilities.log("new filter=" + name);
+		GruwieUtilities.log("name=" + name);
 		FilterDTO temp = default_filter.get(name.toUpperCase());
 		if(temp == null) temp = custom_filter.get(name.toUpperCase());
 		if(temp != null) {

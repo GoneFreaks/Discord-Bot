@@ -19,7 +19,7 @@ public class MetaDA {
 	
 	public boolean compareDBToDDL(String table_name, List<String> expected_column_names) throws Exception {
 		GruwieUtilities.log();
-		GruwieUtilities.log("table_name=" + table_name + " expected_column_names_size=" + expected_column_names.size());
+		GruwieUtilities.log("table_name=" + table_name + " expected_column_names=" + expected_column_names.size() + " " + expected_column_names.toString());
 		try (Statement stmt = cn.createStatement()){
 			try(ResultSet rs = stmt.executeQuery("PRAGMA table_info(" + table_name + ")")) {
 				int counter = 0;

@@ -35,12 +35,14 @@ public class SelectionMenuManager {
 	
 	public static void putAction (UUID uuid, SelectOptionAction action) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("uuid=" + uuid + " action=" + action.getLabel());
 		selectionMenus.put(uuid, action);
 		taken.remove(uuid);
 	}
 	
 	public static void executeAction (String uuid) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("uuid=" + uuid);
 		SelectOptionAction action = selectionMenus.remove(UUID.fromString(uuid));
 		if(action != null) action.perform();
 	}
@@ -63,11 +65,13 @@ public class SelectionMenuManager {
 	
 	public static void putButtonAction (ButtonAction ba, UUID uuid) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("uuid=" + uuid);
 		buttons.put(uuid, ba);
 	}
 	
 	public static void executeButtonAction(String uuid) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("uuid=" + uuid);
 		ButtonAction ba = buttons.remove(UUID.fromString(uuid));
 		if(ba != null) ba.perform();
 	}

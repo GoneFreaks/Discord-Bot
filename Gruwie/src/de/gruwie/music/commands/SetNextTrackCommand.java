@@ -26,7 +26,7 @@ public class SetNextTrackCommand extends ServerCommand {
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		GruwieUtilities.log();
 		String[] args = message.getContentStripped().split(" ");
-		GruwieUtilities.log("Parameter-Count " + args.length);
+		GruwieUtilities.log("args-count=" + args.length);
 		
 		if(args.length > 1) {
 			StringBuilder b = new StringBuilder("");

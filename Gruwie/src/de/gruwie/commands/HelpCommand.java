@@ -21,9 +21,8 @@ public class HelpCommand extends ServerCommand {
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
 		GruwieUtilities.log();
-		
 		String[] args = message.getContentStripped().split(" ");
-		GruwieUtilities.log("Parameter-Count " + args.length);
+		GruwieUtilities.log("args-count=" + args.length);
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		long guildId = channel.getGuild().getIdLong();
 		

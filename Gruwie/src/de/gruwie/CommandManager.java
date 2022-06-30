@@ -49,7 +49,7 @@ public class CommandManager {
 			counter.incrementAndGet();
 			ServerCommand scmd = this.storage.get(cmd);
 			scmd.performServerCommand(member, channel, message);
-			GruwieUtilities.log("executed Command " + cmd);
+			GruwieUtilities.log("executed Command cmd=" + cmd + " channel=" + channel.getId() + " message=" + message.getContentRaw());
 			return false;
 		}
 		else return true;

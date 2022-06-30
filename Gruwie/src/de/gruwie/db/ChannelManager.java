@@ -32,12 +32,14 @@ public class ChannelManager {
 	
 	public static void putChannel(long guild_id, long channel_id) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("guild_id=" + guild_id + " channel_id=" + channel_id);
 		storage.put(guild_id, channel_id);
 		modified.add(guild_id);
 	}
 	
 	public static TextChannel getChannel (TextChannel channel) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("channel=" + channel.getId());
 		return getChannel(channel.getGuild().getIdLong());
 	}
 	

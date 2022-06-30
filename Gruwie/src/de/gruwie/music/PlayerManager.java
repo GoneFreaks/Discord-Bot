@@ -16,6 +16,7 @@ public class PlayerManager {
 	
 	public MusicController getController(long guildId) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("guildId=" + guildId);
 		MusicController mc = null;
 		
 		if(this.controller.containsKey(guildId)) mc = this.controller.get(guildId);
@@ -28,6 +29,7 @@ public class PlayerManager {
 	
 	public long getGuildByPlayerHash(int hash) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("hash=" + hash);
 		for(MusicController controller: this.controller.values()) {
 			if(controller.getPlayer().hashCode() == hash) {
 				return controller.getGuild().getIdLong();

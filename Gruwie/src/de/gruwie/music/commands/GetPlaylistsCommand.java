@@ -25,7 +25,7 @@ public class GetPlaylistsCommand extends ServerCommand {
 		if(message == null) Dropdown.getPlaylists(channel, member, true);
 		else {
 			String[] args = message.getContentRaw().split(" ");
-			GruwieUtilities.log("Parameter-Count " + args.length);
+			GruwieUtilities.log("args-count=" + args.length);
 			if(ConfigManager.getDatabase()) {
 				if(args.length == 1) Dropdown.getPlaylists(channel, member, true);
 				if(args.length == 2) {

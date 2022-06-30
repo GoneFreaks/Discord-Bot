@@ -29,12 +29,13 @@ public class PlaylistManager {
 	
 	public static PlaylistsDTO getPlaylists(long guildId, long userId) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("guildId=" + guildId + " userId=" + userId);
 		return new PlaylistsDTO(PlaylistDA.readAllPlaylists(guildId, false), PlaylistDA.readAllPlaylists(userId, true));
 	}
 	
 	public static boolean exportPlaylist(List<AudioTrack> tracks, String name, long iD, boolean isUser) throws TooManyPlaylistsException, PlaylistAlreadyExistsException {
 		GruwieUtilities.log();
-		GruwieUtilities.log("name=" + name + " size=" + tracks.size() + " iD=" + iD + " isUser=" + isUser);
+		GruwieUtilities.log("name=" + name + " tracks=" + tracks.size() + " " + tracks.toString() + " iD=" + iD + " isUser=" + isUser);
 		List<String> urls = new ArrayList<>();
 		tracks.forEach((k) -> {urls.add(k.getInfo().uri);});
 		return PlaylistDA.writePlaylist(urls, name, iD, isUser, false);
@@ -57,7 +58,7 @@ public class PlaylistManager {
 	
 	public static void playPlaylist(Member member, TextChannel channel, List<TrackDTO> list, String playlist_name) throws Exception {
 		GruwieUtilities.log();
-		GruwieUtilities.log("playlist_name=" + playlist_name);
+		GruwieUtilities.log("playlist_name=" + playlist_name + " tracks=" + list.size() + " " + list.toString());
 		if(list != null && list.size() > 0) {
 			MusicController controller = checkAndJoin(member, channel);
 			if(controller != null) {

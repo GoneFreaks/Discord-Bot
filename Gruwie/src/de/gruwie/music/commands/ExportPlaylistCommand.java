@@ -35,6 +35,7 @@ public class ExportPlaylistCommand extends ServerCommand {
 		GruwieUtilities.log();
 		if(ConfigManager.getBoolean("database")) {
 			String[] args = message.getContentStripped().split(" ");
+			GruwieUtilities.log("args-count=" + args.length);
 			if(args.length > 1) {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();

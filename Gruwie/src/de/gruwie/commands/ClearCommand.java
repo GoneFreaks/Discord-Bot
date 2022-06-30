@@ -23,7 +23,7 @@ public class ClearCommand extends ServerCommand {
 		GruwieUtilities.log();
 		if(member.hasPermission(Permission.MESSAGE_MANAGE)) {
 			String[] args = message.getContentStripped().split(" ");
-			GruwieUtilities.log("Parameter-Count " + args.length);
+			GruwieUtilities.log("args-count=" + args.length);
 			if(args.length == 2) {
 				try {
 					int delete = Integer.parseInt(args[1]);
@@ -41,6 +41,7 @@ public class ClearCommand extends ServerCommand {
 	
 	private void deleteBulkMessages(int delete, TextChannel channel, Message message) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("delete=" + delete);
 		channel.getHistoryAfter(message, delete).queue((history) -> {
 			history.retrievePast(delete).queue((messages) -> {
 				List<List<Message>> list = new ArrayList<>();
@@ -67,6 +68,7 @@ public class ClearCommand extends ServerCommand {
 	
 	private void deleteMessages(int delete, TextChannel channel, Message message) {
 		GruwieUtilities.log();
+		GruwieUtilities.log("delete=" + delete);
 		channel.getHistoryAfter(message, delete).queue((history) ->{
 			history.retrievePast(delete).queue((messages) ->{
 				for (Message i : messages) {

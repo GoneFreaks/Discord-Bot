@@ -34,7 +34,7 @@ public class AdminCommandManager {
 		if(this.storage.containsKey(cmd)) {
 			counter.incrementAndGet();
 			this.storage.get(cmd).performAdminCommand(message, privateChannel);
-			GruwieUtilities.log("executed Admincommand " + cmd);
+			GruwieUtilities.log("executed Admincommand cmd=" + cmd + " message=" + message.getContentRaw());
 			return false;
 		}
 		else return true;

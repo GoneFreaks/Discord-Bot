@@ -31,7 +31,7 @@ public class FastForwardCommand extends ServerCommand {
 		if(message == null) fastForward(track);
 		else {
 			String[] args = message.getContentStripped().split(" ");
-			GruwieUtilities.log("Parameter-Count " + args.length);
+			GruwieUtilities.log("args-count=" + args.length);
 			if(args.length == 1) fastForward(track);
 			if(args.length == 2) {
 				try {
