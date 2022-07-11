@@ -7,7 +7,6 @@ import de.gruwie.util.GuessMeantCommand;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import de.gruwie.util.Threadpool;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -44,7 +43,7 @@ public class CommandListener extends ListenerAdapter {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					message.delete().queue(null, Filter.handler);
+					message.delete().queue(null, (e) -> {});
 				}
 			}
 		});
@@ -54,9 +53,8 @@ public class CommandListener extends ListenerAdapter {
 	public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
 		
 		Threadpool.execute(() -> {
-			if(event.getAuthor().isBot()) {
-				return;
-			}
+			
+			if(event.getAuthor().isBot()) return;
 			
 			if(event.getAuthor().getId().equals(ConfigManager.getString("owner_id"))) {
 				Message message = event.getMessage();

@@ -3,7 +3,6 @@ package de.gruwie.util;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.Message;
 
 public class MessageHolder {
@@ -11,6 +10,7 @@ public class MessageHolder {
 	private static ConcurrentHashMap<Message, Long> storage = new ConcurrentHashMap<>();
 	
 	public static void start() {
+		GruwieUtilities.log();
 		Thread checker = new Thread(() -> {
 			while(true) {
 				try {
@@ -19,7 +19,7 @@ public class MessageHolder {
 					storage.forEach((k,v) -> {
 						long difference = current - v;
 						if(!k.isPinned() && difference > (60000 * ConfigManager.getInteger("delete_other_time"))) {
-							k.delete().queue(null, Filter.handler);
+							k.delete().queue(null, (e) -> {});
 							storage.remove(k);
 						}
 					});
@@ -37,8 +37,9 @@ public class MessageHolder {
 	}
 	
 	public static void shutdown() {
+		GruwieUtilities.log();
 		storage.forEach((k,v) -> {
-			if(!k.isPinned()) k.delete().queue(null, Filter.handler);
+			if(!k.isPinned()) k.delete().queue(null, (e) -> {});
 			storage.remove(k);
 		});
 	}

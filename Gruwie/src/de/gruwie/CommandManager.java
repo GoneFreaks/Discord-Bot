@@ -14,6 +14,7 @@ import java.util.jar.JarFile;
 
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.View;
 import de.gruwie.util.exceptions.IdentifierAlreadyTakenException;
 import net.dv8tion.jda.api.entities.Member;
@@ -31,6 +32,7 @@ public class CommandManager {
 	private EmoteManager eman;
 	
 	public CommandManager () throws IdentifierAlreadyTakenException {
+		GruwieUtilities.log();
 		this.commands = new ArrayList<>();
 		this.buttons = new ArrayList<>();
 		this.emotes = new ArrayList<>();
@@ -42,18 +44,21 @@ public class CommandManager {
 	}
 	
 	public boolean perform (String cmd, Member member, TextChannel channel, Message message) throws Exception {
-		
+		GruwieUtilities.log();
 		if(storage.get(cmd) != null) {
 			counter.incrementAndGet();
 			ServerCommand scmd = this.storage.get(cmd);
 			scmd.performServerCommand(member, channel, message);
+			GruwieUtilities.log("executed Command cmd=" + cmd + " channel=" + channel.getId() + " message=" + message.getContentRaw());
 			return false;
 		}
 		else return true;
 	}
 	
 	public ConcurrentHashMap<String, ServerCommand> initializeMap() throws IdentifierAlreadyTakenException {
+		GruwieUtilities.log();
 		ConcurrentHashMap<String, ServerCommand> result = new ConcurrentHashMap<>();
+		GruwieUtilities.log("loading " + commands.size() + " commands");
 		for (ServerCommand i : commands) {
 			if(result.get(i.getCommand()) != null) throw new IdentifierAlreadyTakenException("Command already taken: " + i.getCommand());
 			if(i.getShortcut() != null)
@@ -62,11 +67,13 @@ public class CommandManager {
 			result.put(i.getCommand(), i);
 			if(i.getShortcut() != null) result.put(i.getShortcut(), i);
 		}
+		GruwieUtilities.log("loaded " + result.size() + " commands (including shortcuts and emotes");
 		return result;
 	}
 	
 	@Override
 	public String toString() {
+		GruwieUtilities.log();
 		StringBuilder b = new StringBuilder("__**Supported commands**__\n\n");
 		String cmd_symbol = ConfigManager.getString("symbol");
 		b.append("**Current command symbol " + cmd_symbol + "**\n\n");
@@ -81,10 +88,12 @@ public class CommandManager {
 	}
 	
 	public ServerCommand getServerCommand(String cmd) {
+		GruwieUtilities.log();
 		return storage.get(cmd);
 	}
 	
 	public String[] getCommandArray() {
+		GruwieUtilities.log();
 		List<String> temp1 = new ArrayList<>();
 		commands.forEach((k) -> {
 			if(k.getShortcut() != null) temp1.add(k.getShortcut());
@@ -99,8 +108,10 @@ public class CommandManager {
 	}
 	
 	private void createServerCommands() {
+		GruwieUtilities.log();
 		File jarFile = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
 		if(jarFile.isFile()) {
+			GruwieUtilities.log("loading commands via jar-entries");
 			try(JarFile jar = new JarFile(jarFile)) {
 				Enumeration<JarEntry> entries = jar.entries();
 				while(entries.hasMoreElements()) {
@@ -119,15 +130,18 @@ public class CommandManager {
 						e.printStackTrace();
 					} 
 				}
+				GruwieUtilities.log("loaded " + commands.size() + " commands");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} 
 		}
 		else {
+			GruwieUtilities.log("loading commands via path-entries");
 			String default_path = "de/gruwie/";
 			try {
 				diffrentPackages(default_path + "music/commands/");
 				diffrentPackages(default_path + "commands/");
+				GruwieUtilities.log("loaded " + commands.size() + " commands");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -135,6 +149,8 @@ public class CommandManager {
 	}
 	
 	private void diffrentPackages(String input) throws Exception {
+		GruwieUtilities.log();
+		GruwieUtilities.log("loading commands from path [" + input + "]");
 		String path = this.getClass().getClassLoader().getResource(input).toExternalForm();
 		File folder = new File(new URI(path));
 		for (File i : folder.listFiles()) {
@@ -150,6 +166,7 @@ public class CommandManager {
 	}
 	
 	public List<ServerCommand> getCommandsWithSymbol() {
+		GruwieUtilities.log();
 		List<ServerCommand> result = new ArrayList<>();
 		for (ServerCommand i : commands) {
 			if(i.getButtonSymbol() != null) result.add(i);
@@ -158,18 +175,22 @@ public class CommandManager {
 	}
 
 	public int size() {
+		GruwieUtilities.log();
 		return commands.size();
 	}
 	
 	public int shortcutCount() {
+		GruwieUtilities.log();
 		return storage.size() - commands.size();
 	}
 	
 	public int getCommandCount () {
+		GruwieUtilities.log();
 		return counter.get();
 	}
 
 	public EmoteManager getEman() {
+		GruwieUtilities.log();
 		return eman;
 	}
 	

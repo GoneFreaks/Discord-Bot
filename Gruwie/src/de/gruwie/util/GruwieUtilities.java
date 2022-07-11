@@ -37,15 +37,8 @@ public class GruwieUtilities {
 		return (hours > 0? h : "") + (minutes > 0? m : (hours > 0? "00:" : "0:")) + s;
 	}
 	
-	public static void printBorderline (String element) {
-		for (int i = 0; i < 50; i++) {
-			if(i < 49) System.out.print(element);
-			else System.out.println(element);
-		}
-	}
-	
 	private static String[] getInfoFromTitle (String title) throws Exception {
-		
+		log();
 		if(!title.contains("-")) return null;
 		
 		String[] temp = title.split("-");
@@ -73,6 +66,7 @@ public class GruwieUtilities {
 	}
 	
 	public static String[] getURL(String title) throws Exception {
+		log();
 		String[] title_author = getInfoFromTitle(title);
 		String[] result = new String[2];
 		
@@ -85,6 +79,7 @@ public class GruwieUtilities {
 	}
 	
 	public static String formatWebsite(String input) {
+		log();
 		if(input.equals("")) return input;
 		
 		int index1 = 0;
@@ -160,6 +155,7 @@ public class GruwieUtilities {
 	}
 	
 	private static InputStream getInputStream (String link) {
+		log();
 		try {
 			URL url = new URL(link);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -176,8 +172,8 @@ public class GruwieUtilities {
 		return null;
 	}
 	
-	public static String doWebBrowsing(String input) throws Exception {
-		
+	public static String doWebBrowsing(String input, String break_string) throws Exception {
+		log();
 		StringBuilder b = new StringBuilder("");
 		InputStream website = getInputStream(input);
 		if(website == null) return "";
@@ -185,7 +181,7 @@ public class GruwieUtilities {
 			while (in.hasNext()) {
 				String line = in.nextLine();
 				b.append(line);
-				if(line.contains("<!-- MxM banner -->")) break;
+				if(line.contains(break_string)) break;
 			}
 				
 		}
@@ -194,6 +190,7 @@ public class GruwieUtilities {
 	}
 	
 	public static Properties loadProperties(String file) {
+		log();
 		try {
 			Properties result = new Properties();
 			File temp = new File(file);
@@ -204,6 +201,26 @@ public class GruwieUtilities {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public static void log(String message) {
+		StackWalker walker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+		String calling_class = walker.getCallerClass().getName();
+		String calling_method = walker.walk(frames -> frames.map(StackWalker.StackFrame::getMethodName).skip(1).findFirst()).toString().replace("Optional[", "").replace("]", "");
+		
+		System.err.println("<" + getTime(System.currentTimeMillis()) + ">\tCLASS: " + calling_class + " METHOD: " + calling_method + "\t" + message);
+	}
+	
+	public static void log() {
+		StackWalker walker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+		String calling_class = walker.getCallerClass().getName();
+		String calling_method = walker.walk(frames -> frames.map(StackWalker.StackFrame::getMethodName).skip(1).findFirst()).toString().replace("Optional[", "").replace("]", "");
+		
+		System.err.println("<" + getTime(System.currentTimeMillis()) + ">\tCLASS: " + calling_class + " METHOD: " + calling_method + "\tENTER");
+	}
+	
+	public static void logMeta(String message) {
+		System.err.println("<" + getTime(System.currentTimeMillis()) + ">\t" + message);
 	}
  	
 }

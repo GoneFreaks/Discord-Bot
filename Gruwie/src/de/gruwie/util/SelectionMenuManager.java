@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import de.gruwie.db.ChannelManager;
 import de.gruwie.util.selectOptions.ButtonAction;
 import de.gruwie.util.selectOptions.SelectOptionAction;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -24,6 +23,7 @@ public class SelectionMenuManager {
 	private static Set<UUID> taken = new HashSet<>();
 	
 	public static UUID getUUID () {
+		GruwieUtilities.log();
 		UUID result;
 		while(true) {
 			result = UUID.randomUUID();
@@ -34,16 +34,21 @@ public class SelectionMenuManager {
 	}
 	
 	public static void putAction (UUID uuid, SelectOptionAction action) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("uuid=" + uuid + " action=" + action.getLabel());
 		selectionMenus.put(uuid, action);
 		taken.remove(uuid);
 	}
 	
 	public static void executeAction (String uuid) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("uuid=" + uuid);
 		SelectOptionAction action = selectionMenus.remove(UUID.fromString(uuid));
 		if(action != null) action.perform();
 	}
 	
 	public static void createDropdownMenu (List<SelectOptionAction> actions, MessageChannel channel, String message) {
+		GruwieUtilities.log();
 		Builder builder = SelectionMenu.create(getUUID().toString());
 		actions.forEach((k) -> {
 			builder.addOptions(k);
@@ -55,14 +60,18 @@ public class SelectionMenuManager {
 		else output_channel = channel;
 		MessageEmbed message_embed = MessageManager.buildEmbedMessage(message, null).build();
 		MessageAction action = output_channel.sendMessageEmbeds(message_embed);
-		action.setActionRow(builder.build()).queue(null, Filter.handler);
+		action.setActionRow(builder.build()).queue(null, (e) -> {});
 	}
 	
 	public static void putButtonAction (ButtonAction ba, UUID uuid) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("uuid=" + uuid);
 		buttons.put(uuid, ba);
 	}
 	
 	public static void executeButtonAction(String uuid) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("uuid=" + uuid);
 		ButtonAction ba = buttons.remove(UUID.fromString(uuid));
 		if(ba != null) ba.perform();
 	}

@@ -4,7 +4,6 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.util.MessageHolder;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.Threadpool;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -21,7 +20,7 @@ public class InteractionListener extends ListenerAdapter {
 		Threadpool.execute(() -> {
 			
 			if(event.getChannelType().equals(ChannelType.TEXT)) {
-				event.deferEdit().queue(null, Filter.handler);
+				event.deferEdit().queue(null, (e) -> {});
 				try {
 					Gruwie_Startup.INSTANCE.getCmdMan().perform(event.getButton().getId(), event.getMember(), event.getTextChannel(), null);
 				} catch (Exception e) {
@@ -30,10 +29,10 @@ public class InteractionListener extends ListenerAdapter {
 			}
 			
 			if(event.getChannelType().equals(ChannelType.PRIVATE)) {
-				event.deferEdit().queue(null, Filter.handler);
+				event.deferEdit().queue(null, (e) -> {});
 				SelectionMenuManager.executeAction(event.getButton().getId());
 				SelectionMenuManager.executeButtonAction(event.getButton().getId());
-				event.getMessage().delete().queue(null, Filter.handler);
+				event.getMessage().delete().queue(null, (e) -> {});
 			}
 		});
 	}

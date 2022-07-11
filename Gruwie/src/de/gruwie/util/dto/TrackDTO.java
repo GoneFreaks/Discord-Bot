@@ -23,4 +23,9 @@ public class TrackDTO {
 	public long getEnd() {
 		return end;
 	}
+	
+	@Override
+	public String toString() {
+		return url;
+	}
 }

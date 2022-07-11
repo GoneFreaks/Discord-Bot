@@ -6,6 +6,7 @@ import java.util.List;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.CheckVoiceState;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.Outputs;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.dto.FilterDTO;
@@ -23,6 +24,7 @@ public class GetFilterCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+		GruwieUtilities.log();
 		MusicController controller = CheckVoiceState.checkVoiceState(member, channel);
 		if(controller != null) {
 			List<SelectOptionAction> actions = new ArrayList<>();

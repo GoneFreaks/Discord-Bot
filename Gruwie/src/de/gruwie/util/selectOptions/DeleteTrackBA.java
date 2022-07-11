@@ -3,6 +3,7 @@ package de.gruwie.util.selectOptions;
 import java.util.UUID;
 
 import de.gruwie.db.da.TrackDA;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.SelectionMenuManager;
 import net.dv8tion.jda.api.interactions.components.Button;
 
@@ -20,10 +21,12 @@ public class DeleteTrackBA implements ButtonAction{
 		if(delete) this.button = Button.danger(uuid.toString(), "DELETE");
 		else this.button = Button.success(uuid.toString(), "CANCEL");
 		SelectionMenuManager.putButtonAction(this, uuid);
+		GruwieUtilities.log("delete=" + delete + " url=" + url);
 	}
 	
 	@Override
 	public void perform() {
+		GruwieUtilities.log();
 		if(delete) TrackDA.deleteCertainTrack(url);
 	}
 

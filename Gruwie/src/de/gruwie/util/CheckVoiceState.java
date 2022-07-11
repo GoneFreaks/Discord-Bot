@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 public class CheckVoiceState {
 
 	public static MusicController checkVoiceState(Member member, TextChannel channel) throws Exception {
+		GruwieUtilities.log();
 		GuildVoiceState state;
 		if((state = member.getVoiceState()) != null) {
 			VoiceChannel vc;

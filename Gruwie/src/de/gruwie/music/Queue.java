@@ -26,6 +26,7 @@ public class Queue {
 	int offset;
 
 	public Queue(MusicController controller) {
+		GruwieUtilities.log();
 		this.controller = controller;
 		this.audioPlayer = controller.getPlayer();
 		this.queuelist = new ConcurrentLinkedList<>();
@@ -39,14 +40,15 @@ public class Queue {
 	}
 	
 	public void shuffle() {
-		queuelist.shuffle();
+		GruwieUtilities.log();
 		queuelist.remove(current_track);
+		queuelist.shuffle();
 		queuelist.addFirst(current_track);
 		editMessage();
 	}
 	
 	public boolean next() {
-		
+		GruwieUtilities.log();
 		if(queuelist.size() > 0) {
 			
 			audioPlayer.stopTrack();
@@ -67,10 +69,12 @@ public class Queue {
 	}
 	
 	public void setView(View view) {
+		GruwieUtilities.log();
 		this.view = view;
 	}
 	
 	public View getView() {
+		GruwieUtilities.log();
 		return view;
 	}
 	
@@ -80,7 +84,8 @@ public class Queue {
 	}
 
 	public void addTrackToQueue(AudioTrackTimed track) {
-
+		GruwieUtilities.log();
+		GruwieUtilities.log("track=" + track.getTitle());
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
 		for (AudioTrackTimed i : queuelist.getContentCopy()) {
@@ -95,7 +100,8 @@ public class Queue {
 	}
 	
 	public void addPlaylistToQueue(List<AudioTrackTimed> tracks) {
-		
+		GruwieUtilities.log();
+		GruwieUtilities.log("tracks=" + tracks.size() + " " + tracks.toString());
 		for (AudioTrackTimed i : tracks) {
 			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
 				boolean already = false;
@@ -115,11 +121,13 @@ public class Queue {
 	}
 	
 	public void clearQueue() {
+		GruwieUtilities.log();
 		this.queuelist = new ConcurrentLinkedList<>();
 		editMessage();
 	}
 	
 	public List<AudioTrack> getQueueList() {
+		GruwieUtilities.log();
 		return AudioTrackTimed.convertToNonTimed(queuelist.getContentCopy());
 	}
 	
@@ -128,6 +136,7 @@ public class Queue {
 	}
 	
 	public void changeRepeat() {
+		GruwieUtilities.log();
 		repeat = !repeat;
 		if(!repeat) queuelist.remove(current_track);
 		else if(current_track != null) {
@@ -150,8 +159,20 @@ public class Queue {
 		b.append("\n");
 		
 		if(queuelist.size() <= size) b.append(toStringHelper(0, queuelist.size(), -1));
-		else b.append(toStringHelper(offset, size + offset, -1));
-		
+		else {
+			int start, end;
+			if(size + offset > queuelist.size()) {
+				start = queuelist.size() - size;
+				end = queuelist.size();
+			}
+			else {
+				start = offset;
+				end = size + offset;
+			}
+			
+			b.append(toStringHelper(start, end, -1));
+			
+		}
 		b.append("**" + GruwieUtilities.getBorder(63, "⎯") + "**");
 		return b.toString();
 	}
@@ -161,6 +182,8 @@ public class Queue {
 		StringBuilder b = new StringBuilder("");
 		
 		if(end != 0) b.append("```fix\n");
+		
+		if(start != 0) b.append("▲ " + start + " Track" + (start > 1? "s" : "") + "\n\n");
 		
 		int title_size = custom_character_count > 0? custom_character_count : ConfigManager.getInteger("queue_character_count");
 		for (int i = start; i < end; i++) {
@@ -176,18 +199,24 @@ public class Queue {
 			b.append("\n");
 		}
 
+		if(end != queuelist.size()) b.append("\n▼ " + (queuelist.size() - end) + " Track" + ((queuelist.size() - end) > 1? "s" : "") + "\n");
+		
 		if(end != 0) b.append("```");
 		
 		return b;
 	}
 	
 	private boolean removeTrack (AudioTrackTimed track) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("track=" + track.getTitle());
 		boolean result = queuelist.remove(track);
 		editMessage();
 		return result;
 	}
 	
 	public boolean removeTrack (String track) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("track=" + track);
 		queuelist.lock();
 		boolean result = false;
 		
@@ -201,6 +230,7 @@ public class Queue {
 	}
 	
 	public int size () {
+		GruwieUtilities.log();
 		return queuelist.size();
 	}
 	
@@ -216,14 +246,18 @@ public class Queue {
 	}
 	
 	public void moveQueueUp() {
+		GruwieUtilities.log();
 		move(-1);
 	}
 	
 	public void moveQueueDown() {
+		GruwieUtilities.log();
 		move(1);
 	}
 	
 	private void move(int sign) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("sign=" + sign);
 		int temp = offset;
 		temp += sign * ConfigManager.getInteger("queue_show");
 		if(temp < queuelist.size() && temp >= 0) offset = temp;
@@ -231,6 +265,8 @@ public class Queue {
 	}
 	
 	public void setNextTrack(String track) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("track=" + track);
 		queuelist.lock();
 		for (AudioTrackTimed i : queuelist.getContentCopy()) {
 			if(i.getTitle().equals(track)) {

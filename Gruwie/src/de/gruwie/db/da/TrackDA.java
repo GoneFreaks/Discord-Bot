@@ -6,10 +6,13 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import de.gruwie.db.ConnectionManager;
+import de.gruwie.util.GruwieUtilities;
 
 public class TrackDA {
 
 	public static boolean writeTrack(String url) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("url=" + url);
 		if(!trackExists(url)) {
 			try (Connection cn = ConnectionManager.getConnection(false)) {
 				try (PreparedStatement pstmt = cn.prepareStatement("INSERT INTO track (url) VALUES (?)")){
@@ -30,6 +33,8 @@ public class TrackDA {
 	}
 	
 	private static boolean trackExists(String url) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("url=" + url);
 		try (Connection cn = ConnectionManager.getConnection(true)) {
 			try (PreparedStatement pstmt = cn.prepareStatement("SELECT * FROM track WHERE url = ?")){
 				pstmt.setString(1, url);
@@ -45,7 +50,8 @@ public class TrackDA {
 	}
 	
 	public static boolean deleteCertainTrack(String url) {
-		
+		GruwieUtilities.log();
+		GruwieUtilities.log("url=" + url);
 		try (Connection cn = ConnectionManager.getConnection(false)) {
 			try {
 				deleteFromPlaylists(cn, url);
@@ -63,6 +69,8 @@ public class TrackDA {
 	}
 	
 	private static void deleteFromTracks(Connection cn, String url) throws Exception{
+		GruwieUtilities.log();
+		GruwieUtilities.log("url=" + url);
 		try (PreparedStatement pstmt = cn.prepareStatement("DELETE FROM TRACK WHERE url = ?")){
 			pstmt.setString(1, url);
 			pstmt.executeUpdate();
@@ -70,6 +78,8 @@ public class TrackDA {
 	}
 	
 	private static void deleteFromPlaylists(Connection cn, String url) throws Exception {
+		GruwieUtilities.log();
+		GruwieUtilities.log("url=" + url);
 		try (PreparedStatement pstmt = cn.prepareStatement("DELETE FROM playlist WHERE trackid IN (SELECT iD FROM track WHERE url = ?)")){
 			pstmt.setString(1, url);
 			pstmt.executeUpdate();
@@ -77,6 +87,7 @@ public class TrackDA {
 	}
 	
 	public static int getTrackCount() {
+		GruwieUtilities.log();
 		try(Connection cn = ConnectionManager.getConnection(true)) {
 			try(Statement stmt = cn.createStatement()) {
 				try(ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM track")) {

@@ -3,6 +3,7 @@ package de.gruwie.music;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import de.gruwie.Gruwie_Startup;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.ProgressBar;
 import de.gruwie.util.Threadpool;
 import net.dv8tion.jda.api.entities.Guild;
@@ -19,6 +20,8 @@ public class MusicController {
 	private ProgressBar bar;
 	
 	public MusicController(Guild guild) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("guild=" + guild.getId());
 		this.guild = guild;
 		this.player = Gruwie_Startup.INSTANCE.getAudioPlayerManager().createPlayer();
 		this.equalizer = new TrackEqualizer(player);
@@ -33,34 +36,42 @@ public class MusicController {
 	}
 	
 	public AudioPlayer getPlayer() {
+		GruwieUtilities.log();
 		return player;
 	}
 	
 	public TrackEqualizer getEqualizer() {
+		GruwieUtilities.log();
 		return equalizer;
 	}
 	
 	public FilterManager getFilterManager() {
+		GruwieUtilities.log();
 		return filter;
 	}
 
 	public Guild getGuild() {
+		GruwieUtilities.log();
 		return guild;
 	}
 
 	public Queue getQueue() {
+		GruwieUtilities.log();
 		return queue;
 	}
 	
 	public void setVoiceChannel(VoiceChannel vc) {
+		GruwieUtilities.log();
 		this.vc = vc;
 	}
 	
 	public VoiceChannel getVoiceChannel() {
+		GruwieUtilities.log();
 		return vc;
 	}
 	
 	public ProgressBar getProgressBar() {
+		GruwieUtilities.log();
 		return bar;
 	}
 	

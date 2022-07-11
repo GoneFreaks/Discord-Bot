@@ -22,7 +22,6 @@ public class SystemListener extends ListenerAdapter {
 	
 	@Override
 	public void onReady(ReadyEvent event) {
-		
 		ShardManager shardMan = Gruwie_Startup.INSTANCE.getShardMan();
 		shardMan.addEventListener(new CommandListener());
 		shardMan.addEventListener(new InteractionListener());
@@ -30,22 +29,22 @@ public class SystemListener extends ListenerAdapter {
 		jda = event.getJDA();
 		
 		List<Guild> guilds = event.getJDA().getGuilds();
-		System.out.println("Connected to:");
+		StringBuilder b = new StringBuilder();
+		b.append("Connected to:\n");
 		for (int i = 0; i < guilds.size(); i++) {
+			if(i != 0) b.append("\n");
 			Guild current = guilds.get(i);
-			System.out.println((i + 1) + ": " + current.getName());
-			System.out.println("\tMembers: " + current.getMemberCount() + "\tOwner: " + jda.retrieveUserById(current.getOwnerId()).complete().getName());
-			if(i + 1 != guilds.size()) GruwieUtilities.printBorderline("-");
+			b.append("\t\t" + current.getName());
+			b.append("\tMembers: " + current.getMemberCount() + "\tOwner: " + jda.retrieveUserById(current.getOwnerId()).complete().getName());
 		}
-		GruwieUtilities.printBorderline("=");
+		
+		GruwieUtilities.logMeta(b.toString());
 		
 		shardMan.setStatus(OnlineStatus.ONLINE);
 		shardMan.setActivity(Activity.listening("help"));
 		MessageHolder.start();
-		
-		long startup_time = (System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000;
-		System.out.println("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
-		GruwieUtilities.printBorderline("=");
+		long startup_time = Math.round((System.currentTimeMillis() - Gruwie_Startup.start_time) / 1000.0);
+		GruwieUtilities.logMeta("BOT online after: " + startup_time + " second" + (startup_time > 1? "s" : ""));
 	}
 	
 	@Override

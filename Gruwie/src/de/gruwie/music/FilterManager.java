@@ -17,6 +17,7 @@ public class FilterManager {
 	private MusicController controller;
 	
 	public FilterManager (MusicController controller) {
+		GruwieUtilities.log();
 		this.current_filter = "DEFAULT";
 		this.controller = controller;
 		default_filter = new ConcurrentHashMap<>();
@@ -35,6 +36,7 @@ public class FilterManager {
 	}
 	
 	public static void loadCustomFilters() {
+		GruwieUtilities.log();
 		Properties props = GruwieUtilities.loadProperties("filter.properties");
 		if(props != null) {
 			custom_filter = new ConcurrentHashMap<>();
@@ -42,7 +44,7 @@ public class FilterManager {
 			props.forEach((k,v) -> {
 				default_filter.forEach((sk, sv) -> {
 					if(sv.equals(k)) {
-						System.err.println("The Filter: " + k + " cannot be loaded\n\t--> The name has already been used");
+						GruwieUtilities.log("The Filter: " + k + " cannot be loaded\n\t--> The name has already been used");
 						return;
 					}
 				});
@@ -57,13 +59,13 @@ public class FilterManager {
 						FilterDTO filter = new FilterDTO(k.toString(), result);
 						if(custom_filter.size() < 25) custom_filter.put(filter.getName(), filter);
 					} catch (Exception e) {
-						System.err.println("The Filter: [" + k + "] cannot be loaded\n\t--> Check Number-Format");
+						GruwieUtilities.log("The Filter: [" + k + "] cannot be loaded\n\t--> Check Number-Format");
 					}
 				}
-				else System.err.println("The Filter: " + k + " cannot be loaded\n\t--> You have to provide exactly 15 Numbers");
+				else GruwieUtilities.log("The Filter: " + k + " cannot be loaded\n\t--> You have to provide exactly 15 Numbers");
 			});
 		}
-		else System.out.println("Unable to load Custom-Filter");
+		else GruwieUtilities.log("Unable to load Custom-Filter");
 	}
 	
 	public String getCurrentFilter() {
@@ -71,6 +73,7 @@ public class FilterManager {
 	}
 	
 	public List<FilterDTO> getFilter(){
+		GruwieUtilities.log();
 		List<FilterDTO> result = new ArrayList<>();
 		result.addAll(default_filter.values());
 		result.addAll(custom_filter.values());
@@ -78,6 +81,8 @@ public class FilterManager {
 	}
 	
 	public void applyFilter(String name) throws Exception {
+		GruwieUtilities.log();
+		GruwieUtilities.log("name=" + name);
 		FilterDTO temp = default_filter.get(name.toUpperCase());
 		if(temp == null) temp = custom_filter.get(name.toUpperCase());
 		if(temp != null) {
@@ -87,11 +92,13 @@ public class FilterManager {
 	}
 	
 	public static int filterCount() {
+		GruwieUtilities.log();
 		if(default_filter != null && custom_filter != null) return default_filter.size() + custom_filter.size();
 		else return -1;
 	}
 	
 	public static int customFilterCount() {
+		GruwieUtilities.log();
 		if(custom_filter != null) return custom_filter.size();
 		else return -1;
 	}

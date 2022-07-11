@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.gruwie.commands.types.ServerCommand;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -20,8 +20,10 @@ public class ClearCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+		GruwieUtilities.log();
 		if(member.hasPermission(Permission.MESSAGE_MANAGE)) {
 			String[] args = message.getContentStripped().split(" ");
+			GruwieUtilities.log("args-count=" + args.length);
 			if(args.length == 2) {
 				try {
 					int delete = Integer.parseInt(args[1]);
@@ -38,6 +40,8 @@ public class ClearCommand extends ServerCommand {
 	}
 	
 	private void deleteBulkMessages(int delete, TextChannel channel, Message message) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("delete=" + delete);
 		channel.getHistoryAfter(message, delete).queue((history) -> {
 			history.retrievePast(delete).queue((messages) -> {
 				List<List<Message>> list = new ArrayList<>();
@@ -53,7 +57,7 @@ public class ClearCommand extends ServerCommand {
 				}
 				try {
 					for (List<Message> i : list) {
-						channel.deleteMessages(i).queue(null, Filter.handler);
+						channel.deleteMessages(i).queue(null, (e) -> {});
 					}
 				} catch (Exception e) {
 					deleteMessages(delete, channel, message);
@@ -63,12 +67,14 @@ public class ClearCommand extends ServerCommand {
 	}
 	
 	private void deleteMessages(int delete, TextChannel channel, Message message) {
+		GruwieUtilities.log();
+		GruwieUtilities.log("delete=" + delete);
 		channel.getHistoryAfter(message, delete).queue((history) ->{
 			history.retrievePast(delete).queue((messages) ->{
 				for (Message i : messages) {
 					if(i.isPinned()) continue;
 					try {
-						i.delete().queue(null, Filter.handler);
+						i.delete().queue(null, (e) -> {});
 						Thread.sleep(100);
 					} catch (Exception e) {
 						e.printStackTrace();

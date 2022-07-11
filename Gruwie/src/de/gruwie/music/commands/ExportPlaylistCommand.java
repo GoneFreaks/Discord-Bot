@@ -9,12 +9,12 @@ import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.MusicController;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.selectOptions.ExportPlaylistSOA;
 import de.gruwie.util.selectOptions.SelectOptionAction;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -32,8 +32,10 @@ public class ExportPlaylistCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+		GruwieUtilities.log();
 		if(ConfigManager.getBoolean("database")) {
 			String[] args = message.getContentStripped().split(" ");
+			GruwieUtilities.log("args-count=" + args.length);
 			if(args.length > 1) {
 				MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 				List<AudioTrack> tracks = controller.getQueue().getQueueList();
@@ -42,6 +44,7 @@ public class ExportPlaylistCommand extends ServerCommand {
 					b.append(args[i] + " ");
 				}
 				String name = b.toString().trim();
+				GruwieUtilities.log("Playlist-Name: " + name);
 				if(name.length() <= 30) {
 					if(tracks.size() > 0) {
 						MessageEmbed embed = MessageManager.buildEmbedMessage("HOW DO YOU WANT TO EXPORT THE PLAYLIST **" + name + "**", null).build();
@@ -57,7 +60,7 @@ public class ExportPlaylistCommand extends ServerCommand {
 							SelectionMenuManager.putAction(select.getUUID(), select);
 							buttons.add(Button.primary(select.getUUID().toString(), "SERVER"));
 						}
-						action.setActionRow(buttons).queue(null, Filter.handler);
+						action.setActionRow(buttons).queue(null, (e) -> {});
 					}
 					else MessageManager.sendEmbedMessage(true, Outputs.EXPORT_EMPTY_QUEUE, channel);
 				}

@@ -8,6 +8,7 @@ import de.gruwie.music.MusicController;
 import de.gruwie.music.Queue;
 import de.gruwie.util.CheckTrack;
 import de.gruwie.util.Dropdown;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import de.gruwie.util.dto.CheckTrackDTO;
@@ -23,15 +24,16 @@ public class RemoveTrackCommand extends ServerCommand {
 	
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
-		
+		GruwieUtilities.log();
 		String[] args = message.getContentStripped().split(" ");
+		GruwieUtilities.log("args-count=" + args.length);
 		
 		if(args.length > 1) {
 			StringBuilder b = new StringBuilder("");
 			for(int i = 1; i < args.length; i++) {
 				b.append(args[i].toLowerCase() + " ");
 			}
-				
+			GruwieUtilities.log("Query: " + b.toString());	
 			MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong());
 			Queue queue = controller.getQueue();
 			List<CheckTrackDTO> track_list = CheckTrack.getAudioTrack(queue.getQueueList(), b.toString());

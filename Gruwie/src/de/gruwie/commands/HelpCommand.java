@@ -4,6 +4,7 @@ import de.gruwie.CommandManager;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.util.ConfigManager;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
@@ -19,7 +20,9 @@ public class HelpCommand extends ServerCommand {
 	@Override
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
 		
+		GruwieUtilities.log();
 		String[] args = message.getContentStripped().split(" ");
+		GruwieUtilities.log("args-count=" + args.length);
 		CommandManager cmdMan = Gruwie_Startup.INSTANCE.getCmdMan();
 		long guildId = channel.getGuild().getIdLong();
 		

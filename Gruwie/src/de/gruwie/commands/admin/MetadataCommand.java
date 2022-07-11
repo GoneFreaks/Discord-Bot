@@ -9,7 +9,6 @@ import de.gruwie.util.ConfigManager;
 import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.streams.ErrInterceptor;
-import de.gruwie.util.streams.OutInterceptor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 
@@ -18,6 +17,7 @@ public class MetadataCommand implements AdminCommand {
 	@Override
 	public void performAdminCommand(Message message, PrivateChannel privateChannel) throws Exception {
 		
+		GruwieUtilities.log();
 		if(ConfigManager.getDatabase()) {
 			MessageManager.sendEmbedPrivateMessage(privateChannel, getMetadataMessage(), false);
 		}
@@ -25,6 +25,7 @@ public class MetadataCommand implements AdminCommand {
 	}
 	
 	public String getMetadataMessage() {
+		GruwieUtilities.log();
 		int guild_count = PlaylistDA.getPlaylistCount(false);
 		int user_count = PlaylistDA.getPlaylistCount(true);
 		int track_count = TrackDA.getTrackCount();
@@ -52,9 +53,6 @@ public class MetadataCommand implements AdminCommand {
 		b.append("\n\tLoaded_Filters: " + (filter_count == -1? "Not yet loaded" : filter_count));
 		int custom_filter_count = FilterManager.customFilterCount();
 		b.append("\n\tCustom_Filters: " + (custom_filter_count == -1? "Not yet loaded" : custom_filter_count));
-		
-		b.append("\n\nCMD-Output: ");
-		b.append("\n\n" + OutInterceptor.getCmdOutput());
 		
 		b.append("```");
 		return b.toString();

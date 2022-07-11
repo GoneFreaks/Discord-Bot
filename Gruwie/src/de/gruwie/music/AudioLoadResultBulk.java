@@ -14,7 +14,6 @@ import de.gruwie.util.MessageManager;
 import de.gruwie.util.dto.AudioTrackTimed;
 import de.gruwie.util.dto.TrackDTO;
 import de.gruwie.util.selectOptions.DeleteTrackBA;
-import de.gruwie.util.streams.Filter;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
@@ -55,10 +54,10 @@ public class AudioLoadResultBulk implements AudioLoadResultHandler {
 				
 				MessageEmbed embed = MessageManager.buildEmbedMessage("**UNABLE TO LOAD THE FOLLOWING TRACK**\n" + uri, null).build();
 				MessageAction action = channel.sendMessageEmbeds(embed);
-				action.setActionRow(new DeleteTrackBA(true, uri).getButton(), new DeleteTrackBA(false, uri).getButton()).queue(null, Filter.handler);
+				action.setActionRow(new DeleteTrackBA(true, uri).getButton(), new DeleteTrackBA(false, uri).getButton()).queue(null, (e) -> {});
 				
-			}, Filter.handler);
-		}, Filter.handler);
+			}, (e) -> {});
+		}, (e) -> {});
 		latch.countDown();
 	}
 

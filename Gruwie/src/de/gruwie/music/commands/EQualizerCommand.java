@@ -3,6 +3,7 @@ package de.gruwie.music.commands;
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.commands.types.ServerCommand;
 import de.gruwie.music.TrackEqualizer;
+import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.Outputs;
 import net.dv8tion.jda.api.entities.Member;
@@ -16,7 +17,9 @@ public class EQualizerCommand extends ServerCommand{
 	}
 	
 	public void performServerCommand(Member member, TextChannel channel, Message message) throws Exception {
+		GruwieUtilities.log();
 		String[] args = message.getContentRaw().split(" ");
+		GruwieUtilities.log("args-count=" + args.length);
 		if(args.length == 1) {
 			TrackEqualizer eq = Gruwie_Startup.INSTANCE.getPlayerManager().getController(channel.getGuild().getIdLong()).getEqualizer();
 			Message m = MessageManager.sendEmbedMessageVariable(false, eq.toString(), channel.getGuild().getIdLong());

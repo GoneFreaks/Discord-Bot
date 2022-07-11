@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.gruwie.db.ConnectionManager;
+import de.gruwie.util.GruwieUtilities;
 
 public class ChannelOutputDA {
 
@@ -25,11 +26,14 @@ public class ChannelOutputDA {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		GruwieUtilities.log("output-channels=" + result.size() + " " + result.toString());
 		return result;
 	}
 	
 	public static void writeOutputChannels(Set<Long> modified, ConcurrentHashMap<Long, Long> channels) {
 		
+		GruwieUtilities.log();
+		GruwieUtilities.log("modified=" + modified.size() + " " + modified.toString() + " channels=" + channels.size() + " " + channels.toString());
 		try (Connection cn = ConnectionManager.getConnection(false)){
 			try (PreparedStatement pstmt = cn.prepareStatement("UPDATE output_channel SET channelId = ? WHERE guildId = ?")){
 				
