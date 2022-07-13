@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
+import de.gruwie.music.MusicController;
 import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageHolder;
 import de.gruwie.util.Threadpool;
@@ -13,7 +14,10 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ShutdownEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.managers.AudioManager;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class SystemListener extends ListenerAdapter {
@@ -55,6 +59,26 @@ public class SystemListener extends ListenerAdapter {
 			System.out.println("BOT is offline");
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void onMessageDelete(MessageDeleteEvent event) {
+		Threadpool.execute(() -> {
+			MessageHolder.checkMessage(event.getMessageId());
+		});
+	}
+	
+	@Override
+	public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
+		long guild_id = event.getGuild().getIdLong();
+		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
+		long channel_id = controller.getVoiceChannel().getIdLong();
+		long left_channel_id = event.getChannelLeft().getIdLong();
+		if(channel_id == left_channel_id && event.getChannelLeft().getMembers().size() < 2) {
+			AudioManager manager = event.getGuild().getAudioManager();
+			controller.getPlayer().stopTrack();
+			controller.getQueue().clearQueue();
+			manager.closeAudioConnection();
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package de.gruwie.listener;
 
 import de.gruwie.Gruwie_Startup;
-import de.gruwie.util.MessageHolder;
 import de.gruwie.util.SelectionMenuManager;
 import de.gruwie.util.Threadpool;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -9,7 +8,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
-import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -34,12 +32,6 @@ public class InteractionListener extends ListenerAdapter {
 				SelectionMenuManager.executeButtonAction(event.getButton().getId());
 				event.getMessage().delete().queue(null, (e) -> {});
 			}
-		});
-	}
-	
-	public void onMessageDelete(MessageDeleteEvent event) {
-		Threadpool.execute(() -> {
-			MessageHolder.checkMessage(event.getMessageId());
 		});
 	}
 	

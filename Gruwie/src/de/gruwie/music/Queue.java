@@ -88,11 +88,18 @@ public class Queue {
 		GruwieUtilities.log("track=" + track.getTitle());
 		if (queuelist.size() >= ConfigManager.getInteger("max_queue_size")) return;
 		
+		queuelist.lock();
+		
 		for (AudioTrackTimed i : queuelist.getContentCopy()) {
-			if(i.getTitle().equals(track.getTitle())) return;
+			if(i.getTitle().equals(track.getTitle())) {
+				queuelist.unlock();
+				return;
+			}
 		}
 		
 		this.queuelist.add(track);
+		
+		queuelist.unlock();
 
 		if (audioPlayer.getPlayingTrack() == null) next();
 		
@@ -102,6 +109,7 @@ public class Queue {
 	public void addPlaylistToQueue(List<AudioTrackTimed> tracks) {
 		GruwieUtilities.log();
 		GruwieUtilities.log("tracks=" + tracks.size() + " " + tracks.toString());
+		queuelist.lock();
 		for (AudioTrackTimed i : tracks) {
 			if(queuelist.size() < ConfigManager.getInteger("max_queue_size")) {
 				boolean already = false;
@@ -115,6 +123,7 @@ public class Queue {
 			}
 			else break;
 		}
+		queuelist.unlock();
 		if (audioPlayer.getPlayingTrack() == null) next();
 		
 		editMessage();

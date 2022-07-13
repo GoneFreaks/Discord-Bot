@@ -11,17 +11,13 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import de.gruwie.Gruwie_Startup;
 import de.gruwie.db.ChannelManager;
-import de.gruwie.util.ConfigManager;
 import de.gruwie.util.GruwieUtilities;
 import de.gruwie.util.MessageManager;
 import de.gruwie.util.View;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.managers.AudioManager;
 
 public class TrackScheduler extends AudioEventAdapter {
 
@@ -75,37 +71,15 @@ public class TrackScheduler extends AudioEventAdapter {
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
 		GruwieUtilities.log();
 		long guild_id = Gruwie_Startup.INSTANCE.getPlayerManager().getGuildByPlayerHash(player.hashCode());
-		Guild guild = Gruwie_Startup.INSTANCE.getShardMan().getGuildById(guild_id);
 		
 		MusicController controller = Gruwie_Startup.INSTANCE.getPlayerManager().getController(guild_id);
 		Queue queue = controller.getQueue();
 		
 		view.deleteView();
 		
-		VoiceChannel vc = controller.getVoiceChannel();
-		if(ConfigManager.getBoolean("afk") && vc.getMembers().size() == 1) {
-			closeAudio(guild, player, queue);
-		}
-		
 		if(endReason.equals(AudioTrackEndReason.STOPPED)) return;
 		
-		if(endReason.mayStartNext) {
-			try {
-				if(!queue.next()) closeAudio(guild, player, queue);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private void closeAudio(Guild guild, AudioPlayer player, Queue queue) {
-		GruwieUtilities.log();
-		if(ConfigManager.getBoolean("leave")) {
-			AudioManager manager = guild.getAudioManager();
-			player.stopTrack();
-			queue.clearQueue();
-			manager.closeAudioConnection();
-		}
+		if(endReason.mayStartNext) queue.next();
 	}
 
 }

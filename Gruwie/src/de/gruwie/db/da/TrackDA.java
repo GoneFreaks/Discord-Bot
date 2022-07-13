@@ -80,7 +80,7 @@ public class TrackDA {
 	private static void deleteFromPlaylists(Connection cn, String url) throws Exception {
 		GruwieUtilities.log();
 		GruwieUtilities.log("url=" + url);
-		try (PreparedStatement pstmt = cn.prepareStatement("DELETE FROM playlist WHERE trackid IN (SELECT iD FROM track WHERE url = ?)")){
+		try (PreparedStatement pstmt = cn.prepareStatement("DELETE FROM playlist WHERE track IN (SELECT iD FROM track WHERE url = ?)")){
 			pstmt.setString(1, url);
 			pstmt.executeUpdate();
 		} 

@@ -75,4 +75,9 @@ public class AudioTrackTimed {
 		return result;
 	}
 	
+	@Override
+	public String toString() {
+		return track.getInfo().title;
+	}
+	
 }
